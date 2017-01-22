@@ -1,3 +1,4 @@
+import { Response } from '@angular/http';
 import { dataItem } from './../../core/models/data-item';
 import { BackendService } from './../../core/backend.service';
 import { Component, OnInit } from '@angular/core';
@@ -9,21 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DataListComponent implements OnInit {
 
-  data = [];
+  data: dataItem[] = new Array<dataItem>();
 
   constructor(private backendService: BackendService) { }
 
   ngOnInit() {
-    this.backendService.getAllData()
+    this.backendService.get('/data')
     .subscribe( (res: dataItem[]) => {
-      this.data = this.processData(res);
+      this.data = res;
     })
   }
 
-  private processData(data: dataItem[]): any[] {
-
-    return data.map(item => item.name);
-    
-  }
+  addRow() {
+    this.backendService.post('/data')
+    .subscribe( () => {
+      location.reload();
+    });
+  };
 
 }

@@ -4,15 +4,9 @@ const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
 
-// Get our API routes
-const api = require('./server/routes/api');
-
+const DB = require('./server/database');
+const db = new DB();
 const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -20,7 +14,44 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use('/api', api);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+db.connect();
+
+setInterval(function() {
+    db.stayAlive((err, results) => {
+        if (err) {
+            console.log(err.stack);
+        } else {
+            console.log('staying alive');
+        }
+    });
+}, 10000);
+
+
+/* GET api listing. */
+app.get('/data', (req, res) => {
+    db.getNames((err, results) => {
+        if (results) {
+            res.send(results);
+        } else {
+            res.json(404, { status: err });
+        }
+    })
+
+});
+
+app.post('/data', (req, res) => {
+    db.addRow(req.body, (err, results) => {
+        if (results) {
+            res.send(results);
+        } else {
+            res.json(404, { status: err });
+        }
+    })
+})
 
 app.get('*', (req, res) => {
     res.send('No path');

@@ -1,4 +1,8 @@
 export class dataItem {
-    name: string;
-    rank: number;
+    constructor(name, id){
+        this.Name = name;
+        this.Id = id;
+    }
+    Name: string;
+    Id: string;
 }
