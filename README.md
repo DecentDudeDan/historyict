@@ -13,13 +13,13 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Node server
 
-For the app to work you must run the backend in a seperate terminal. To run this server simply navigate to the app root directory and then run `node server.js`.
+For the app to work you must run the backend in a seperate terminal. To run this server simply navigate to the app root directory and then run `node server.js` or `npm run backend`.
 This server is configured to send a simple query every 10 seconds to keep the connection alive. 
 
 ## Configuring mySQL
 
 In database.js there are 2 config setups, one that can be used to connect to the remote heroku database and one that I used to connect to my local one.
-To change which database it connect to simply edit the line 
+To change which database it connects to simply edit the line 
 `this.connection = mysql.createConnection(this.localConfig);` 
 to 
 `this.connection = mysql.createConnection(this.config);`
