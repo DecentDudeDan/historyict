@@ -34,7 +34,7 @@ setInterval(function() {
 
 /* GET api listing. */
 app.get('/data', (req, res) => {
-    db.getNames((err, results) => {
+    db.getUsers((err, results) => {
         if (results) {
             res.send(results);
         } else {
@@ -45,7 +45,17 @@ app.get('/data', (req, res) => {
 });
 
 app.post('/data', (req, res) => {
-    db.addRow(req.body, (err, results) => {
+    db.addUser(req.body, (err, results) => {
+        if (results) {
+            res.send(results);
+        } else {
+            res.json(404, { status: err });
+        }
+    })
+})
+
+app.put('/data', (req, res) => {
+    db.updateUser(req.body, (err, results) => {
         if (results) {
             res.send(results);
         } else {

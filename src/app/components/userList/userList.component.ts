@@ -10,28 +10,42 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 })
 export class UserListComponent implements OnInit {
 
+  private chance = require('../../../../node_modules/chance').Chance();
   data: User[];
   selectedUsers: User[] = new Array<User>();
   currentUser: User;
+  showEdit: Boolean = false;
 
   constructor(private backendService: BackendService) {
    }
 
   ngOnInit() {
+    this.currentUser = null;
+
     this.backendService.get('/data')
     .subscribe( (res: User[]) => {
       this.data = res;
     })
   }
+  
+  addNewUser() {
+    this.currentUser = null;
+    this.showEdit = !this.showEdit;
+  }
 
-  addUser() {
-    this.backendService.post('/data')
+  addRandomUser() {
+    let user: User = {
+      "Name": this.chance.name(),
+      "Id": this.chance.natural()
+    };
+
+    this.backendService.post('/data', user)
     .subscribe( () => {
       location.reload();
     });
   };
 
-  deleteUsers() {
+  deleteUser() {
     this.backendService.delete('/data', this.currentUser)
     .subscribe( () => {
       location.reload();
@@ -53,6 +67,39 @@ export class UserListComponent implements OnInit {
     // } else {
     //   this.selectedUsers.push(user);
     // }
+
+    this.resetState();
+  }
+
+  onEditEnter(value: string) {
+    let id: string; 
+    let name: string = value;
+    
+    if (this.currentUser === null) {
+      id = this.chance.natural();
+      let newUser: User = {
+        Name: name,
+        Id: id
+      };
+
+      this.backendService.post('/data', newUser)
+      .subscribe( () => {
+        location.reload();
+      });
+
+    } else {
+      id = this.currentUser.Id;
+      let editUser: User = {
+        Name: name,
+        Id: id
+      };
+
+      this.backendService.put('/data', editUser)
+      .subscribe( () => {
+        location.reload();
+      });
+
+    }
   }
 
   isActive(user: User) {
@@ -60,6 +107,10 @@ export class UserListComponent implements OnInit {
     // for (let i = 0; i < this.selectedUsers.length; i++) {
     //   if (this.selectedUsers[i].Id === user.Id) return true;
     // }
+  }
+
+  resetState() {
+    this.showEdit = false;
   }
 
 }

@@ -12,11 +12,19 @@ class Database {
             password: 'dc364a45',
             database: 'heroku_21be83ada68dab8'
         };
+
+        this.localConfig = {
+            host: 'localhost',
+            user: 'danlocal',
+            password: 'fakepassword',
+            database: 'Danny'
+
+        }
         this.chance = new Chance();
     };
 
     connect() {
-        this.connection = mysql.createConnection(this.config);
+        this.connection = mysql.createConnection(this.localConfig);
 
         this.connection.connect(function(err) {
             if (err) {
@@ -25,7 +33,7 @@ class Database {
         });
     }
 
-    addRow(body, cb) {
+    addUser(body, cb) {
         var name = body.Name;
         var id = body.Id;
         this.connection.query('insert into dantest set Name = ?, Id = ?', [name, id], (err, result) => {
@@ -47,7 +55,18 @@ class Database {
         });
     }
 
-    getNames(cb) {
+    updateUser(body, cb) {
+        var name = body.Name;
+        var id = body.Id;
+        this.connection.query('update dantest set Name = ? where Id = ?', [name, id], (err, result) => {
+            if (err) {
+                console.log('error inserting into table', err.stack);
+            }
+            cb(err, result);
+        });
+    }
+
+    getUsers(cb) {
         this.connection.query('select * from dantest', (err, result) => {
             if (err) {
                 console.log(err.stack);

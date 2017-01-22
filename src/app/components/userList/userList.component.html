@@ -3,6 +3,12 @@
         <li class="list-group-item" *ngFor="let item of data" [ngClass]="{ 'active': isActive(item), '': !isActive(item)}" (click)="onSelect(item)">{{item.Name}}</li>
     </ul>
 
-    <button type="button" class="btn btn-primary" (click)="addUser()">Add random user</button>
-    <button [ngClass]="{disabled: currentUser === null}" type="button" class="btn btn-primary" (click)="deleteUsers()">Delete user(s)</button>
+    <button type="button" class="btn btn-primary" (click)="addRandomUser()">Add random user</button>
+    <button type="button" class="btn btn-primary" (click)="addNewUser()">Add new user</button>
+    <button [ngClass]="{disabled: currentUser === null}" type="button" class="btn btn-primary" (click)="deleteUser()">Delete user</button>
+    <button [ngClass]="{disabled: currentUser === null}" type="button" class="btn btn-primary" (click)="showEdit = !showEdit">Edit user</button>
+    <div *ngIf="showEdit" class="form-group">
+        <label for="editName">New name</label>
+        <input #edit type="text" class="form-control" id="editName" (keyup.enter)="onEditEnter(edit.value)">
+    </div>
 </div>
