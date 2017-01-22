@@ -24,7 +24,7 @@ class Database {
     };
 
     connect() {
-        this.connection = mysql.createConnection(this.localConfig);
+        this.connection = mysql.createConnection(this.config);
 
         this.connection.connect(function(err) {
             if (err) {
