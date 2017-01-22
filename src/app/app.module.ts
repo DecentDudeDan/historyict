@@ -1,4 +1,4 @@
-import { DataListComponent } from './components/data-list/data-list.component';
+import { UserListComponent } from './components/userList/userList.component';
 import { CoreModule } from './core/core.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 @NgModule({
   declarations: [
     AppComponent,
-    DataListComponent
+    UserListComponent
   ],
   imports: [
     BrowserModule,

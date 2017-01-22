@@ -28,20 +28,31 @@ class Database {
     addRow(body, cb) {
         var name = body.Name;
         var id = body.Id;
-        this.connection.query('insert into dantest set Name = ?, Id = ?', [name, id], (err, rows) => {
+        this.connection.query('insert into dantest set Name = ?, Id = ?', [name, id], (err, result) => {
             if (err) {
                 console.log('error inserting into table', err.stack);
             }
-            cb(err, rows);
+            cb(err, result);
+        });
+    }
+
+    deleteUser(body, cb) {
+        var name = body.Name;
+        var id = body.Id;
+        this.connection.query('delete from dantest where Id = ' + id, (err, result) => {
+            if (err) {
+                console.log('error inserting into table', err.stack);
+            }
+            cb(err, result);
         });
     }
 
     getNames(cb) {
-        this.connection.query('select * from dantest', (err, rows) => {
+        this.connection.query('select * from dantest', (err, result) => {
             if (err) {
                 console.log(err.stack);
             }
-            cb(err, rows);
+            cb(err, result);
         });
     };
 

@@ -1,0 +1,8 @@
+<div>
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let item of data" [ngClass]="{ 'active': isActive(item), '': !isActive(item)}" (click)="onSelect(item)">{{item.Name}}</li>
+    </ul>
+
+    <button type="button" class="btn btn-primary" (click)="addUser()">Add random user</button>
+    <button [ngClass]="{disabled: currentUser === null}" type="button" class="btn btn-primary" (click)="deleteUsers()">Delete user(s)</button>
+</div>

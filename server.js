@@ -11,6 +11,7 @@ const app = express();
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
     next();
 });
 
@@ -45,6 +46,16 @@ app.get('/data', (req, res) => {
 
 app.post('/data', (req, res) => {
     db.addRow(req.body, (err, results) => {
+        if (results) {
+            res.send(results);
+        } else {
+            res.json(404, { status: err });
+        }
+    })
+})
+
+app.delete('/data', (req, res) => {
+    db.deleteUser(req.body, (err, results) => {
         if (results) {
             res.send(results);
         } else {
