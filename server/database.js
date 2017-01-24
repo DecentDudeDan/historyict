@@ -7,10 +7,10 @@ class Database {
     constructor() {
         this.connection;
         this.config = {
-            host: 'us-cdbr-iron-east-04.cleardb.net',
-            user: 'bafccab7834260',
-            password: 'dc364a45',
-            database: 'heroku_21be83ada68dab8'
+            host: '',
+            user: '',
+            password: '',
+            database: ''
         };
 
         this.localConfig = {
