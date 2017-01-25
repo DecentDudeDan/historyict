@@ -4,9 +4,9 @@ import { BackendService } from './../../core/backend.service';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'userList',
-  templateUrl: './userList.component.html',
-  styleUrls: ['./userList.component.css']
+  selector: 'user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
 
@@ -15,6 +15,7 @@ export class UserListComponent implements OnInit {
   selectedUsers: User[] = new Array<User>();
   currentUser: User;
   showEdit: Boolean = false;
+  isLoaded: Boolean = false;
 
   constructor(private backendService: BackendService) {
    }
@@ -24,7 +25,10 @@ export class UserListComponent implements OnInit {
 
     this.backendService.get('/data')
     .subscribe( (res: User[]) => {
-      this.data = res;
+      if (res) {
+        this.data = res;
+        this.isLoaded = true;
+      }
     })
   }
   
