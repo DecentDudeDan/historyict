@@ -18,6 +18,4 @@ This server is configured to send a simple query every 10 seconds to keep the co
 
 ## Configuring mySQL
 
-In database.js there are 2 config setups, one that can be used to connect to the remote heroku database and one that I used to connect to my local one.
-To change which database it connects to simply edit the line 
-`this.connection = mysql.createConnection(this.localConfig);`
+Currently you will need to have a local instance of mysql running with the app for it to work. You can make your own local instance but you will also need to create all the tables that this app uses (with the same names, and configure the conect logic to connect to yours).
