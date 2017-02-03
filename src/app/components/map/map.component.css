@@ -1,0 +1,16 @@
+.sebm-google-map-container {
+    height: 560px;
+}
+
+.container {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 600px;
+}
+
+.timeline-container {
+    display: inline-block;
+    height: 600px;
+    width: 50%;
+}

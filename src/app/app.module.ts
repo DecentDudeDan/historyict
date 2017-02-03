@@ -1,18 +1,20 @@
+import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
-import { UserListComponent } from './components/user-list/user-list.component';
 import { CoreModule } from './core/core.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http'
 import { Routes, RouterModule } from '@angular/router';
+import { AgmCoreModule } from 'angular2-google-maps/core';
 
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { TimelineComponent } from './components/timeline/timeline.component';
 
 const appRoutes: Routes = [
-  { path: 'users', component: UserListComponent },
+  { path: 'map', component: MapComponent },
   { path: '', component: WelcomePageComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -21,17 +23,21 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    UserListComponent,
     WelcomePageComponent,
     PageNotFoundComponent,
-    NavBarComponent
+    NavBarComponent,
+    MapComponent,
+    TimelineComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     CoreModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyB4ASKPhyU9yq1UfTGfMjNGKHsNqrnFg3c'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
