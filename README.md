@@ -1,6 +1,6 @@
 # Funapp
 
-This is a super simple project for databases
+This is a project for History of Wichita intersections
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -20,6 +20,4 @@ This server is configured to send a simple query every 10 seconds to keep the co
 
 In database.js there are 2 config setups, one that can be used to connect to the remote heroku database and one that I used to connect to my local one.
 To change which database it connects to simply edit the line 
-`this.connection = mysql.createConnection(this.localConfig);` 
-to 
-`this.connection = mysql.createConnection(this.config);`
+`this.connection = mysql.createConnection(this.localConfig);`

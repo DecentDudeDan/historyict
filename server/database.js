@@ -6,12 +6,6 @@ class Database {
 
     constructor() {
         this.connection;
-        this.config = {
-            host: '',
-            user: '',
-            password: '',
-            database: ''
-        };
 
         this.localConfig = {
             host: 'localhost',
@@ -33,10 +27,19 @@ class Database {
         });
     }
 
-    addUser(body, cb) {
-        var name = body.Name;
+    addMarker(body, cb) {
+        this.connection.query('insert into Markers set ?', body, (err, result) => {
+            if (err) {
+                console.log('error inserting into table', err.stack);
+            }
+            cb(err, result);
+        });
+
+    }
+
+    deleteMarker(body, cb) {
         var id = body.Id;
-        this.connection.query('insert into dantest set Name = ?, Id = ?', [name, id], (err, result) => {
+        this.connection.query('delete from where id = ' + id, (err, result) => {
             if (err) {
                 console.log('error inserting into table', err.stack);
             }
@@ -44,10 +47,10 @@ class Database {
         });
     }
 
-    deleteUser(body, cb) {
+    updateMarker(body, cb) {
         var name = body.Name;
         var id = body.Id;
-        this.connection.query('delete from dantest where Id = ' + id, (err, result) => {
+        this.connection.query('update table = ? set name = ? where id = ?', [name, id], (err, result) => {
             if (err) {
                 console.log('error inserting into table', err.stack);
             }
@@ -55,19 +58,9 @@ class Database {
         });
     }
 
-    updateUser(body, cb) {
-        var name = body.Name;
-        var id = body.Id;
-        this.connection.query('update dantest set Name = ? where Id = ?', [name, id], (err, result) => {
-            if (err) {
-                console.log('error inserting into table', err.stack);
-            }
-            cb(err, result);
-        });
-    }
-
-    getUsers(cb) {
-        this.connection.query('select * from dantest', (err, result) => {
+    getMarkers(cb) {
+        var table = table;
+        this.connection.query('select * from Markers', (err, result) => {
             if (err) {
                 console.log(err.stack);
             }
@@ -91,7 +84,6 @@ class Database {
             }
         });
     };
-
 };
 
 module.exports = Database;

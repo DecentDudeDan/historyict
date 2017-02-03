@@ -33,8 +33,8 @@ setInterval(function() {
 
 
 /* GET api listing. */
-app.get('/data', (req, res) => {
-    db.getUsers((err, results) => {
+app.get('/markers', (req, res) => {
+    db.getMarkers((err, results) => {
         if (results) {
             res.send(results);
         } else {
@@ -44,8 +44,8 @@ app.get('/data', (req, res) => {
 
 });
 
-app.post('/data', (req, res) => {
-    db.addUser(req.body, (err, results) => {
+app.post('/markers', (req, res) => {
+    db.addMarker(req.body, (err, results) => {
         if (results) {
             res.send(results);
         } else {
@@ -54,7 +54,7 @@ app.post('/data', (req, res) => {
     })
 })
 
-app.put('/data', (req, res) => {
+app.put('/markers', (req, res) => {
     db.updateUser(req.body, (err, results) => {
         if (results) {
             res.send(results);
@@ -64,7 +64,7 @@ app.put('/data', (req, res) => {
     })
 })
 
-app.delete('/data', (req, res) => {
+app.delete('/markers', (req, res) => {
     db.deleteUser(req.body, (err, results) => {
         if (results) {
             res.send(results);

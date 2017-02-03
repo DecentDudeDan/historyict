@@ -1,11 +1,17 @@
 <div class="container well">
     <div>
         <sebm-google-map [latitude]="lat" [longitude]="lng" streetViewControl="false" [zoom]="zoomAmount" disableDoubleclickZoom="true" disableDefaultUI="true">
-            <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
+            <sebm-google-map-marker [latitude]="lat" [longitude]="lng" title="Middle of Wichita"></sebm-google-map-marker>
         </sebm-google-map>
     </div>
 </div>
 
 <div class="timeline-container well">
     <app-timeline></app-timeline>
+</div>
+
+
+<div>
+    <button class="btn primary-btn" (click)="getMarkers()">Log Markers</button>
+    <button class="btn primary-btn" (click)="createMarker()">Add a Marker</button>
 </div>

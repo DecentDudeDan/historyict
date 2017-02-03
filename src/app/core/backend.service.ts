@@ -1,4 +1,4 @@
-import { User } from './models/user';
+import { Marker } from './models/marker';
 import { Http, Response, Headers, Request, RequestOptions, RequestMethod } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
@@ -24,32 +24,33 @@ export class BackendService {
     });
 }
 
-  post(url: string, user: User) {
-    return this.http.post(this.url + url, user, {headers: this.headers})
+  post(url: string, marker: Marker) {
+    console.log(marker);
+    return this.http.post(this.url + url, marker, {headers: this.headers})
     .map((res: Response) => {
       console.log(res);
     });
   }
 
-  put(url: string, user: User) {
-    let userToEdit = JSON.stringify(user);
+  put(url: string, marker: Marker) {
+    let markerToEdit = JSON.stringify(marker);
 
-    return this.http.put(this.url + url, user, {headers: this.headers})
+    return this.http.put(this.url + url, marker, {headers: this.headers})
     .map((res: Response) => {
       console.log(res);
     });
   }
 
-  delete(url: string, user: User) {
+  delete(url: string, marker: Marker) {
 
-    let deleteUser = JSON.stringify({
-      "Name": user.Name,
-      "Id": user.Id
+    let deletemarker = JSON.stringify({
+      "Name": marker.Title,
+      "Id": marker.Id
     });
     console.log('in delete');
     return this.http.delete(this.url + url, new RequestOptions({
       headers: this.headers,
-      body: deleteUser
+      body: deletemarker
     }))
     .map((res: Response) => {
       console.log(res);
