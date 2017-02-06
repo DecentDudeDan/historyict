@@ -14,3 +14,13 @@
     height: 600px;
     width: 50%;
 }
+
+.edit-form {
+    width: 50%;
+    float: left;
+}
+
+.marker-list {
+    display: inline-block;
+    width: 50%;
+}

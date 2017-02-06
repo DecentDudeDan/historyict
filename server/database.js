@@ -39,7 +39,7 @@ class Database {
 
     deleteMarker(body, cb) {
         var id = body.Id;
-        this.connection.query('delete from where id = ' + id, (err, result) => {
+        this.connection.query('update Markers set deleted = ? where id = ?' + [true, id], (err, result) => {
             if (err) {
                 console.log('error inserting into table', err.stack);
             }
@@ -50,7 +50,7 @@ class Database {
     updateMarker(body, cb) {
         var name = body.Name;
         var id = body.Id;
-        this.connection.query('update table = ? set name = ? where id = ?', [name, id], (err, result) => {
+        this.connection.query('update Markers set name = ? where id = ?', [name, id], (err, result) => {
             if (err) {
                 console.log('error inserting into table', err.stack);
             }
