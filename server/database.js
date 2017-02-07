@@ -39,7 +39,7 @@ class Database {
 
     deleteMarker(body, cb) {
         var id = body.Id;
-        this.connection.query('update Markers set deleted = ? where id = ?' + [true, id], (err, result) => {
+        this.connection.query('update Markers set deleted = true where id = ?', [id], (err, result) => {
             if (err) {
                 console.log('error inserting into table', err.stack);
             }
@@ -60,7 +60,7 @@ class Database {
 
     getMarkers(cb) {
         var table = table;
-        this.connection.query('select * from Markers', (err, result) => {
+        this.connection.query('select * from Markers where Deleted = false', (err, result) => {
             if (err) {
                 console.log(err.stack);
             }

@@ -25,7 +25,7 @@ export class BackendService {
 }
 
   post(url: string, marker: Marker) {
-    console.log(marker);
+    console.log('in post', marker);
     return this.http.post(this.url + url, marker, {headers: this.headers})
     .map((res: Response) => {
       console.log(res);
@@ -44,7 +44,7 @@ export class BackendService {
   delete(url: string, marker: Marker) {
 
     let deletemarker = JSON.stringify({
-      "Name": marker.Title,
+      "Title": marker.Title,
       "Id": marker.Id
     });
     console.log('in delete');

@@ -20,7 +20,24 @@
     float: left;
 }
 
+.edit-form button {
+    margin: 5px;
+}
+
 .marker-list {
     display: inline-block;
     width: 50%;
+}
+
+li:hover {
+    background-color: lightgrey;
+    cursor: pointer;
+}
+
+button {
+    margin-bottom: 5px;
+}
+
+.hasCrosshairs {
+    cursor: crosshair;
 }

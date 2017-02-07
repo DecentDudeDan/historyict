@@ -19,8 +19,10 @@ export class MapComponent implements OnInit {
   initialLng: number = -97.3301;
   zoomAmount: number = 15;
   markers: Marker[];
-  currentMarker: Marker;
+  currentMarker: Marker = new Marker();
   isEditing: boolean;
+  gettingCoords: boolean = false;
+  cursorType: string = 'move';
   
   constructor(private backendServce: BackendService) { }
 
@@ -29,7 +31,12 @@ export class MapComponent implements OnInit {
   }
 
   mapClicked($event: MouseEvent) {
-    console.log($event.coords.lat, $event.coords.lng);
+    if (this.gettingCoords) {
+      this.currentMarker.Lat = $event.coords.lat;
+      this.currentMarker.Lng = $event.coords.lng;
+      this.gettingCoords = false;
+      this.cursorType = 'move';
+    }
   }
 
   getMarkers(): void {
@@ -40,44 +47,74 @@ export class MapComponent implements OnInit {
     })
   }
 
-  createMarker(): void {
+  showMarkerForm(): void {
     this.isEditing = !this.isEditing;
-    let newMarker: Marker = {
-      Title: 'addedmarker',
-      Street1: null,
-      Street2: null,
-      Lat: 39.0202020,
-      Lng: 90.93930,
-      Id: this.chance.natural(),
-      IconUrl: null,
-      Label: null,
-      Author: 'Me',
-      Created: new Date().getTime(),
-      LastUpdated: Date.now(),
-      Deleted: false
-    }
-
-    console.log(newMarker);
-    // this.backendServce.post('/markers', newMarker)
-    // .subscribe((res: any) => {
-    //   console.log(res);
-    // })
+    this.currentMarker = new Marker();
+    console.log(new Date().getTime().toString());
   }
 
   deleteMarker(): void {
     console.log(this.currentMarker);
+    if (this.currentMarker != null) {
+    this.backendServce.delete('/markers', this.currentMarker)
+    .subscribe(() => {
+      this.currentMarker = new Marker();
+      this.getMarkers();
+    });
+    }
   }
 
   clickedMarker(marker: Marker): void {
     this.currentMarker = marker;
+    this.currentMarker = new Marker();
   }
 
   onSelect(marker: Marker) {
     if ( this.currentMarker === marker) {
-      this.currentMarker = null;
+      this.currentMarker = new Marker();
     } else {
       this.currentMarker = marker;
     }
+  }
+
+  isActive(marker: Marker): boolean {
+    return this.currentMarker === marker;
+  }
+
+  onSave(): void {
+
+    if (this.isValid(this.currentMarker)) {
+      this.currentMarker.Created = new Date().getTime();
+      this.currentMarker.LastUpdated = new Date().getTime();
+      this.currentMarker.Author = 'Danny';
+      this.currentMarker.Id = this.chance.natural();
+      this.currentMarker.Deleted = false;
+    }
+
+    this.backendServce.post('/markers', this.currentMarker)
+    .subscribe((res: any) => {
+      this.getMarkers();
+    })
+
+    this.showMarkerForm();
+  }
+
+  cancel(): void {
+    this.currentMarker = new Marker();
+    this.isEditing = !this.isEditing;
+  }
+
+  isValid(marker: Marker): boolean {
+    if(marker.Title != null && marker.Lat != null && marker.Lng != null) {
+      return true;
+    } else {
+      alert('Error: Title, Lat, and Lng must be set to save a new marker');
+    }
+  }
+
+  getCoords(): void {
+    this.gettingCoords = true;
+    this.cursorType = 'crosshair';
   }
 
 }

@@ -55,7 +55,7 @@ app.post('/markers', (req, res) => {
 })
 
 app.put('/markers', (req, res) => {
-    db.updateUser(req.body, (err, results) => {
+    db.updateMarker(req.body, (err, results) => {
         if (results) {
             res.send(results);
         } else {
@@ -65,7 +65,7 @@ app.put('/markers', (req, res) => {
 })
 
 app.delete('/markers', (req, res) => {
-    db.deleteUser(req.body, (err, results) => {
+    db.deleteMarker(req.body, (err, results) => {
         if (results) {
             res.send(results);
         } else {
