@@ -1,4 +1,4 @@
-import { MouseEvent } from 'angular2-google-maps/core';
+import { MouseEvent, LatLngBoundsLiteral } from 'angular2-google-maps/core';
 import { browser } from 'protractor';
 import { Response } from '@angular/http';
 import { Marker } from './../../core/models/marker';
@@ -50,7 +50,6 @@ export class MapComponent implements OnInit {
   showMarkerForm(): void {
     this.isEditing = !this.isEditing;
     this.currentMarker = new Marker();
-    console.log(new Date().getTime().toString());
   }
 
   deleteMarker(): void {
@@ -65,8 +64,11 @@ export class MapComponent implements OnInit {
   }
 
   clickedMarker(marker: Marker): void {
-    this.currentMarker = marker;
-    this.currentMarker = new Marker();
+    if ( this.currentMarker === marker) {
+      this.currentMarker = new Marker();
+    } else {
+      this.currentMarker = marker;
+    }
   }
 
   onSelect(marker: Marker) {
@@ -84,8 +86,8 @@ export class MapComponent implements OnInit {
   onSave(): void {
 
     if (this.isValid(this.currentMarker)) {
-      this.currentMarker.Created = new Date().getTime();
-      this.currentMarker.LastUpdated = new Date().getTime();
+      this.currentMarker.Created = new Date().toJSON();
+      this.currentMarker.LastUpdated = new Date().toJSON();
       this.currentMarker.Author = 'Danny';
       this.currentMarker.Id = this.chance.natural();
       this.currentMarker.Deleted = false;
