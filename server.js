@@ -8,6 +8,8 @@ const DB = require('./server/database');
 const db = new DB();
 const app = express();
 
+var __projectRoot = path.join(__dirname, '/../../');
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -31,10 +33,10 @@ db.connect();
 //     });
 // }, 10000);
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(__projectRoot));
 
 app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
+    res.sendFile(path.join(__projectRoot, '/index.html'));
 });
 
 /* GET api listing. */
