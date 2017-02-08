@@ -1,4 +1,4 @@
-# Funapp
+# HistoryICT
 
 This is a project for History of Wichita intersections
 
