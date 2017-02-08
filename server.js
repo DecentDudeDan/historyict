@@ -1,7 +1,7 @@
 // Get dependencies
 const express = require('express');
-const path = require('path');
 const http = require('http');
+const path = require('path');
 const bodyParser = require('body-parser');
 
 const DB = require('./server/database');
@@ -21,16 +21,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 db.connect();
 
-setInterval(function() {
-    db.stayAlive((err, results) => {
-        if (err) {
-            console.log(err.stack);
-        } else {
-            console.log('staying alive');
-        }
-    });
-}, 10000);
+// setInterval(function() {
+//     db.stayAlive((err, results) => {
+//         if (err) {
+//             console.log(err.stack);
+//         } else {
+//             console.log('staying alive');
+//         }
+//     });
+// }, 10000);
 
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
 
 /* GET api listing. */
 app.get('/markers', (req, res) => {
