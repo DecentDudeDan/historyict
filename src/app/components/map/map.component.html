@@ -1,7 +1,7 @@
 <div class="container well" [ngClass]="{'hasCrosshair': gettingCoords}">
     <div>
         <sebm-google-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" [draggableCursor]="cursorType">
-            <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.Lat" [longitude]="marker.Lng" [title]="marker.Title" [label]="marker.label" (markerClick)="clickedMarker(marker)">
+            <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.Lat" [longitude]="marker.Lng" [title]="marker.Title" [label]="marker.Label" (markerClick)="clickedMarker(marker)">
                 <sebm-google-map-info-window>
                     <strong>View Timeline</strong>
                 </sebm-google-map-info-window>

@@ -24,6 +24,10 @@
     margin: 5px;
 }
 
+.edit-form input {
+    margin: 3px;
+}
+
 .marker-list {
     display: inline-block;
     width: 50%;
