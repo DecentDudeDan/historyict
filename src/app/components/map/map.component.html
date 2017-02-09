@@ -37,7 +37,7 @@
         </div>
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let marker of markers" [ngClass]="{'active': isActive(marker), '': !isActive(marker)}" (click)="onSelect(marker)">
-                {{ marker.Title }}
+                {{ marker.title }}
             </li>
         </ul>
     </div>
