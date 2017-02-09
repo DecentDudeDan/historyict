@@ -8,7 +8,7 @@
     ],
     "scripts": {
         "ng": "ng",
-        "preinstall": "npm cache clean",
+        "preinstall": "ng build",
         "start": "ng serve",
         "lint": "tslint \"src/**/*.ts\" --project src/tsconfig.json --type-check && tslint \"e2e/**/*.ts\" --project e2e/tsconfig.json --type-check",
         "test": "ng test",
@@ -36,10 +36,8 @@
         "rxjs": "^5.0.1",
         "style-loader": "^0.13.1",
         "ts-helpers": "^1.1.1",
-        "typescript": "~2.0.3",
-        "zone.js": "^0.7.2"
-    },
-    "devDependencies": {
+        "typescript": "2.0.0",
+        "zone.js": "^0.7.2",
         "codelyzer": "~2.0.0-beta.1",
         "jasmine-core": "2.5.2",
         "jasmine-spec-reporter": "2.5.0",
@@ -51,5 +49,6 @@
         "protractor": "~4.0.13",
         "ts-node": "1.2.1",
         "tslint": "^4.3.0"
-    }
+    },
+    "devDependencies": {}
 }
