@@ -32,8 +32,8 @@ export class MapComponent implements OnInit {
 
   mapClicked($event: MouseEvent) {
     if (this.gettingCoords) {
-      this.currentMarker.Lat = $event.coords.lat;
-      this.currentMarker.Lng = $event.coords.lng;
+      this.currentMarker.lat = $event.coords.lat;
+      this.currentMarker.lng = $event.coords.lng;
       this.gettingCoords = false;
       this.cursorType = 'move';
     }
@@ -86,11 +86,11 @@ export class MapComponent implements OnInit {
   onSave(): void {
 
     if (this.isValid(this.currentMarker)) {
-      this.currentMarker.Created = new Date().toJSON();
-      this.currentMarker.LastUpdated = new Date().toJSON();
-      this.currentMarker.Author = 'Danny';
-      this.currentMarker.Id = this.chance.natural();
-      this.currentMarker.Deleted = false;
+      this.currentMarker.created = new Date().toJSON();
+      this.currentMarker.lastUpdated = new Date().toJSON();
+      this.currentMarker.author = 'Danny';
+      this.currentMarker.id = this.chance.natural();
+      this.currentMarker.deleted = false;
     }
 
     this.backendServce.post('/markers', this.currentMarker)
@@ -107,7 +107,7 @@ export class MapComponent implements OnInit {
   }
 
   isValid(marker: Marker): boolean {
-    if(marker.Title != null && marker.Lat != null && marker.Lng != null) {
+    if(marker.title != null && marker.lat != null && marker.lng != null) {
       return true;
     } else {
       alert('Error: Title, Lat, and Lng must be set to save a new marker');

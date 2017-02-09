@@ -1,14 +1,14 @@
 export class Marker {
-    Title: string;
-    Street1?: string;
-    Street2?: string;
-    Lat: number;
-    Lng: number;
-    Id: string;
-    IconUrl?: string;
-    Label?: string;
-    Author: string;
-    Created: string;
-    LastUpdated: string;
-    Deleted: boolean;
+    title: string;
+    street1?: string;
+    street2?: string;
+    lat: number;
+    lng: number;
+    id: string;
+    iconUrl?: string;
+    label?: string;
+    author: string;
+    created: string;
+    lastUpdated: string;
+    deleted: boolean;
 }

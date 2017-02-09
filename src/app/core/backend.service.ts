@@ -44,8 +44,8 @@ export class BackendService {
   delete(url: string, marker: Marker) {
 
     let deletemarker = JSON.stringify({
-      "Title": marker.Title,
-      "Id": marker.Id
+      "Title": marker.title,
+      "Id": marker.id
     });
     console.log('in delete');
     return this.http.delete(this.url + url, new RequestOptions({
