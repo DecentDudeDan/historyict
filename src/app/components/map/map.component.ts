@@ -15,6 +15,7 @@ export class MapComponent implements OnInit {
 
   private chance = require('../../../../node_modules/chance').Chance();
 
+  iconUrl: string = this.iconBase + 'parking_lot_maps.png';
   initialLat: number = 37.6872;
   initialLng: number = -97.3301;
   zoomAmount: number = 15;
@@ -23,8 +24,9 @@ export class MapComponent implements OnInit {
   isEditing: boolean;
   gettingCoords: boolean = false;
   cursorType: string = 'move';
+  iconBase: string  = 'http://maps.google.com/mapfiles/kml/shapes/';
   
-  constructor(private backendServce: BackendService) { }
+  constructor(private backendService: BackendService) { }
 
   ngOnInit() {
     this.getMarkers();
@@ -40,7 +42,7 @@ export class MapComponent implements OnInit {
   }
 
   getMarkers(): void {
-    this.backendServce.get('/markers')
+    this.backendService.get('/markers')
     .subscribe((res: Marker[]) => {
       console.log(res);
       this.markers = res;
@@ -55,7 +57,7 @@ export class MapComponent implements OnInit {
   deleteMarker(): void {
     console.log(this.currentMarker);
     if (this.currentMarker != null) {
-    this.backendServce.delete('/markers', this.currentMarker)
+    this.backendService.delete('/markers', this.currentMarker)
     .subscribe(() => {
       this.currentMarker = new Marker();
       this.getMarkers();
@@ -86,17 +88,11 @@ export class MapComponent implements OnInit {
   onSave(): void {
 
     if (this.isValid(this.currentMarker)) {
-      this.currentMarker.created = new Date().toJSON();
-      this.currentMarker.lastUpdated = new Date().toJSON();
-      this.currentMarker.author = 'Danny';
-      this.currentMarker.id = this.chance.natural();
-      this.currentMarker.deleted = false;
+      this.backendService.post('/markers', this.currentMarker)
+      .subscribe((res: any) => {
+        this.getMarkers();
+      })
     }
-
-    this.backendServce.post('/markers', this.currentMarker)
-    .subscribe((res: any) => {
-      this.getMarkers();
-    })
 
     this.showMarkerForm();
   }
@@ -112,6 +108,13 @@ export class MapComponent implements OnInit {
     } else {
       alert('Error: Title, Lat, and Lng must be set to save a new marker');
     }
+  }
+
+  getIcon(url: string): string {
+    if (url) {
+      return this.iconBase + url;
+    }
+    return '';
   }
 
   getCoords(): void {

@@ -8,7 +8,7 @@ export class Marker {
     iconUrl?: string;
     label?: string;
     author: string;
-    created: string;
-    lastUpdated: string;
+    created: Date;
+    lastUpdated: Date;
     deleted: boolean;
 }

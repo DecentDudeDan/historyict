@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class BackendService {
 
-  private baseUrl: string = 'http://histofict-backend.herokuapp.com';
+  private baseUrl: string = this.matchBackendFromUrl();
   private headers: Headers = new Headers(); 
 
   constructor(private http: Http) { 
@@ -25,6 +25,7 @@ export class BackendService {
 }
 
   post(url: string, marker: Marker) {
+    marker.author = this.getAccountName();
     return this.http.post(this.baseUrl + url, marker, {headers: this.headers})
     .map((res: Response) => {
       console.log(res);
@@ -32,8 +33,6 @@ export class BackendService {
   }
 
   put(url: string, marker: Marker) {
-    let markerToEdit = JSON.stringify(marker);
-
     return this.http.put(this.baseUrl + url, marker, {headers: this.headers})
     .map((res: Response) => {
       console.log(res);
@@ -41,18 +40,22 @@ export class BackendService {
   }
 
   delete(url: string, marker: Marker) {
-
-    let deletemarker = JSON.stringify({
-      "Title": marker.title,
-      "Id": marker.id
-    });
-    console.log('in delete');
-    return this.http.delete(this.baseUrl + url, new RequestOptions({
-      headers: this.headers,
-      body: deletemarker
-    }))
+    marker.deleted = true;
+    return this.http.put(this.baseUrl + url, marker, {headers: this.headers})
     .map((res: Response) => {
       console.log(res);
     });
+  }
+
+  matchBackendFromUrl(): string {
+    if (document.location.href.indexOf('localhost') !== -1) {
+      return 'http://localhost:3000';
+    }
+
+    return 'https://histofict-backend.herokuapp.com';
+  }
+
+  getAccountName(): string {
+    return 'Danny';
   }
 }

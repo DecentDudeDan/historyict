@@ -1,7 +1,7 @@
 <div class="container well" [ngClass]="{'hasCrosshair': gettingCoords}">
     <div>
         <sebm-google-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" [draggableCursor]="cursorType">
-            <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [label]="marker.label" (markerClick)="clickedMarker(marker)">
+            <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [label]="marker.label" [iconUrl]="getIcon(marker.iconUrl)" (markerClick)="clickedMarker(marker)">
                 <sebm-google-map-info-window>
                     <strong>View Timeline</strong>
                 </sebm-google-map-info-window>
@@ -20,7 +20,7 @@
             <button class="btn primary-btn" (click)="showMarkerForm()">Add a Marker</button>
             <button *ngIf="isEditing" class="btn primary-btn" (click)="getCoords()">Get Coordinates</button>
         </div>
-        <div *ngIf="currentMarker.Title != null || isEditing" class="form-group edit-form">
+        <div *ngIf="currentMarker.title != null || isEditing" class="form-group edit-form">
             <input [(ngModel)]="currentMarker.title" type="text" class="form-control" placeholder="New Title" required>
             <input [(ngModel)]="currentMarker.street1" type="text" class="form-control" placeholder="Street1">
             <input [(ngModel)]="currentMarker.street2" type="text" class="form-control" placeholder="Street2">

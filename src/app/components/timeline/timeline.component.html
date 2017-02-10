@@ -1,43 +1,15 @@
-<div class="timeline timeline-alternating timeline-collapsing timeline-with-arrows">
-
-    <div class="timeline-block">
+<div *ngIf="!hasHistory()" class="timeline timeline-alternating timeline-collapsing timeline-with-arrows">
+    <div *ngFor="let history of historys" class="timeline-block">
         <div class="timeline-icon"><i style="color:#c23b22" class="fa fa-bell-o fa-lg"></i></div>
         <div class="timeline-content">
-            <h2>Summary or name</h2>
-            <ul>
-                <li>Stuff happened</li>
-                <li>And then this happened</li>
-                <li>Last important event</li>
-            </ul>
-            <div class="timeline-date">03/23/1864</div>
+            <h2>{{history.title}}</h2>
+            <p>{{history.content}}</p>
+            <div class="timeline-date">{{history.date}}</div>
         </div>
     </div>
-
-    <div class="timeline-block">
-        <div class="timeline-icon"><i style="color:#c23b22" class="fa fa-github fa-lg"></i></div>
-        <div class="timeline-content">
-            <h2> Summary </h2>
-            <p>More information.</p>
-            <div class="timeline-date">4/16/1873</div>
-        </div>
-    </div>
-
-    <div class="timeline-block">
-        <div class="timeline-icon"></div>
-        <div class="timeline-content">
-            <h2>Summary</h2>
-            <p>You're getting the picture now but just in case I'm going to type a whole lot to see how the styling reacts to a lot of text. You're getting the picture now but just in case I'm going to type a whole lot to see how the styling reacts to a
-                lot of text. You're getting the picture now but just in case I'm going to type a whole lot to see how the styling reacts to a lot of text. You're getting the picture now but just in case I'm going to type a whole lot to see how the styling
-                reacts to a lot of text. You're getting the picture now but just in case I'm going to type a whole lot to see how the styling reacts to a lot of text. </p>
-            <div class="timeline-date">10/14/1875</div>
-        </div>
-    </div>
-    <div class="timeline-block">
-        <div class="timeline-icon"></div>
-        <div class="timeline-content">
-            <h2>Blah</h2>
-            <p>Filler text</p>
-            <div class="timeline-date">1/19/1900</div>
-        </div>
-    </div>
+</div>
+<div *ngIf="hasHistory()" class="no-history-container">
+    <h1>
+        No history found.
+    </h1>
 </div>
