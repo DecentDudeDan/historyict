@@ -15,7 +15,6 @@ export class MapComponent implements OnInit {
 
   private chance = require('../../../../node_modules/chance').Chance();
 
-  iconUrl: string = this.iconBase + 'parking_lot_maps.png';
   initialLat: number = 37.6872;
   initialLng: number = -97.3301;
   zoomAmount: number = 15;
@@ -24,7 +23,6 @@ export class MapComponent implements OnInit {
   isEditing: boolean;
   gettingCoords: boolean = false;
   cursorType: string = 'move';
-  iconBase: string  = 'http://maps.google.com/mapfiles/kml/shapes/';
   
   constructor(private backendService: BackendService) { }
 

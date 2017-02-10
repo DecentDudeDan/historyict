@@ -1,3 +1,4 @@
+import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
 import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
@@ -27,7 +28,8 @@ const appRoutes: Routes = [
     PageNotFoundComponent,
     NavBarComponent,
     MapComponent,
-    TimelineComponent
+    TimelineComponent,
+    IconPickerComponent
   ],
   imports: [
     BrowserModule,
