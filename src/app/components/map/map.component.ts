@@ -3,13 +3,14 @@ import { browser } from 'protractor';
 import { Response } from '@angular/http';
 import { Marker } from './../../core/models/marker';
 import { BackendService } from './../../core/backend.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MapComponent implements OnInit {
 
@@ -20,6 +21,7 @@ export class MapComponent implements OnInit {
   zoomAmount: number = 15;
   markers: Marker[];
   currentMarker: Marker = new Marker();
+  newMarker: Marker = new Marker();
   isEditing: boolean;
   gettingCoords: boolean = false;
   cursorType: string = 'move';
@@ -28,12 +30,17 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.getMarkers();
+    this.currentMarker = null;
+  }
+
+  showDialog(): void {
+    this.isEditing = true;
   }
 
   mapClicked($event: MouseEvent) {
     if (this.gettingCoords) {
-      this.currentMarker.lat = $event.coords.lat;
-      this.currentMarker.lng = $event.coords.lng;
+      this.newMarker.lat = $event.coords.lat;
+      this.newMarker.lng = $event.coords.lng;
       this.gettingCoords = false;
       this.cursorType = 'move';
     }
@@ -53,8 +60,7 @@ export class MapComponent implements OnInit {
   }
 
   deleteMarker(): void {
-    console.log(this.currentMarker);
-    if (this.currentMarker != null) {
+      if (this.currentMarker != null) {
     this.backendService.delete('/markers', this.currentMarker)
     .subscribe(() => {
       this.currentMarker = new Marker();
@@ -65,7 +71,7 @@ export class MapComponent implements OnInit {
 
   clickedMarker(marker: Marker): void {
     if ( this.currentMarker === marker) {
-      this.currentMarker = new Marker();
+      this.currentMarker = null;
     } else {
       this.currentMarker = marker;
     }
@@ -73,7 +79,7 @@ export class MapComponent implements OnInit {
 
   onSelect(marker: Marker) {
     if ( this.currentMarker === marker) {
-      this.currentMarker = new Marker();
+      this.currentMarker = null;
     } else {
       this.currentMarker = marker;
     }
@@ -86,7 +92,7 @@ export class MapComponent implements OnInit {
   onSave(): void {
 
     if (this.isValid(this.currentMarker)) {
-      this.backendService.post('/markers', this.currentMarker)
+      this.backendService.post('/markers', this.newMarker)
       .subscribe((res: any) => {
         this.getMarkers();
       })
@@ -96,7 +102,7 @@ export class MapComponent implements OnInit {
   }
 
   cancel(): void {
-    this.currentMarker = new Marker();
+    this.newMarker = new Marker();
     this.isEditing = !this.isEditing;
   }
 
@@ -106,13 +112,6 @@ export class MapComponent implements OnInit {
     } else {
       alert('Error: Title, Lat, and Lng must be set to save a new marker');
     }
-  }
-
-  getIcon(url: string): string {
-    if (url) {
-      return this.iconBase + url;
-    }
-    return '';
   }
 
   getCoords(): void {

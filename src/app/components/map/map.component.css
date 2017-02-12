@@ -1,31 +1,20 @@
 .sebm-google-map-container {
-    height: 560px;
+    height: 760px;
 }
 
 .container {
     display: block;
     float: left;
-    width: 50%;
-    height: 600px;
+    width: 45%;
+    height: 800px;
+    margin: 5px;
 }
 
 .timeline-container {
     display: inline-block;
-    height: 600px;
-    width: 50%;
-}
-
-.edit-form {
-    width: 50%;
-    float: left;
-}
-
-.edit-form button {
+    height: 800px;
+    width: 45%;
     margin: 5px;
-}
-
-.edit-form input {
-    margin: 3px;
 }
 
 .marker-list {

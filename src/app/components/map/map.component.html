@@ -1,36 +1,46 @@
-<div class="container well" [ngClass]="{'hasCrosshair': gettingCoords}">
-    <div>
-        <sebm-google-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" [draggableCursor]="cursorType">
-            <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [label]="marker.label" [iconUrl]="getIcon(marker.iconUrl)" (markerClick)="clickedMarker(marker)">
-                <sebm-google-map-info-window>
-                    <strong>View Timeline</strong>
-                </sebm-google-map-info-window>
-            </sebm-google-map-marker>
-        </sebm-google-map>
-    </div>
-</div>
-
-<div class="timeline-container well">
-    <app-timeline></app-timeline>
-</div>
-
+<button (click)="showDialog()" class="btn btn-primary">Add Marker</button>
 <div>
-    <div class="edit-form">
+    <div class="container well" [ngClass]="{'hasCrosshair': gettingCoords}">
         <div>
-            <button class="btn primary-btn" (click)="showMarkerForm()">Add a Marker</button>
-            <button *ngIf="isEditing" class="btn primary-btn" (click)="getCoords()">Get Coordinates</button>
-        </div>
-        <div *ngIf="currentMarker.title != null || isEditing" class="form-group edit-form">
-            <input [(ngModel)]="currentMarker.title" type="text" class="form-control" placeholder="New Title" required>
-            <input [(ngModel)]="currentMarker.street1" type="text" class="form-control" placeholder="Street1">
-            <input [(ngModel)]="currentMarker.street2" type="text" class="form-control" placeholder="Street2">
-            <input [(ngModel)]="currentMarker.lat" type="text" class="form-control" placeholder="Latitude" required>
-            <input [(ngModel)]="currentMarker.lng" type="text" class="form-control" placeholder="Longitude" required>
-            <input [(ngModel)]="currentMarker.label" type="text" class="form-control" placeholder="Label">
-            <button class="btn primary-btn" (click)=onSave()>Save</button>
-            <button class="btn primary-btn" (click)=cancel()>Cancel</button>
+            <sebm-google-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" [draggableCursor]="cursorType">
+                <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [label]="marker.label" [iconUrl]="marker.iconUrl" (markerClick)="clickedMarker(marker)">
+                </sebm-google-map-marker>
+            </sebm-google-map>
         </div>
     </div>
+
+    <div class="timeline-container well">
+        <app-timeline *ngIf="this.currentMarker != null" [marker]="this.currentMarker"></app-timeline>
+        <div *ngIf="this.currentMarker == null">
+            <h2>
+                Please select a map marker.
+            </h2>
+        </div>
+    </div>
+
+    <p-dialog header="Marker Form" [(visible)]="isEditing">
+        <div class="edit-form">
+            <div>
+                <button class="btn primary-btn" (click)="showMarkerForm()">Add a Marker</button>
+                <button *ngIf="isEditing" class="btn primary-btn" (click)="getCoords()">Get Coordinates</button>
+            </div>
+            <div class="form-group edit-form">
+                <input [(ngModel)]="newMarker.title" type="text" class="form-control" placeholder="New Title" required>
+                <input [(ngModel)]="newMarker.street1" type="text" class="form-control" placeholder="Street1">
+                <input [(ngModel)]="newMarker.street2" type="text" class="form-control" placeholder="Street2">
+                <input [(ngModel)]="newMarker.lat" type="text" class="form-control" placeholder="Latitude" required>
+                <input [(ngModel)]="newMarker.lng" type="text" class="form-control" placeholder="Longitude" required>
+                <input [(ngModel)]="newMarker.label" type="text" class="form-control" placeholder="Label">
+                <button class="btn primary-btn" (click)=onSave()>Save</button>
+                <button class="btn primary-btn" (click)=cancel()>Cancel</button>
+            </div>
+        </div>
+    </p-dialog>
+
+</div>
+
+
+<!--<div>
     <div class="marker-list">
         <div>
             <button class="btn primary-btn" (click)="deleteMarker()">Delete a Marker</button>
@@ -41,4 +51,4 @@
             </li>
         </ul>
     </div>
-</div>
+</div>-->

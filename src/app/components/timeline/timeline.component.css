@@ -4,3 +4,26 @@
     align-content: center;
     justify-content: center;
 }
+
+.timeline-container {
+    width: 100%;
+    height: 720px;
+    margin-bottom: 10px;
+    border-bottom: 3px solid black;
+}
+
+.editor-container {
+    padding-left: 3px;
+}
+
+.edit-form {
+    width: 80%;
+}
+
+.edit-form button {
+    margin: 5px;
+}
+
+.edit-form input {
+    margin: 3px;
+}

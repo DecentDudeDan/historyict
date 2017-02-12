@@ -1,4 +1,5 @@
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
+import { DialogModule, EditorModule, SharedModule, CalendarModule } from 'primeng/primeng'
 import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
@@ -33,6 +34,10 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
+    CalendarModule,
+    DialogModule,
+    EditorModule,
+    SharedModule,
     FormsModule,
     HttpModule,
     CoreModule,

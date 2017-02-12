@@ -15,8 +15,9 @@ export class BackendService {
   }
 
 
-  get(url: string) {
-    return this.http.get(this.baseUrl + url)
+  get(url: string, id?: string) {
+    let dataId = id ? id : '';
+    return this.http.get(this.baseUrl + url + '/' + dataId)
     .map((res) => {
       if (res) {
         return res.json();
@@ -24,24 +25,24 @@ export class BackendService {
     });
 }
 
-  post(url: string, marker: Marker) {
-    marker.author = this.getAccountName();
-    return this.http.post(this.baseUrl + url, marker, {headers: this.headers})
+  post(url: string, body: any) {
+    body.author = this.getAccountName();
+    return this.http.post(this.baseUrl + url, body, {headers: this.headers})
     .map((res: Response) => {
       console.log(res);
     });
   }
 
-  put(url: string, marker: Marker) {
-    return this.http.put(this.baseUrl + url, marker, {headers: this.headers})
+  put(url: string, body: any) {
+    return this.http.put(this.baseUrl + url, body, {headers: this.headers})
     .map((res: Response) => {
       console.log(res);
     });
   }
 
-  delete(url: string, marker: Marker) {
-    marker.deleted = true;
-    return this.http.put(this.baseUrl + url, marker, {headers: this.headers})
+  delete(url: string, body: any) {
+    body.deleted = true;
+    return this.http.put(this.baseUrl + url, body, {headers: this.headers})
     .map((res: Response) => {
       console.log(res);
     });
