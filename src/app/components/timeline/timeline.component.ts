@@ -10,18 +10,27 @@ import { Component, OnInit, Input, OnChanges, ViewEncapsulation } from '@angular
 })
 export class TimelineComponent implements OnChanges {
 
+  private dateFormat = require('../../../../node_modules/dateformat');
+
   @Input() marker: Marker;
   historys: History[] = [];
   visible: boolean;
-  newHistory: History = new History();
+  currentHistory: History = new History();
 
   constructor(private backendService: BackendService) { }
 
   ngOnChanges() {
-    this.getHistory();
+    if(this.marker.title){
+      this.getHistory();
+    }
   }
 
-  showDialog(): void {
+  addHistory(): void {
+    this.currentHistory = new History();
+    this.visible = true;
+  }
+
+  editHistory(): void {
     this.visible = true;
   }
 
@@ -29,23 +38,55 @@ export class TimelineComponent implements OnChanges {
     this.backendService.get('/historys', this.marker.id)
     .subscribe((res: History[]) => {
       console.log(res);
+      res.forEach((hist: History) => {
+        hist.date = this.dateFormat(hist.date, "mm/dd/yyyy");
+      })
       this.historys = res;
     })
   }
 
   onSave(): void {
-    this.newHistory.markerId = this.marker.id;
+    this.currentHistory.markerId = this.marker.id;
+    this.currentHistory.date;
 
-    this.backendService.post('/historys', this.newHistory)
+    if (this.currentHistory.created === undefined) {
+    this.backendService.post('/historys', this.currentHistory)
     .subscribe(() => {
       this.getHistory();
     });
-    this.newHistory = new History();
+    } else {
+      this.backendService.put('/historys', this.currentHistory)
+      .subscribe(() => {
+        this.getHistory();
+      })
+    }
+    this.currentHistory = new History();
     this.visible = false;
+  }
+
+  deleteHistory(): void {
+    if (this.currentHistory.created) {
+      this.backendService.delete('/historys', this.currentHistory)
+      .subscribe(() => {
+        this.getHistory();
+      })
+    }
   }
 
   onCancel(): void {
     this.visible = false;
+  }
+
+  onSelect(history: History): void {
+    if (this.currentHistory !== history) {
+      this.currentHistory = history;
+    } else {
+      this.currentHistory = new History();
+    }
+  }
+
+  isLocal(): boolean {
+    return window.location.href.indexOf('localhost') != -1;
   }
 
 

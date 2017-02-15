@@ -20,8 +20,8 @@ export class MapComponent implements OnInit {
   initialLng: number = -97.3301;
   zoomAmount: number = 15;
   markers: Marker[];
-  currentMarker: Marker = new Marker();
-  newMarker: Marker = new Marker();
+  currentMarker: Marker;
+  editingMarker: Marker = new Marker();
   isEditing: boolean;
   gettingCoords: boolean = false;
   cursorType: string = 'move';
@@ -30,19 +30,26 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.getMarkers();
-    this.currentMarker = null;
+    this.currentMarker = null
   }
 
-  showDialog(): void {
+  addMarker(): void {
+    this.editingMarker = new Marker();
+    this.getCoords();
+  }
+
+  editMarker(): void {
+    this.editingMarker = this.currentMarker;
     this.isEditing = true;
   }
 
   mapClicked($event: MouseEvent) {
     if (this.gettingCoords) {
-      this.newMarker.lat = $event.coords.lat;
-      this.newMarker.lng = $event.coords.lng;
+      this.currentMarker.lat = $event.coords.lat;
+      this.currentMarker.lng = $event.coords.lng;
       this.gettingCoords = false;
       this.cursorType = 'move';
+      this.isEditing = true;
     }
   }
 
@@ -52,11 +59,6 @@ export class MapComponent implements OnInit {
       console.log(res);
       this.markers = res;
     })
-  }
-
-  showMarkerForm(): void {
-    this.isEditing = !this.isEditing;
-    this.currentMarker = new Marker();
   }
 
   deleteMarker(): void {
@@ -77,14 +79,6 @@ export class MapComponent implements OnInit {
     }
   }
 
-  onSelect(marker: Marker) {
-    if ( this.currentMarker === marker) {
-      this.currentMarker = null;
-    } else {
-      this.currentMarker = marker;
-    }
-  }
-
   isActive(marker: Marker): boolean {
     return this.currentMarker === marker;
   }
@@ -92,17 +86,17 @@ export class MapComponent implements OnInit {
   onSave(): void {
 
     if (this.isValid(this.currentMarker)) {
-      this.backendService.post('/markers', this.newMarker)
+      this.backendService.post('/markers', this.currentMarker)
       .subscribe((res: any) => {
         this.getMarkers();
       })
     }
 
-    this.showMarkerForm();
+    this.isEditing = !this.isEditing;
   }
 
   cancel(): void {
-    this.newMarker = new Marker();
+    this.currentMarker = null;
     this.isEditing = !this.isEditing;
   }
 
@@ -112,6 +106,10 @@ export class MapComponent implements OnInit {
     } else {
       alert('Error: Title, Lat, and Lng must be set to save a new marker');
     }
+  }
+  
+  isLocal(): boolean {
+    return window.location.href.indexOf('localhost') != -1;
   }
 
   getCoords(): void {

@@ -1,19 +1,24 @@
 .sebm-google-map-container {
-    height: 760px;
+    height: 720px;
 }
 
 .container {
     display: block;
     float: left;
-    width: 45%;
+    width: 49%;
     height: 800px;
     margin: 5px;
+}
+
+.map-container {
+    margin-bottom: 10px;
+    border-bottom: 3px solid black;
 }
 
 .timeline-container {
     display: inline-block;
     height: 800px;
-    width: 45%;
+    width: 49%;
     margin: 5px;
 }
 

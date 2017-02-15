@@ -1,34 +1,39 @@
-<div class="timeline-container">
-    <div *ngIf="this.historys.length > 0" class="timeline timeline-alternating timeline-collapsing timeline-with-arrows">
-        <div *ngFor="let history of historys" class="timeline-block">
-            <div class="timeline-icon"><i style="color:#c23b22" class="fa fa-lg"></i></div>
-            <div class="timeline-content">
-                <h2 *ngIf="history.title != null">{{history.title}}</h2>
-                <div [innerHTML]="history.content">
+<div>
+    <div class="timeline-container">
+        <div *ngIf="this.historys.length > 0" class="timeline timeline-alternating timeline-collapsing timeline-with-arrows">
+            <div *ngFor="let history of historys" class="timeline-block" [ngClass]="{selected: history == currentHistory}" (click)="onSelect(history)">
+                <div class="timeline-icon"><i style="color:#c23b22" class="fa fa-lg"></i></div>
+                <div class="timeline-content tl-content">
+                    <h2 *ngIf="history.title != null">{{history.title}}</h2>
+                    <div [innerHTML]="history.content">
+                    </div>
+                    <div class="timeline-date">{{history.date}}</div>
                 </div>
-                <div class="timeline-date">{{history.date}}</div>
             </div>
         </div>
+        <div *ngIf="this.historys.length < 1" class="no-history-container">
+            <h1>
+                No history found.
+            </h1>
+        </div>
+        <p-dialog width="1000" height="800" responsive="true" header="History Form" modal="true" [(visible)]="visible">
+            <div class="form-group edit-form">
+                <input [(ngModel)]="currentHistory.title" type="text" class="form-control" placeholder="Title">
+                <div class="editor-container">
+                    <p-editor [(ngModel)]="currentHistory.content" [style]="{'height':'150px'}" placeholder="Content"></p-editor>
+                </div>
+                <input [(ngModel)]="currentHistory.keywords" type="text" class="form-control" placeholder="Keywords">
+                <input [(ngModel)]="currentHistory.source" type="text" class="form-control" placeholder="Source">
+                <input [(ngModel)]="currentHistory.images" type="text" class="form-control" placeholder="Image Url">
+                <div>
+                    <p-calendar inputStyleClass="form-control" readonlyInput="true" [(ngModel)]="currentHistory.date" [monthNavigator]="true" [yearNavigator]="true" yearRange="1800:2030" placeholder="Date"></p-calendar>
+                </div>
+                <button class="btn primary-btn" (click)=onSave()>Save</button>
+                <button class="btn primary-btn" (click)=onCancel()>Cancel</button>
+            </div>
+        </p-dialog>
     </div>
-    <div *ngIf="this.historys.length < 1" class="no-history-container">
-        <h1>
-            No history found.
-        </h1>
-    </div>
+    <button class="btn" (click)="addHistory()"> Add history </button>
+    <button class="btn" [disabled]="!this.currentHistory.created" (click)="editHistory()"> Edit History </button>
+    <button *ngIf="isLocal()" class="btn" [disabled]="!this.currentHistory.created" (click)="deleteHistory()"> Delete History </button>
 </div>
-<p-dialog width="1000" height="800" responsive="true" header="History Form" modal="true" [(visible)]="visible">
-    <div class="form-group edit-form">
-        <input [(ngModel)]="newHistory.title" type="text" class="form-control" placeholder="Title">
-        <div class="editor-container">
-            <p-editor [(ngModel)]="newHistory.content" [style]="{'height':'150px'}" placeholder="Content"></p-editor>
-        </div>
-        <input [(ngModel)]="newHistory.keywords" type="text" class="form-control" placeholder="Keywords">
-        <input [(ngModel)]="newHistory.images" type="text" class="form-control" placeholder="Image Url">
-        <div>
-            <p-calendar inputStyleClass="form-control" readonlyInput="true" [(ngModel)]="newHistory.date" [monthNavigator]="true" [yearNavigator]="true" yearRange="1800:2030" placeholder="Date"></p-calendar>
-        </div>
-        <button class="btn primary-btn" (click)=onSave()>Save</button>
-        <button class="btn primary-btn" (click)=onCancel()>Cancel</button>
-    </div>
-</p-dialog>
-<button class="btn" (click)="showDialog()"> Add history </button>

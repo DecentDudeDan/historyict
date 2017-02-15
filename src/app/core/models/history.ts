@@ -1,11 +1,12 @@
 export class History {
     title: string;
     content: string;
-    markerId: String;
+    markerId: string;
     date: Date;
     keywords: string[];
     images: string[];
     author: string;
+    source: string[];
     created: Date;
     lastUpdated: Date;
     deleted: Boolean

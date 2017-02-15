@@ -11,6 +11,14 @@
     border-bottom: 3px solid black;
 }
 
+.timeline-block div:hover {
+    cursor: pointer;
+}
+
+.selected {
+    color: grey;
+}
+
 .editor-container {
     padding-left: 3px;
 }
