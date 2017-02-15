@@ -4,6 +4,7 @@ import { Response } from '@angular/http';
 import { Marker } from './../../core/models/marker';
 import { BackendService } from './../../core/backend.service';
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Message } from 'primeng/primeng';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class MapComponent implements OnInit {
 
   private chance = require('../../../../node_modules/chance').Chance();
 
+  msgs: Message[] = [];
   initialLat: number = 37.6872;
   initialLng: number = -97.3301;
   zoomAmount: number = 15;
@@ -36,6 +38,8 @@ export class MapComponent implements OnInit {
   addMarker(): void {
     this.editingMarker = new Marker();
     this.getCoords();
+    this.msgs = [];
+    this.msgs.push({severity: 'info', summary: 'Getting Coordinates', detail: 'Select a locatin on the map to obtain coordinates'});
   }
 
   editMarker(): void {
@@ -45,8 +49,8 @@ export class MapComponent implements OnInit {
 
   mapClicked($event: MouseEvent) {
     if (this.gettingCoords) {
-      this.currentMarker.lat = $event.coords.lat;
-      this.currentMarker.lng = $event.coords.lng;
+      this.editingMarker.lat = $event.coords.lat;
+      this.editingMarker.lng = $event.coords.lng;
       this.gettingCoords = false;
       this.cursorType = 'move';
       this.isEditing = true;
@@ -79,14 +83,10 @@ export class MapComponent implements OnInit {
     }
   }
 
-  isActive(marker: Marker): boolean {
-    return this.currentMarker === marker;
-  }
-
   onSave(): void {
 
-    if (this.isValid(this.currentMarker)) {
-      this.backendService.post('/markers', this.currentMarker)
+    if (this.isValid(this.editingMarker)) {
+      this.backendService.post('/markers', this.editingMarker)
       .subscribe((res: any) => {
         this.getMarkers();
       })
@@ -96,7 +96,7 @@ export class MapComponent implements OnInit {
   }
 
   cancel(): void {
-    this.currentMarker = null;
+    this.editingMarker = new Marker();
     this.isEditing = !this.isEditing;
   }
 

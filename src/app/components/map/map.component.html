@@ -1,3 +1,5 @@
+<p-growl [value]="msgs"></p-growl>
+
 <div>
     <div class="container well" [ngClass]="{'hasCrosshair': gettingCoords}">
         <div class="map-container">
@@ -14,7 +16,7 @@
 
     <div class="timeline-container well">
         <app-timeline *ngIf="this.currentMarker" [marker]="this.currentMarker"></app-timeline>
-        <div *ngIf="this.currentMarker == null">
+        <div *ngIf="this.currentMarker">
             <h2>
                 Please select a map marker.
             </h2>
@@ -38,17 +40,3 @@
     </p-dialog>
 
 </div>
-
-
-<!--<div>
-    <div class="marker-list">
-        <div>
-            <button class="btn primary-btn" (click)="deleteMarker()">Delete a Marker</button>
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item" *ngFor="let marker of markers" [ngClass]="{'active': isActive(marker), '': !isActive(marker)}" (click)="onSelect(marker)">
-                {{ marker.title }}
-            </li>
-        </ul>
-    </div>
-</div>-->
