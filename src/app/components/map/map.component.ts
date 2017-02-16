@@ -25,6 +25,7 @@ export class MapComponent implements OnInit {
   currentMarker: Marker;
   editingMarker: Marker = new Marker();
   isEditing: boolean;
+  isSelected: boolean;
   gettingCoords: boolean = false;
   cursorType: string = 'move';
   
@@ -32,7 +33,14 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.getMarkers();
-    this.currentMarker = null
+    this.isSelected = false;
+  }
+
+  getCurrentMarker(): Marker {
+    if (this.currentMarker) {
+      return this.currentMarker;
+    }
+    return new Marker
   }
 
   addMarker(): void {
@@ -57,6 +65,13 @@ export class MapComponent implements OnInit {
     }
   }
 
+  mapRightClicked($event: MouseEvent) {
+    if (this.gettingCoords) {
+      this.cursorType = 'move';
+      
+    }
+  }
+
   getMarkers(): void {
     this.backendService.get('/markers')
     .subscribe((res: Marker[]) => {
@@ -69,7 +84,6 @@ export class MapComponent implements OnInit {
       if (this.currentMarker != null) {
     this.backendService.delete('/markers', this.currentMarker)
     .subscribe(() => {
-      this.currentMarker = new Marker();
       this.getMarkers();
     });
     }
@@ -78,8 +92,10 @@ export class MapComponent implements OnInit {
   clickedMarker(marker: Marker): void {
     if ( this.currentMarker === marker) {
       this.currentMarker = null;
+      this.isSelected = false;
     } else {
       this.currentMarker = marker;
+      this.isSelected = true;
     }
   }
 
@@ -91,7 +107,7 @@ export class MapComponent implements OnInit {
         this.getMarkers();
       })
     }
-
+    this.editingMarker = new Marker();
     this.isEditing = !this.isEditing;
   }
 

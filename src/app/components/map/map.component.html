@@ -3,20 +3,20 @@
 <div>
     <div class="container well" [ngClass]="{'hasCrosshair': gettingCoords}">
         <div class="map-container">
-            <sebm-google-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" [draggableCursor]="cursorType">
+            <sebm-google-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" (mapRightClick)="mapRightClicked($event)" [draggableCursor]="cursorType">
                 <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [label]="marker.label" [iconUrl]="marker.iconUrl" (markerClick)="clickedMarker(marker)">
                 </sebm-google-map-marker>
             </sebm-google-map>
         </div>
         <button (click)="addMarker()" class="btn">Add Marker</button>
-        <button (click)="editMarker()" [disabled]="!this.currentMarker" class="btn"> Edit Marker </button>
-        <button *ngIf="isLocal()" (click)="deleteMarker()" [disabled]="!this.currentMarker" class="btn"> Delete Marker </button>
+        <button (click)="editMarker()" [disabled]="!isSelected" class="btn"> Edit Marker </button>
+        <button *ngIf="isLocal()" (click)="deleteMarker()" [disabled]="!isSelected" class="btn"> Delete Marker </button>
 
     </div>
 
     <div class="timeline-container well">
-        <app-timeline *ngIf="this.currentMarker" [marker]="this.currentMarker"></app-timeline>
-        <div *ngIf="this.currentMarker">
+        <app-timeline *ngIf="isSelected" [marker]="getCurrentMarker()"></app-timeline>
+        <div *ngIf="!isSelected">
             <h2>
                 Please select a map marker.
             </h2>
@@ -24,17 +24,36 @@
     </div>
 
     <p-dialog width="1000" height="800" header="Marker Form" modal="true" [(visible)]="isEditing">
-        <div class="edit-form">
-
-            <div *ngIf="isEditing" class="form-group edit-form">
-                <input [(ngModel)]="editingMarker.title" type="text" class="form-control" placeholder="New Title" required>
-                <input [(ngModel)]="editingMarker.street1" type="text" class="form-control" placeholder="Street1">
-                <input [(ngModel)]="editingMarker.street2" type="text" class="form-control" placeholder="Street2">
-                <input [(ngModel)]="editingMarker.lat" type="text" class="form-control" placeholder="Latitude" required>
-                <input [(ngModel)]="editingMarker.lng" type="text" class="form-control" placeholder="Longitude" required>
-                <input [(ngModel)]="editingMarker.label" type="text" class="form-control" placeholder="Label">
-                <button class="btn primary-btn" (click)=onSave()>Save</button>
-                <button class="btn primary-btn" (click)=cancel()>Cancel</button>
+        <div *ngIf="isEditing" class="ui-grid ui-grid-responsive ui-grid-pad">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="editingMarker.title" type="text" class="ui-grid-col-12" pInputText placeholder="New Title" required>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="editingMarker.street1" type="text" class="ui-grid-col-6" pInputText placeholder="Street1">
+                    <input [(ngModel)]="editingMarker.street2" type="text" class="ui-grid-col-6" pInputText placeholder="Street2">
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="editingMarker.lat" type="text" class="ui-grid-col-6" pInputText placeholder="Latitude" required>
+                    <input [(ngModel)]="editingMarker.lng" type="text" class="ui-grid-col-6" pInputText placeholder="Longitude" required>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="editingMarker.label" type="text" class="ui-grid-col-12" pInputText placeholder="Label">
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2">
+                    <button class="btn btn-primary" (click)=onSave()>Save</button>
+                </div>
+                <div class="ui-grid-col-2">
+                    <button class="btn" (click)=cancel()>Cancel</button>
+                </div>
             </div>
         </div>
     </p-dialog>

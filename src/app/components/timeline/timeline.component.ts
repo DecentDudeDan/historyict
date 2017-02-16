@@ -6,7 +6,7 @@ import { Component, OnInit, Input, OnChanges, ViewEncapsulation } from '@angular
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.css'],
+  styleUrls: ['./timeline.component.css']
 })
 export class TimelineComponent implements OnChanges {
 
@@ -16,6 +16,8 @@ export class TimelineComponent implements OnChanges {
   historys: History[] = [];
   visible: boolean;
   currentHistory: History = new History();
+  keywordSuggestions: string[] = ['Black history', '1800"s', '1900"s', '2000"s', 'Kansas', 'Native Americans', "Indians"];
+  filteredKeywords: string[];
 
   constructor(private backendService: BackendService) { }
 
@@ -89,5 +91,20 @@ export class TimelineComponent implements OnChanges {
     return window.location.href.indexOf('localhost') != -1;
   }
 
+  filterKeywordsEvent($event) {
+    let query = $event.query;
+    this.filteredKeywords = this.filterKeywords(query, this.keywordSuggestions);
+  }
+
+  filterKeywords(query, keywords: string[]): string[]  {
+    let filtered : any[] = [];
+    
+    keywords.forEach((keyword: string) => {
+      if(keyword.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(keyword);
+      }
+    });
+    return filtered;
+  }
 
 }

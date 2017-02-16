@@ -1,5 +1,5 @@
 <div>
-    <div class="timeline-container">
+    <div class="timeline-container tl-container">
         <div *ngIf="this.historys.length > 0" class="timeline timeline-alternating timeline-collapsing timeline-with-arrows">
             <div *ngFor="let history of historys" class="timeline-block" [ngClass]="{selected: history == currentHistory}" (click)="onSelect(history)">
                 <div class="timeline-icon"><i style="color:#c23b22" class="fa fa-lg"></i></div>
@@ -17,19 +17,51 @@
             </h1>
         </div>
         <p-dialog width="1000" height="800" responsive="true" header="History Form" modal="true" [(visible)]="visible">
-            <div class="form-group edit-form">
-                <input [(ngModel)]="currentHistory.title" type="text" class="form-control" placeholder="Title">
-                <div class="editor-container">
-                    <p-editor [(ngModel)]="currentHistory.content" [style]="{'height':'150px'}" placeholder="Content"></p-editor>
+            <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+                        <input [(ngModel)]="currentHistory.title" type="text" pInputText class="ui-grid-col-12" placeholder="Title">
+                    </div>
                 </div>
-                <input [(ngModel)]="currentHistory.keywords" type="text" class="form-control" placeholder="Keywords">
-                <input [(ngModel)]="currentHistory.source" type="text" class="form-control" placeholder="Source">
-                <input [(ngModel)]="currentHistory.images" type="text" class="form-control" placeholder="Image Url">
-                <div>
-                    <p-calendar inputStyleClass="form-control" readonlyInput="true" [(ngModel)]="currentHistory.date" [monthNavigator]="true" [yearNavigator]="true" yearRange="1800:2030" placeholder="Date"></p-calendar>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+                        <p-editor [(ngModel)]="currentHistory.content" [style]="{'height':'150px'}" placeholder="Content">
+                        </p-editor>
+                    </div>
                 </div>
-                <button class="btn primary-btn" (click)=onSave()>Save</button>
-                <button class="btn primary-btn" (click)=onCancel()>Cancel</button>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+                        <input [(ngModel)]="currentHistory.source" type="text" pInputText class="ui-grid-col-12" placeholder="Source">
+                    </div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+                        <input [(ngModel)]="currentHistory.images" type="text" pInputText class="ui-grid-col-12" placeholder="Image Url">
+                    </div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-6">
+                        <div class="ui-grid-col-12">
+                            <p-autoComplete [(ngModel)]="currentHistory.keywords" inputStyleClass="ui-grid-col-12" class="ui-grid-col-12" styleClass="ui-grid-col-12" [suggestions]="filteredKeywords" (completeMethod)="filterKeywordsEvent($event)" [minLength]="2" placeholder="Keyword"></p-autoComplete>
+                        </div>
+                    </div>
+                    <div class="ui-grid-col-6">
+                        <div class="ui-grid-col-2">
+                            Date:
+                        </div>
+                        <div class="ui-grid-col-10">
+                            <p-inputMask styleClass="ui-grid-col-12" [(ngModel)]="currentHistory.date" mask="99/99/9999" placeholder="mm/dd/yyyy"></p-inputMask>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-2">
+                        <button class="btn btn-primary ui-grid-col-12" (click)=onSave()>Save</button>
+                    </div>
+                    <div class="ui-grid-col-2">
+                        <button class="btn ui-grid-col-12" (click)=onCancel()>Cancel</button>
+                    </div>
+                </div>
             </div>
         </p-dialog>
     </div>
