@@ -12,9 +12,9 @@
             </div>
         </div>
         <div *ngIf="this.historys.length < 1" class="no-history-container">
-            <h1>
-                No history found.
-            </h1>
+            <h2>
+                No history found. Be the first to add history to this location by clicking "Add History" below.
+            </h2>
         </div>
         <p-dialog width="1000" height="800" responsive="true" header="History Form" modal="true" [(visible)]="visible">
             <div class="ui-grid ui-grid-responsive ui-grid-pad">
@@ -65,7 +65,7 @@
             </div>
         </p-dialog>
     </div>
-    <button class="btn" (click)="addHistory()"> Add history </button>
+    <button class="btn" (click)="addHistory()"> Add History </button>
     <button class="btn" [disabled]="!this.currentHistory.created" (click)="editHistory()"> Edit History </button>
     <button *ngIf="isLocal()" class="btn" [disabled]="!this.currentHistory.created" (click)="deleteHistory()"> Delete History </button>
 </div>

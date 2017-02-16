@@ -87,6 +87,7 @@ export class MapComponent implements OnInit {
       this.getMarkers();
     });
     }
+    this.isSelected = false;
   }
 
   clickedMarker(marker: Marker): void {
@@ -102,10 +103,17 @@ export class MapComponent implements OnInit {
   onSave(): void {
 
     if (this.isValid(this.editingMarker)) {
+      if (this.editingMarker.created != null) {
+        this.backendService.put('/markers', this.editingMarker)
+        .subscribe(() => {
+          this.getMarkers();
+        });
+      } else {
       this.backendService.post('/markers', this.editingMarker)
-      .subscribe((res: any) => {
+      .subscribe(() => {
         this.getMarkers();
-      })
+      });
+      }
     }
     this.editingMarker = new Marker();
     this.isEditing = !this.isEditing;

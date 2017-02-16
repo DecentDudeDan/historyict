@@ -17,9 +17,11 @@
     <div class="timeline-container well">
         <app-timeline *ngIf="isSelected" [marker]="getCurrentMarker()"></app-timeline>
         <div *ngIf="!isSelected">
-            <h2>
-                Please select a map marker.
-            </h2>
+            <div>
+                <h2>
+                    Please select a map marker or add one to the map by clicking the "Add Marker" button below the map.
+                </h2>
+            </div>
         </div>
     </div>
 
