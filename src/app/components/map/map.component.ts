@@ -1,8 +1,9 @@
+import { AuthenticationService } from './../../core/services/authentication.service';
 import { MouseEvent, LatLngBoundsLiteral } from 'angular2-google-maps/core';
 import { browser } from 'protractor';
 import { Response } from '@angular/http';
 import { Marker } from './../../core/models/marker';
-import { BackendService } from './../../core/backend.service';
+import { MarkerService } from './../../core/services/marker.service';
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { Message } from 'primeng/primeng';
 
@@ -29,7 +30,7 @@ export class MapComponent implements OnInit {
   gettingCoords: boolean = false;
   cursorType: string = 'move';
   
-  constructor(private backendService: BackendService) { }
+  constructor(private markerService: MarkerService, private auth: AuthenticationService) { }
 
   ngOnInit() {
     this.getMarkers();
@@ -73,16 +74,18 @@ export class MapComponent implements OnInit {
   }
 
   getMarkers(): void {
-    this.backendService.get('/markers')
+    this.markerService.get()
     .subscribe((res: Marker[]) => {
-      console.log(res);
       this.markers = res;
+    }, err => {
+      this.markers = [];
+      console.log(err);
     })
   }
 
   deleteMarker(): void {
       if (this.currentMarker != null) {
-    this.backendService.delete('/markers', this.currentMarker)
+    this.markerService.delete(this.currentMarker)
     .subscribe(() => {
       this.getMarkers();
     });
@@ -104,12 +107,12 @@ export class MapComponent implements OnInit {
 
     if (this.isValid(this.editingMarker)) {
       if (this.editingMarker.created != null) {
-        this.backendService.put('/markers', this.editingMarker)
+        this.markerService.put(this.editingMarker)
         .subscribe(() => {
           this.getMarkers();
         });
       } else {
-      this.backendService.post('/markers', this.editingMarker)
+      this.markerService.post(this.editingMarker)
       .subscribe(() => {
         this.getMarkers();
       });
@@ -139,6 +142,10 @@ export class MapComponent implements OnInit {
   getCoords(): void {
     this.gettingCoords = true;
     this.cursorType = 'crosshair';
+  }
+
+  isLoggedIn(): boolean {
+    return this.auth.isLoggedIn();
   }
 
 }

@@ -1,3 +1,8 @@
+import { MarkerService } from './core/services/marker.service';
+import { BackendService } from './core/services/backend.service';
+import { HistoryService } from './core/services/history.service';
+import { UserService } from './core/services/user.service';
+import { AuthenticationService } from './core/services/authentication.service';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
 import { DialogModule, 
   EditorModule, 
@@ -22,10 +27,12 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
+import { LoginComponent } from './components/login/login.component';
 
 const appRoutes: Routes = [
   { path: 'map', component: MapComponent },
   { path: '', component: WelcomePageComponent },
+  { path: 'login', component: LoginComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -38,7 +45,8 @@ const appRoutes: Routes = [
     NavBarComponent,
     MapComponent,
     TimelineComponent,
-    IconPickerComponent
+    IconPickerComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +67,7 @@ const appRoutes: Routes = [
       apiKey: 'AIzaSyB4ASKPhyU9yq1UfTGfMjNGKHsNqrnFg3c'
     })
   ],
-  providers: [],
+  providers: [AuthenticationService, UserService, HistoryService, BackendService, MarkerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

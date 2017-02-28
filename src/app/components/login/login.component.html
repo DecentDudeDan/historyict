@@ -1,0 +1,55 @@
+<div *ngIf="!isLoggedIn()" class="login-container">
+    <form>
+        <h2>
+            Please log in
+        </h2>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input #user type="text" class="form-control" id="username" placeholder="Enter username" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input #pass type="password" class="form-control" id="password" placeholder="Enter password" (keyup.enter)="onEnter(user.value, pass.value)" />
+        </div>
+    </form>
+</div>
+
+<div *ngIf="isLoggedIn()">
+    <h2>
+        You are currently logged in.
+    </h2>
+    <button class="btn" (click)="showUserInfo()">Show Info</button>
+</div>
+
+<div class="login-container">
+    <button *ngIf="!inCreate" class="btn new-user-button" (click)="showCreate()">Create new user</button>
+</div>
+<div *ngIf="inCreate" class="login-container">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+                <input [(ngModel)]="newUser.username" type="text" class="form-control" placeholder="Enter username" />
+            </div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+                <input [(ngModel)]="newUser.password" type="password" class="form-control" placeholder="Enter password" />
+            </div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+                <input [(ngModel)]="newUser.email" type="text" class="form-control" placeholder="Enter Email" />
+            </div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+                <select [(ngModel)]="newUser.permissionLevel" class="form-control" id="sel">
+                <option selected="selected" [value]="0">User</option>
+                <option [value]="1">Editor</option>
+                <option [value]="2">Admin</option>
+            </select>
+            </div>
+        </div>
+        <button class="btn btn-primary" (click)="onCreate()">Create</button>
+    </div>
+</div>

@@ -1,4 +1,6 @@
-import { BackendService } from './backend.service';
+import { MarkerService } from './services/marker.service';
+import { HistoryService } from './services/history.service';
+import { BackendService } from './services/backend.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -7,6 +9,6 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
   declarations: [],
-  providers: [BackendService]
+  providers: [BackendService, HistoryService, MarkerService]
 })
 export class CoreModule { }

@@ -1,6 +1,6 @@
 import { Marker } from './../../core/models/marker';
 import { History } from './../../core/models/history';
-import { BackendService } from './../../core/backend.service';
+import { HistoryService } from './../../core/services/history.service';
 import { Component, OnInit, Input, OnChanges, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -19,7 +19,7 @@ export class TimelineComponent implements OnChanges {
   keywordSuggestions: string[] = ['Black history', '1800"s', '1900"s', '2000"s', 'Kansas', 'Native Americans', "Indians"];
   filteredKeywords: string[];
 
-  constructor(private backendService: BackendService) { }
+  constructor(private historyService: HistoryService) { }
 
   ngOnChanges() {
     if(this.marker.title){
@@ -37,7 +37,7 @@ export class TimelineComponent implements OnChanges {
   }
 
   getHistory(): void {
-    this.backendService.get('/historys', this.marker.id)
+    this.historyService.get(this.marker.id)
     .subscribe((res: History[]) => {
       console.log(res);
       res.forEach((hist: History) => {
@@ -52,12 +52,12 @@ export class TimelineComponent implements OnChanges {
     this.currentHistory.date;
 
     if (this.currentHistory.created === undefined) {
-    this.backendService.post('/historys', this.currentHistory)
+    this.historyService.post(this.currentHistory)
     .subscribe(() => {
       this.getHistory();
     });
     } else {
-      this.backendService.put('/historys', this.currentHistory)
+      this.historyService.put(this.currentHistory)
       .subscribe(() => {
         this.getHistory();
       })
@@ -68,7 +68,7 @@ export class TimelineComponent implements OnChanges {
 
   deleteHistory(): void {
     if (this.currentHistory.created) {
-      this.backendService.delete('/historys', this.currentHistory)
+      this.historyService.delete(this.currentHistory)
       .subscribe(() => {
         this.getHistory();
       })
