@@ -1,3 +1,5 @@
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { appRoutes } from './app.routes';
 import { MarkerService } from './core/services/marker.service';
 import { BackendService } from './core/services/backend.service';
 import { HistoryService } from './core/services/history.service';
@@ -29,19 +31,12 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
 import { LoginComponent } from './components/login/login.component';
 
-const appRoutes: Routes = [
-  { path: 'map', component: MapComponent },
-  { path: '', component: WelcomePageComponent },
-  { path: 'login', component: LoginComponent },
-  { path: '**', component: PageNotFoundComponent }
-];
-
-
 @NgModule({
   declarations: [
     AppComponent,
     WelcomePageComponent,
     PageNotFoundComponent,
+    AdminDashboardComponent,
     NavBarComponent,
     MapComponent,
     TimelineComponent,

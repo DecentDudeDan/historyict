@@ -9,5 +9,7 @@ export class History {
     source: string[];
     created: Date;
     lastUpdated: Date;
+    approved: Date;
+    declined: Date;
     deleted: Boolean
 }

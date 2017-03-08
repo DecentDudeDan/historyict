@@ -10,5 +10,7 @@ export class Marker {
     author: string;
     created: Date;
     lastUpdated: Date;
+    approved: Date;
+    declined: Date;
     deleted: boolean;
 }

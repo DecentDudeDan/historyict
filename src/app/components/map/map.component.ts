@@ -1,6 +1,6 @@
+import { Observable } from 'rxjs/Rx';
 import { AuthenticationService } from './../../core/services/authentication.service';
 import { MouseEvent, LatLngBoundsLiteral } from 'angular2-google-maps/core';
-import { browser } from 'protractor';
 import { Response } from '@angular/http';
 import { Marker } from './../../core/models/marker';
 import { MarkerService } from './../../core/services/marker.service';
@@ -19,6 +19,7 @@ export class MapComponent implements OnInit {
   private chance = require('../../../../node_modules/chance').Chance();
 
   msgs: Message[] = [];
+  loggedIn: boolean;
   initialLat: number = 37.6872;
   initialLng: number = -97.3301;
   zoomAmount: number = 15;
@@ -30,11 +31,14 @@ export class MapComponent implements OnInit {
   gettingCoords: boolean = false;
   cursorType: string = 'move';
   
-  constructor(private markerService: MarkerService, private auth: AuthenticationService) { }
+  constructor(private markerService: MarkerService, private auth: AuthenticationService) {
+    this.isLoggedIn();
+   }
 
   ngOnInit() {
     this.getMarkers();
     this.isSelected = false;
+    this.isLoggedIn();
   }
 
   getCurrentMarker(): Marker {
@@ -144,8 +148,11 @@ export class MapComponent implements OnInit {
     this.cursorType = 'crosshair';
   }
 
-  isLoggedIn(): boolean {
-    return this.auth.isLoggedIn();
+  isLoggedIn(): void {
+    this.auth.loggedInStatus().subscribe((auth) => {
+      console.log('checking status in map', auth);
+      this.loggedIn = auth.loggedIn;
+    });
   }
 
 }

@@ -1,39 +1,63 @@
+import { UserService } from './user.service';
 import { User } from './../models/user';
+import { AuthEvent } from './../models/authEvent';
 import { BackendService } from './backend.service';
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable, ReplaySubject } from 'rxjs/Rx';
 import 'rxjs/add/operator/map'
 
 @Injectable()
 export class AuthenticationService {
-    token: string;
 
-    constructor(private backendService: BackendService) {  }
+    constructor(private backendService: BackendService) {}
 
-    login(username: string, password: string) {
+    login(username: string, password: string): Observable<boolean> {
         let user = new User();
         user.username = username;
         user.password = password;
         return this.backendService.post('/authenticate', user)
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
-                let user = response.json();
-                console.log('in auth service, res:', user);
-                if (user && user.token) {
+                let res = response.json();
+                console.log('in auth service, res:', res);
+                if (res && res.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    this.backendService.setToken(JSON.stringify(user.token));
-                    localStorage.setItem('authToken', JSON.stringify(user.token));
+                    let auth: AuthEvent = {
+                        loggedIn: true
+                    };
+                    this.backendService.updateLoginCache(auth);
+                    localStorage.setItem('authToken', JSON.stringify(res.token));
+                    this.backendService.setToken(res.token);
+                    return true;
+                } else {
+                    return false;
                 }
             });
     }
 
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('authToken');
+    clearLoginInfo() {
+        let logoutAuth: AuthEvent = {
+            loggedIn: false
+        }
+        this.backendService.updateLoginCache(logoutAuth);
+        this.backendService.clearLoginInfo();
     }
 
-    isLoggedIn(): boolean {
-        return this.backendService.isLoggedIn();
+    loggedInStatus(): ReplaySubject<AuthEvent> {
+        return this.backendService.getLoginCache();
+    }
+
+    getLoginInfo() {
+        let body = { includePermission: true };
+        return this.backendService.post('/users' + '/info', body);
+    }
+
+    updateLoginCache(body) {
+        if (body) {
+            if ((body.id != '' || body.id != null) && body.deleted != false) {
+                this.backendService.updateLoginCache({loggedIn: true});
+            }
+        }
     }
 }

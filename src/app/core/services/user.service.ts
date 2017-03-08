@@ -1,3 +1,4 @@
+import { ReplaySubject } from 'rxjs/Rx';
 import { User } from './../models/user';
 import { BackendService } from './backend.service';
 import { Http, Response, Headers, Request, RequestOptions, RequestMethod } from '@angular/http';
@@ -19,11 +20,6 @@ export class UserService {
       } else {
           return this.backendService.get(this.userUrl);
       }
-  }
-
-  getUserInfo() {
-    let body = { includePermission: true };
-    return this.backendService.post(this.userUrl + '/info', body);
   }
 
   post(body: User) {

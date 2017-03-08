@@ -10,23 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private auth: AuthenticationService, private userService: UserService) { }
+  constructor(private auth: AuthenticationService, private userService: UserService) {
+    this.isLoggedIn();
+   }
 
   newUser: User = new User();
   inCreate: boolean = false;
-  loggedIn: boolean = false;
+  loggedIn: boolean;
 
   ngOnInit() {
   }
 
   onEnter(username: string, password: string): void {
     this.auth.login(username, password)
-    .subscribe((resp) => {
-      console.log(resp);
-    }),
-    (err) => {
-      console.log(err);
-    }
+    .subscribe((bool) => {
+      this.isLoggedIn();
+    });
   }
 
   onCreate(): void {
@@ -40,14 +39,17 @@ export class LoginComponent implements OnInit {
     this.inCreate = true;
   }
 
-  isLoggedIn(): boolean {
-    return this.auth.isLoggedIn();
+  isLoggedIn(): void {
+    this.auth.loggedInStatus().subscribe((auth) => {
+      console.log('setting status', auth);
+      this.loggedIn = auth.loggedIn;
+    });
   }
 
   showUserInfo(): void {
-    this.userService.getUserInfo()
-    .subscribe(() => {
-      console.log('getting info');
+    this.auth.getLoginInfo()
+    .subscribe((res) => {
+      console.log(res);
     })
   }
 }

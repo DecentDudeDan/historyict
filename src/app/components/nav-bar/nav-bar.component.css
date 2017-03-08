@@ -1,3 +1,7 @@
 .settings {
     text-align: right;
 }
+
+.router-header li:hover {
+    cursor: pointer;
+}

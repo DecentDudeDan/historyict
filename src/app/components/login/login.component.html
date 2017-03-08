@@ -1,4 +1,4 @@
-<div *ngIf="!isLoggedIn()" class="login-container">
+<div *ngIf="!loggedIn" class="login-container">
     <form>
         <h2>
             Please log in
@@ -14,7 +14,7 @@
     </form>
 </div>
 
-<div *ngIf="isLoggedIn()">
+<div *ngIf="loggedIn">
     <h2>
         You are currently logged in.
     </h2>

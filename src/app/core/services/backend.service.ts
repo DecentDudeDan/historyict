@@ -1,3 +1,5 @@
+import { AuthEvent } from './../models/authEvent';
+import { ReplaySubject } from 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { User } from './../models/user';
@@ -9,21 +11,43 @@ import 'rxjs/add/operator/map';
 export class BackendService {
 
   private baseUrl: string = this.matchBackendFromUrl();
-  private headers: Headers = new Headers(); 
+  private headers: Headers; 
   private token: string;
   private options: RequestOptions
+  private loginStatusCache: ReplaySubject<AuthEvent> = new ReplaySubject();
 
   constructor(private http: Http, private router: Router) { 
-    let authtoken = localStorage.getItem('authToken');
-    this.token = authtoken ? 'Bearer ' + authtoken : null;
-    this.headers.append("Content-Type", 'application/json');
-    this.headers.append("Accept", 'application/json');
-    this.headers.append("Authorization", this.token);
+    let authToken = localStorage.getItem('authToken');
+    this.setToken(JSON.parse(authToken));
     this.options = new RequestOptions({ headers: this.headers });
   }
 
   setToken(token: string): void {
-    this.token = token;
+    if (token) {
+      if(this.token == '' || this.token == null) {
+        this.token = "Bearer " + token;
+        this.updateLoginCache({loggedIn: true});
+      } else {
+        this.token = null;
+        this.updateLoginCache({loggedIn: false});
+      }
+      this.setHeaders();
+    }
+  }
+
+  updateLoginCache(auth: AuthEvent) {
+    this.loginStatusCache.next(auth);
+  }
+
+  getLoginCache(): ReplaySubject<AuthEvent> {
+    return this.loginStatusCache;
+  }
+
+  setHeaders(): void {
+    this.headers = new Headers();
+    this.headers.append("Content-Type", 'application/json');
+    this.headers.append("Accept", 'application/json');
+    this.headers.append("Authorization", this.token);
   }
 
   get(url: string, id?: string) {
@@ -37,27 +61,29 @@ export class BackendService {
 }
 
   post(url: string, body: any) {
+    console.log('posting with headers', this.headers);
     this.checkLoginStatus();
-    return this.http.post(this.baseUrl + url, body, this.options)
-    .map((res: Response) => {
-      return res;
-    });
+    return this.handleResponse(this.http.post(this.baseUrl + url, body, this.options));
   }
 
   put(url: string, body: any) {
     this.checkLoginStatus();
-    return this.http.put(this.baseUrl + url, body, this.options)
-    .map((res: Response) => {
-      console.log(res);
-    });
+    return this.handleResponse(this.http.put(this.baseUrl + url, body, this.options));
   }
 
   delete(url: string, body: any) {
     this.checkLoginStatus();
     body.deleted = true;
-    return this.http.put(this.baseUrl + url, body, this.options)
-    .map((res: Response) => {
-      console.log(res);
+    return this.handleResponse(this.http.put(this.baseUrl + url, body, this.options))
+  }
+
+  handleResponse(res: Observable<Response>): Observable<Response> {
+    return res.map((res) => {
+      if (res.status == 401) {
+        this.clearLoginInfo();
+        this.router.navigate(['login']);
+      }
+      return res;
     });
   }
 
@@ -77,6 +103,10 @@ export class BackendService {
     if (!this.token){
       this.router.navigate(['login']);
     }
+  }
+
+  clearLoginInfo(): void {
+    this.setToken(null);
   }
 
   isLoggedIn(): boolean {
