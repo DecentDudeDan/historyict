@@ -28,7 +28,7 @@
     </div>
 
     <p-dialog width="1000" height="800" header="Marker Form" modal="true" [(visible)]="isEditing">
-        <div *ngIf="isEditing" class="ui-grid ui-grid-responsive ui-grid-pad">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad">
             <div class="ui-grid-row">
                 <div class="ui-grid-col-12">
                     <input [(ngModel)]="editingMarker.title" type="text" class="ui-grid-col-12" pInputText placeholder="New Title" required>
