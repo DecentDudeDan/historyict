@@ -109,6 +109,13 @@ export class BackendService {
     this.setToken(null);
   }
 
+  logout(): void {
+    this.token = null;
+    this.updateLoginCache({loggedIn: false});
+    localStorage.clear();
+    this.setHeaders();
+  }
+
   isLoggedIn(): boolean {
     return !!this.token;
   }

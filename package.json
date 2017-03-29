@@ -1,6 +1,6 @@
 {
   "name": "historyict",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "engines": {
     "node": "7.4.0"
@@ -43,6 +43,7 @@
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.0.2",
     "karma-remap-istanbul": "^0.2.1",
+    "ng2-bootstrap": "^1.6.0",
     "primeng": "^2.0.0",
     "primeui": "^4.1.15",
     "protractor": "~4.0.13",

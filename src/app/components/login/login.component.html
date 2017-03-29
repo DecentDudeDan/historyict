@@ -14,15 +14,22 @@
     </form>
 </div>
 
-<div *ngIf="loggedIn">
-    <h2>
-        You are currently logged in.
-    </h2>
-    <button class="btn" (click)="showUserInfo()">Show Info</button>
+<div *ngIf="loggedIn" class="login-container">
+    <div>
+        <h2>
+            You are currently logged in.
+        </h2>
+    </div>
+    <br>
 </div>
+<div *ngIf="loggedIn" class="login-container">
+    <button class="btn" (click)="showUserInfo()">Show Info</button>
+    <div *ngIf="showInfo">
 
+    </div>
+</div>
 <div class="login-container">
-    <button *ngIf="!inCreate" class="btn new-user-button" (click)="showCreate()">Create new user</button>
+    <button *ngIf="!inCreate && showCreateButton" class="btn new-user-button" (click)="showCreate()">Create new user</button>
 </div>
 <div *ngIf="inCreate" class="login-container">
     <div class="ui-grid ui-grid-responsive ui-grid-pad">

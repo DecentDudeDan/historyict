@@ -10,5 +10,7 @@ export class User {
     permissionLevel: permissionType;
     created: Date;
     lastUpdated: Date;
+    approved: Date;
+    declinded: Date;
     deleted: Boolean
 }

@@ -16,8 +16,6 @@ import { Message } from 'primeng/primeng';
 })
 export class MapComponent implements OnInit {
 
-  private chance = require('../../../../node_modules/chance').Chance();
-
   msgs: Message[] = [];
   loggedIn: boolean;
   initialLat: number = 37.6872;
@@ -128,7 +126,7 @@ export class MapComponent implements OnInit {
 
   cancel(): void {
     this.editingMarker = new Marker();
-    this.isEditing = !this.isEditing;
+    this.isEditing = false;
   }
 
   isValid(marker: Marker): boolean {
@@ -136,6 +134,7 @@ export class MapComponent implements OnInit {
       return true;
     } else {
       alert('Error: Title, Lat, and Lng must be set to save a new marker');
+      return false;
     }
   }
   

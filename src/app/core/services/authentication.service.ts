@@ -1,3 +1,4 @@
+import { PageNotFoundComponent } from './../../components/page-not-found/page-not-found.component';
 import { UserService } from './user.service';
 import { User } from './../models/user';
 import { AuthEvent } from './../models/authEvent';
@@ -44,6 +45,10 @@ export class AuthenticationService {
         this.backendService.clearLoginInfo();
     }
 
+    logout() {
+        this.backendService.logout();
+    }
+
     loggedInStatus(): ReplaySubject<AuthEvent> {
         return this.backendService.getLoginCache();
     }
@@ -58,6 +63,8 @@ export class AuthenticationService {
             if ((body.id != '' || body.id != null) && body.deleted != false) {
                 this.backendService.updateLoginCache({loggedIn: true});
             }
+        } else {
+            this.backendService.updateLoginCache({loggedIn: false});
         }
     }
 }

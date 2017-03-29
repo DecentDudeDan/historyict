@@ -6,6 +6,7 @@ import { HistoryService } from './core/services/history.service';
 import { UserService } from './core/services/user.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
+import { CollapseModule } from 'ng2-bootstrap/collapse';
 import { DialogModule, 
   EditorModule, 
   SharedModule, 
@@ -57,6 +58,7 @@ import { LoginComponent } from './components/login/login.component';
     FormsModule,
     HttpModule,
     CoreModule,
+    CollapseModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4ASKPhyU9yq1UfTGfMjNGKHsNqrnFg3c'

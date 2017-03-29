@@ -15,7 +15,10 @@ export class LoginComponent implements OnInit {
    }
 
   newUser: User = new User();
+  showUser: User;
   inCreate: boolean = false;
+  showInfo: boolean = false;
+  showCreateButton: boolean = true;
   loggedIn: boolean;
 
   ngOnInit() {
@@ -24,7 +27,8 @@ export class LoginComponent implements OnInit {
   onEnter(username: string, password: string): void {
     this.auth.login(username, password)
     .subscribe((bool) => {
-      this.isLoggedIn();
+      this.showCreateButton = !bool;
+      this.loggedIn = bool;
     });
   }
 
@@ -32,24 +36,29 @@ export class LoginComponent implements OnInit {
     this.userService.post(this.newUser)
     .subscribe((res) => {
       console.log(res);
+      this.inCreate = false;
+      this.showCreateButton = false;
     });
   }
 
   showCreate(): void {
     this.inCreate = true;
   }
-
-  isLoggedIn(): void {
-    this.auth.loggedInStatus().subscribe((auth) => {
-      console.log('setting status', auth);
+  
+  isLoggedIn() {
+    this.auth.loggedInStatus()
+    .subscribe((auth) => {
+      this.showCreateButton = !auth.loggedIn;
       this.loggedIn = auth.loggedIn;
-    });
+    }, (err) => {
+      this.loggedIn = false;
+    })
   }
 
   showUserInfo(): void {
-    this.auth.getLoginInfo()
-    .subscribe((res) => {
-      console.log(res);
+    this.auth.loggedInStatus()
+    .subscribe((auth) => {
+      this.showInfo = auth.loggedIn;
     })
   }
 }
