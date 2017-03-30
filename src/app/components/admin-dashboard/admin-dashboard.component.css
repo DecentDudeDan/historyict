@@ -1,0 +1,10 @@
+.well {
+    background-color: #008999;
+    color: #F7FFFF;
+    height: 600px;
+}
+
+.well div:hover {
+    color: darkslategrey;
+    cursor: pointer;
+}

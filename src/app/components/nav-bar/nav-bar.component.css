@@ -5,3 +5,23 @@
 .router-header li:hover {
     cursor: pointer;
 }
+
+nav {
+    background-color: #008999;
+}
+
+nav li:hover {
+    background-color: #002C51;
+}
+
+.navbar-nav li a {
+    color: #F7FFFF;
+}
+
+.navbar-brand {
+    color: #F7FFFF;
+}
+
+.navbar-brand:hover {
+    color: #F7FFFF;
+}
