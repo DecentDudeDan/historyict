@@ -1,3 +1,9 @@
+import { History } from './../../core/models/history';
+import { Marker } from './../../core/models/marker';
+import { User } from './../../core/models/user';
+import { HistoryService } from './../../core/services/history.service';
+import { MarkerService } from './../../core/services/marker.service';
+import { UserService } from './../../core/services/user.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +13,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  constructor() { }
+  pendingUsers: User[] = [];
+  pendingMarkers: Marker[] = [];
+  pendingHistorys: History[] = [];
+
+  constructor(private userService: UserService, private markerSerice: MarkerService, private historyService: HistoryService) { }
 
   ngOnInit() {
+    this.populatePendingItems();
+  }
+
+  populatePendingItems() {
+    this.userService.get('pending')
+    .subscribe((users) => {
+      this.pendingUsers = users;
+    });
   }
 
 }

@@ -1,10 +1,23 @@
 .well {
     background-color: #008999;
     color: #F7FFFF;
-    height: 600px;
+    height: 100%;
+    width: 800px;
+    opacity: 0.9;
+}
+
+.well div {
+    color: #F7FFFF;
+    opacity: 1.0
 }
 
 .well div:hover {
     color: darkslategrey;
     cursor: pointer;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -6,6 +6,11 @@
 
         <div>
             Pending markers...
+            <ul>
+                <li *ngFor="let user of pendingUsers">
+                    {{ user.firstName }}
+                </li>
+            </ul>
         </div>
         <div>
             Pending historys...

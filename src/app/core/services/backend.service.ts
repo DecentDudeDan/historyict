@@ -48,6 +48,7 @@ export class BackendService {
     this.headers.append("Content-Type", 'application/json');
     this.headers.append("Accept", 'application/json');
     this.headers.append("Authorization", this.token);
+    console.log('Headers: ', this.headers);
   }
 
   get(url: string, id?: string) {
@@ -107,6 +108,7 @@ export class BackendService {
 
   clearLoginInfo(): void {
     this.setToken(null);
+    this.setHeaders();
   }
 
   logout(): void {

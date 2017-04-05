@@ -1,5 +1,5 @@
 <div *ngIf="!loggedIn" class="login-container">
-    <form>
+    <form class="well">
         <h2>
             Please log in
         </h2>
@@ -52,8 +52,8 @@
             <div class="ui-grid-col-12">
                 <select [(ngModel)]="newUser.permissionLevel" class="form-control" id="sel">
                 <option selected="selected" [value]="0">User</option>
-                <option [value]="1">Editor</option>
-                <option [value]="2">Admin</option>
+                <option [value]="1">Editor (must be approved)</option>
+                <option [value]="2">Admin (must be approved)</option>
             </select>
             </div>
         </div>

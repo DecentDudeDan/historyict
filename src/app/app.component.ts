@@ -15,14 +15,7 @@ export class AppComponent {
 
   constructor(private auth: AuthenticationService) {
     if (localStorage.getItem('authToken')) {
-      this.auth.getLoginInfo()
-      .subscribe((res) => {
-        console.log('checking login: ', res);
-        this.auth.updateLoginCache(res);
-      }, (err) => {
-        console.log('Error: ', err);
-        this.auth.clearLoginInfo();
-      })
+      this.auth.getLoginInfo();
     }
   }
 }

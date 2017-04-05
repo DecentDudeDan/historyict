@@ -1,5 +1,5 @@
 import { UserService } from './../../core/services/user.service';
-import { User } from './../../core/models/user';
+import { User, AuthEvent, permissionType } from './../../core/models';
 import { AuthenticationService } from './../../core/services/authentication.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -33,6 +33,10 @@ export class LoginComponent implements OnInit {
   }
 
   onCreate(): void {
+    if (this.auth.permissionLevel !== permissionType.USER) {
+      this.newUser.approved = new Date();
+    }
+    
     this.userService.post(this.newUser)
     .subscribe((res) => {
       console.log(res);

@@ -10,9 +10,13 @@
     margin: 5px;
 }
 
+.well {
+    background-color: #008999;
+    color: #F7FFFF;
+}
+
 .map-container {
     margin-bottom: 10px;
-    border-bottom: 3px solid black;
 }
 
 .timeline-container {

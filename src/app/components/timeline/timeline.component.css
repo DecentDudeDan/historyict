@@ -11,6 +11,10 @@
     border-bottom: 3px solid black;
 }
 
+.tl-container {
+    color: black;
+}
+
 .timeline-block div:hover {
     cursor: pointer;
 }

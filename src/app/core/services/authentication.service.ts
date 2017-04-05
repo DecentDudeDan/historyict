@@ -1,6 +1,6 @@
 import { PageNotFoundComponent } from './../../components/page-not-found/page-not-found.component';
 import { UserService } from './user.service';
-import { User } from './../models/user';
+import { User, permissionType } from './../models';
 import { AuthEvent } from './../models/authEvent';
 import { BackendService } from './backend.service';
 import { Injectable } from '@angular/core';
@@ -10,6 +10,8 @@ import 'rxjs/add/operator/map'
 
 @Injectable()
 export class AuthenticationService {
+
+    private _permissionLevel: permissionType;
 
     constructor(private backendService: BackendService) {}
 
@@ -24,12 +26,9 @@ export class AuthenticationService {
                 console.log('in auth service, res:', res);
                 if (res && res.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    let auth: AuthEvent = {
-                        loggedIn: true
-                    };
-                    this.backendService.updateLoginCache(auth);
                     localStorage.setItem('authToken', JSON.stringify(res.token));
                     this.backendService.setToken(res.token);
+                    this.getLoginInfo();
                     return true;
                 } else {
                     return false;
@@ -39,7 +38,8 @@ export class AuthenticationService {
 
     clearLoginInfo() {
         let logoutAuth: AuthEvent = {
-            loggedIn: false
+            loggedIn: false,
+            permissionLevel: permissionType.USER
         }
         this.backendService.updateLoginCache(logoutAuth);
         this.backendService.clearLoginInfo();
@@ -55,16 +55,29 @@ export class AuthenticationService {
 
     getLoginInfo() {
         let body = { includePermission: true };
-        return this.backendService.post('/users' + '/info', body);
+        this.backendService.post('/users' + '/info', body)
+        .subscribe((res) => {
+            console.log('checking login: ', res);
+            this.updateLoginCache(res);
+        }, (err) => {
+            console.log('Error: ', err);
+            this.clearLoginInfo();
+        });
     }
 
     updateLoginCache(body) {
         if (body) {
             if ((body.id != '' || body.id != null) && body.deleted != false) {
-                this.backendService.updateLoginCache({loggedIn: true});
+                this._permissionLevel = body.permissionLevel
+                this.backendService.updateLoginCache({ loggedIn: true, permissionLevel: body.permissionLevel });
             }
         } else {
-            this.backendService.updateLoginCache({loggedIn: false});
+            this._permissionLevel = permissionType.USER;
+            this.backendService.updateLoginCache({loggedIn: false, permissionLevel: permissionType.USER});
         }
+    }
+
+    get permissionLevel(): permissionType {
+        return this._permissionLevel ? this._permissionLevel : permissionType.USER;
     }
 }

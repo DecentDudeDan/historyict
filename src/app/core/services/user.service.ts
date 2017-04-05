@@ -13,8 +13,8 @@ export class UserService {
 
   private userUrl: string = '/users';
 
-  get(id?: string) {
-      let dataId = id ? id : '';
+  get(path?: string) {
+      let dataId = path ? path : '';
       if (dataId) {
         return this.backendService.get(this.userUrl + '/' + dataId);
       } else {

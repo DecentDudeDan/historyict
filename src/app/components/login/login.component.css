@@ -11,4 +11,15 @@
 
 .new-user-button {
     margin-left: 10px;
+    float: left;
+}
+
+.btn {
+    background-color: #008999;
+    color: #F7FFFF;
+}
+
+.well {
+    background-color: #008999;
+    color: #F7FFFF;
 }
