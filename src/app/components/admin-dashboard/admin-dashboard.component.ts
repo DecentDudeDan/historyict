@@ -26,6 +26,7 @@ export class AdminDashboardComponent implements OnInit {
   populatePendingItems() {
     this.userService.get('pending')
     .subscribe((users) => {
+      console.log('pendingUsers: ', users);
       this.pendingUsers = users;
     });
   }

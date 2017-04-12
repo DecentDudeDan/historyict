@@ -23,3 +23,16 @@
     background-color: #008999;
     color: #F7FFFF;
 }
+
+.info-container {
+    justify-content: center;
+    align-items: center;
+    background: #008999;
+    border-radius: 5%;
+    padding: 20px;
+    color: #F7FFFF;
+}
+
+h2 {
+    text-decoration: underline;
+}

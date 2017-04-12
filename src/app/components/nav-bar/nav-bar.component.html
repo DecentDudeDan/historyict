@@ -8,8 +8,11 @@
             <li [routerLink]="['/map']"><a>Map</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li [routerLink]="['/admin']"><a>Admin</a></li>
-            <li [routerLink]="['/login']"><a>Login</a></li>
+            <li *ngIf="hasAdminPermission()" [routerLink]="['/admin']"><a>Admin</a></li>
+            <li [routerLink]="['/account']">
+                <a *ngIf="!loggedIn">Login</a>
+                <a *ngIf="loggedIn">Account</a>
+            </li>
             <li *ngIf="loggedIn">
                 <a (click)="logout()">
                     Logout

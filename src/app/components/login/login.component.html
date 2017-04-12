@@ -1,3 +1,5 @@
+<p-growl life=10000 [value]="msgs"></p-growl>
+
 <div *ngIf="!loggedIn" class="login-container">
     <form class="well">
         <h2>
@@ -14,19 +16,22 @@
     </form>
 </div>
 
-<div *ngIf="loggedIn" class="login-container">
-    <div>
+<div *ngIf="loggedIn && showUser !== null" class="login-container">
+    <div class="info-container">
         <h2>
             You are currently logged in.
         </h2>
+        <div>
+            Username: {{showUser.username}}
+        </div>
+        <div>
+            Permission: {{showUser.permissionLevel}}
+        </div>
+        <div>
+            Created: {{showUser.created}}
+        </div>
     </div>
     <br>
-</div>
-<div *ngIf="loggedIn" class="login-container">
-    <button class="btn" (click)="showUserInfo()">Show Info</button>
-    <div *ngIf="showInfo">
-
-    </div>
 </div>
 <div class="login-container">
     <button *ngIf="!inCreate && showCreateButton" class="btn new-user-button" (click)="showCreate()">Create new user</button>

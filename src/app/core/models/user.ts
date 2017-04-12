@@ -1,4 +1,4 @@
-import { permissionType } from './permissionType';
+import { PermissionType } from './permissionType';
 
 export class User {
     id: string;
@@ -7,7 +7,7 @@ export class User {
     email: string;
     username: string;
     password: string;
-    permissionLevel: permissionType;
+    permissionLevel: PermissionType;
     created: Date;
     approved: Date;
     declined: Date;

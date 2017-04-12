@@ -1,5 +1,6 @@
+import { Message } from 'primeng/primeng';
 import { UserService } from './../../core/services/user.service';
-import { User, AuthEvent, permissionType } from './../../core/models';
+import { User, AuthEvent, PermissionType } from './../../core/models';
 import { AuthenticationService } from './../../core/services/authentication.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -11,17 +12,18 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
 
   constructor(private auth: AuthenticationService, private userService: UserService) {
-    this.isLoggedIn();
    }
 
+  msgs: Message[] = [];
   newUser: User = new User();
-  showUser: User;
+  showUser: User = new User();
   inCreate: boolean = false;
   showInfo: boolean = false;
   showCreateButton: boolean = true;
   loggedIn: boolean;
 
   ngOnInit() {
+    this.isLoggedIn();
   }
 
   onEnter(username: string, password: string): void {
@@ -33,7 +35,7 @@ export class LoginComponent implements OnInit {
   }
 
   onCreate(): void {
-    if (this.auth.permissionLevel !== permissionType.USER) {
+    if (this.auth.permissionLevel === PermissionType.ADMIN || this.newUser.permissionLevel === PermissionType.USER) {
       this.newUser.approved = new Date();
     }
     
@@ -42,6 +44,8 @@ export class LoginComponent implements OnInit {
       console.log(res);
       this.inCreate = false;
       this.showCreateButton = false;
+      this.msgs = [];
+      this.msgs.push({severity: 'success', summary: 'Creation success!', detail: 'New user was successfully created, please log in now.'});
     });
   }
 
@@ -54,15 +58,10 @@ export class LoginComponent implements OnInit {
     .subscribe((auth) => {
       this.showCreateButton = !auth.loggedIn;
       this.loggedIn = auth.loggedIn;
+      this.showUser = this.auth.userInfo;
     }, (err) => {
       this.loggedIn = false;
     })
   }
 
-  showUserInfo(): void {
-    this.auth.loggedInStatus()
-    .subscribe((auth) => {
-      this.showInfo = auth.loggedIn;
-    })
-  }
 }

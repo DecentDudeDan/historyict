@@ -1,5 +1,6 @@
 import { AuthenticationService } from './../../core/services/authentication.service';
 import { Component, OnInit } from '@angular/core';
+import { PermissionType } from '../../core/models';
 
 @Component({
   selector: 'nav-bar',
@@ -11,7 +12,8 @@ export class NavBarComponent implements OnInit {
   constructor(private auth: AuthenticationService) {
    }
 
-  private loggedIn: boolean = false;
+  loggedIn: boolean = false;
+  permissionLevel: PermissionType = PermissionType.USER;
 
   ngOnInit() {
     this.isLoggedIn();
@@ -21,8 +23,10 @@ export class NavBarComponent implements OnInit {
     this.auth.loggedInStatus()
     .subscribe((auth) => {
       this.loggedIn = auth.loggedIn;
+      this.permissionLevel = auth.permissionLevel;
     }, (err) => {
       this.loggedIn = false;
+      this.permissionLevel = PermissionType.USER;
     })
   }
 
@@ -30,4 +34,7 @@ export class NavBarComponent implements OnInit {
     this.auth.logout();
   }
 
+  hasAdminPermission(): boolean {
+    return this.permissionLevel === PermissionType.ADMIN ? true : false;
+  }
 }

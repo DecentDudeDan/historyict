@@ -1,6 +1,6 @@
 import { PageNotFoundComponent } from './../../components/page-not-found/page-not-found.component';
 import { UserService } from './user.service';
-import { User, permissionType } from './../models';
+import { User, PermissionType } from './../models';
 import { AuthEvent } from './../models/authEvent';
 import { BackendService } from './backend.service';
 import { Injectable } from '@angular/core';
@@ -11,7 +11,8 @@ import 'rxjs/add/operator/map'
 @Injectable()
 export class AuthenticationService {
 
-    private _permissionLevel: permissionType;
+    private _permissionLevel: PermissionType;
+    private currentUser: User;
 
     constructor(private backendService: BackendService) {}
 
@@ -19,30 +20,22 @@ export class AuthenticationService {
         let user = new User();
         user.username = username;
         user.password = password;
-        return this.backendService.post('/authenticate', user)
+        return this.backendService.handleResponse(this.backendService.post('/authenticate', user))
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
                 let res = response.json();
-                console.log('in auth service, res:', res);
                 if (res && res.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    console.log('in auth service with token: ', res);
                     localStorage.setItem('authToken', JSON.stringify(res.token));
                     this.backendService.setToken(res.token);
                     this.getLoginInfo();
                     return true;
                 } else {
+                    console.log('in auth service w/o token: ', res);
                     return false;
                 }
             });
-    }
-
-    clearLoginInfo() {
-        let logoutAuth: AuthEvent = {
-            loggedIn: false,
-            permissionLevel: permissionType.USER
-        }
-        this.backendService.updateLoginCache(logoutAuth);
-        this.backendService.clearLoginInfo();
     }
 
     logout() {
@@ -55,29 +48,35 @@ export class AuthenticationService {
 
     getLoginInfo() {
         let body = { includePermission: true };
-        this.backendService.post('/users' + '/info', body)
+        this.backendService.post('/users/info', body)
         .subscribe((res) => {
-            console.log('checking login: ', res);
+            console.log('getLoginInfo response: ', res);
             this.updateLoginCache(res);
         }, (err) => {
-            console.log('Error: ', err);
-            this.clearLoginInfo();
+            console.log('Error in getLoginInfo: ', err);
+            this.logout()
         });
     }
 
-    updateLoginCache(body) {
-        if (body) {
-            if ((body.id != '' || body.id != null) && body.deleted != false) {
-                this._permissionLevel = body.permissionLevel
-                this.backendService.updateLoginCache({ loggedIn: true, permissionLevel: body.permissionLevel });
-            }
+    updateLoginCache(res) {
+        let body = JSON.parse(res._body);
+        this.currentUser = body;
+
+        if ((body.id !== '' || body.id !== null) && body.deleted !== true) {
+            this.backendService.updateLoginCache({loggedIn: true, permissionLevel: body.permissionLevel });
+            console.log('setting login cache to: ', {loggedIn: true, permissionLevel: body.permissionLevel });
         } else {
-            this._permissionLevel = permissionType.USER;
-            this.backendService.updateLoginCache({loggedIn: false, permissionLevel: permissionType.USER});
+            this._permissionLevel = PermissionType.USER;
+            this.backendService.updateLoginCache({loggedIn: false, permissionLevel: PermissionType.USER});
+            console.log('setting login cache to: ', {loggedIn: false, permissionLevel: PermissionType.USER});
         }
     }
 
-    get permissionLevel(): permissionType {
-        return this._permissionLevel ? this._permissionLevel : permissionType.USER;
+    get userInfo(): User {
+        return this.currentUser ? this.currentUser : null;
+    }
+
+    get permissionLevel(): PermissionType {
+        return this._permissionLevel ? this._permissionLevel : PermissionType.USER;
     }
 }

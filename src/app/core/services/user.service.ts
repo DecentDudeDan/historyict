@@ -18,7 +18,7 @@ export class UserService {
       if (dataId) {
         return this.backendService.get(this.userUrl + '/' + dataId);
       } else {
-          return this.backendService.get(this.userUrl);
+        return this.backendService.get(this.userUrl);
       }
   }
 

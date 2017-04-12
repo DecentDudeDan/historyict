@@ -30,7 +30,6 @@ export class MapComponent implements OnInit {
   cursorType: string = 'move';
   
   constructor(private markerService: MarkerService, private auth: AuthenticationService) {
-    this.isLoggedIn();
    }
 
   ngOnInit() {
@@ -149,7 +148,6 @@ export class MapComponent implements OnInit {
 
   isLoggedIn(): void {
     this.auth.loggedInStatus().subscribe((auth) => {
-      console.log('checking status in map', auth);
       this.loggedIn = auth.loggedIn;
     });
   }

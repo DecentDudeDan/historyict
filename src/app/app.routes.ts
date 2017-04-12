@@ -9,7 +9,7 @@ import { Routes } from '@angular/router';
 export const appRoutes: Routes = [
   { path: 'map', component: MapComponent },
   { path: '', component: WelcomePageComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'account', component: LoginComponent },
   { path: 'admin', component: AdminDashboardComponent, canLoad: ['canLoadWithPermissions'] },
   { path: '**', component: PageNotFoundComponent }
 ];

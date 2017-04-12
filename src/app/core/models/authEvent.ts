@@ -1,6 +1,6 @@
-import { permissionType } from './permissionType';
+import { PermissionType } from './permissionType';
 
 export class AuthEvent {
     loggedIn?: boolean;
-    permissionLevel?: permissionType;
+    permissionLevel?: PermissionType;
 }
