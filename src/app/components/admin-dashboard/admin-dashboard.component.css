@@ -6,18 +6,23 @@
     opacity: 0.9;
 }
 
-.well div {
-    color: #F7FFFF;
-    opacity: 1.0
-}
-
-.well div:hover {
-    color: darkslategrey;
-    cursor: pointer;
-}
-
 .container {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.review-buttons {
+    display: inline-block;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.pending-item:hover {
+    color: darkslategrey;
+}
+
+.admin-title {
+    align-self: center;
 }

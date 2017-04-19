@@ -66,6 +66,6 @@
         </p-dialog>
     </div>
     <button class="btn" (click)="addHistory()"> Add History </button>
-    <button class="btn" [disabled]="!this.currentHistory.created" (click)="editHistory()"> Edit History </button>
-    <button *ngIf="isLocal()" class="btn" [disabled]="!this.currentHistory.created" (click)="deleteHistory()"> Delete History </button>
+    <button *ngIf="loggedIn" class="btn" [disabled]="!this.currentHistory.created" (click)="editHistory()"> Edit History </button>
+    <button *ngIf="loggedIn" class="btn" [disabled]="!this.currentHistory.created" (click)="deleteHistory()"> Delete History </button>
 </div>

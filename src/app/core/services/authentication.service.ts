@@ -16,7 +16,7 @@ export class AuthenticationService {
 
     constructor(private backendService: BackendService) {}
 
-    login(username: string, password: string): Observable<boolean> {
+    login(username: string, password: string): Observable<any> {
         let user = new User();
         user.username = username;
         user.password = password;
@@ -30,15 +30,22 @@ export class AuthenticationService {
                     localStorage.setItem('authToken', JSON.stringify(res.token));
                     this.backendService.setToken(res.token);
                     this.getLoginInfo();
-                    return true;
+                    return {
+                        success: true,
+                        res: res
+                    };
                 } else {
                     console.log('in auth service w/o token: ', res);
-                    return false;
+                    return {
+                        success: false,
+                        res: res
+                    };
                 }
             });
     }
 
     logout() {
+        this._permissionLevel = PermissionType.USER;
         this.backendService.logout();
     }
 
@@ -50,7 +57,6 @@ export class AuthenticationService {
         let body = { includePermission: true };
         this.backendService.post('/users/info', body)
         .subscribe((res) => {
-            console.log('getLoginInfo response: ', res);
             this.updateLoginCache(res);
         }, (err) => {
             console.log('Error in getLoginInfo: ', err);
@@ -63,12 +69,11 @@ export class AuthenticationService {
         this.currentUser = body;
 
         if ((body.id !== '' || body.id !== null) && body.deleted !== true) {
+            this._permissionLevel = body.permissionLevel;
             this.backendService.updateLoginCache({loggedIn: true, permissionLevel: body.permissionLevel });
-            console.log('setting login cache to: ', {loggedIn: true, permissionLevel: body.permissionLevel });
         } else {
             this._permissionLevel = PermissionType.USER;
             this.backendService.updateLoginCache({loggedIn: false, permissionLevel: PermissionType.USER});
-            console.log('setting login cache to: ', {loggedIn: false, permissionLevel: PermissionType.USER});
         }
     }
 

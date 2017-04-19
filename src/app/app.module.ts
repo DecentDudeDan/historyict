@@ -1,3 +1,4 @@
+import { permissionGuard } from './core/services/user.permission.guard';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { appRoutes } from './app.routes';
 import { MarkerService } from './core/services/marker.service';
@@ -64,7 +65,14 @@ import { LoginComponent } from './components/login/login.component';
       apiKey: 'AIzaSyB4ASKPhyU9yq1UfTGfMjNGKHsNqrnFg3c'
     })
   ],
-  providers: [AuthenticationService, UserService, HistoryService, BackendService, MarkerService],
+  providers: [
+    AuthenticationService,
+    UserService,
+    HistoryService,
+    BackendService,
+    MarkerService,
+    permissionGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

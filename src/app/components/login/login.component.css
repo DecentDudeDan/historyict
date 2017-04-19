@@ -9,14 +9,13 @@
     width: 500px;
 }
 
+.login-container .well {
+    width: 500px;
+}
+
 .new-user-button {
     margin-left: 10px;
     float: left;
-}
-
-.btn {
-    background-color: #008999;
-    color: #F7FFFF;
 }
 
 .well {
@@ -35,4 +34,9 @@
 
 h2 {
     text-decoration: underline;
+}
+
+.create-btn {
+    margin: 10px;
+    color: black;
 }

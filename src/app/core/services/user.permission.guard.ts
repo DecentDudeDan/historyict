@@ -1,13 +1,14 @@
 import { AuthenticationService } from './authentication.service';
 import { Injectable } from '@angular/core';
-import { CanLoad } from '@angular/router';
+import { CanActivate } from '@angular/router';
+import { PermissionType } from './../models'
 
 @Injectable()
-export class canLoadWithPermissions implements CanLoad {
+export class permissionGuard implements CanActivate {
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(private authService: AuthenticationService) { }
 
-  canLoad() {
-    return this.authService.loggedInStatus();
+  canActivate(): boolean {
+    return this.authService.permissionLevel === PermissionType.ADMIN;
   }
 }

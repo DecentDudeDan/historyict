@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Rx';
 import { AuthenticationService } from './../../core/services/authentication.service';
 import { MouseEvent, LatLngBoundsLiteral } from 'angular2-google-maps/core';
 import { Response } from '@angular/http';
-import { Marker } from './../../core/models/marker';
+import { Marker, PermissionType } from './../../core/models';
 import { MarkerService } from './../../core/services/marker.service';
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { Message } from 'primeng/primeng';
@@ -105,14 +105,17 @@ export class MapComponent implements OnInit {
   }
 
   onSave(): void {
-
     if (this.isValid(this.editingMarker)) {
-      if (this.editingMarker.created != null) {
+      if (this.editingMarker.created) {
         this.markerService.put(this.editingMarker)
         .subscribe(() => {
           this.getMarkers();
         });
       } else {
+        if (this.auth.permissionLevel === PermissionType.ADMIN || this.auth.permissionLevel === PermissionType.EDITOR) {
+          this.editingMarker.approved = new Date();
+        }
+        this.editingMarker.author = this.auth.userInfo.firstName + ' ' + this.auth.userInfo.lastName;
       this.markerService.post(this.editingMarker)
       .subscribe(() => {
         this.getMarkers();
@@ -132,7 +135,7 @@ export class MapComponent implements OnInit {
     if(marker.title != null && marker.lat != null && marker.lng != null) {
       return true;
     } else {
-      alert('Error: Title, Lat, and Lng must be set to save a new marker');
+      this.msgs.push({severity: 'error', summary: 'Invalid Marker', detail: 'Marker must have a title, latitude, and longitude'});
       return false;
     }
   }

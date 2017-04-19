@@ -1,4 +1,4 @@
-<p-growl life=10000 [value]="msgs"></p-growl>
+<p-growl life=5000 [value]="msgs"></p-growl>
 
 <div *ngIf="!loggedIn" class="login-container">
     <form class="well">
@@ -7,7 +7,7 @@
         </h2>
         <div class="form-group">
             <label for="username">Username</label>
-            <input #user type="text" class="form-control" id="username" placeholder="Enter username" />
+            <input #user type="text" class="form-control" id="username" placeholder="Enter username" (keyup.enter)="onEnter(user.value, pass.value)" />
         </div>
         <div class="form-group">
             <label for="password">Password</label>
@@ -25,10 +25,16 @@
             Username: {{showUser.username}}
         </div>
         <div>
-            Permission: {{showUser.permissionLevel}}
+            Permission: {{ getPermissionLevelType() }}
         </div>
         <div>
-            Created: {{showUser.created}}
+            Created: {{ getFormattedDate() }}
+        </div>
+        <div *ngIf="showUser.firstName">
+            First Name: {{ showUser.firstName }}
+        </div>
+        <div *ngIf="showUser.lastName">
+            Last Name: {{ showUser.lastName }}
         </div>
     </div>
     <br>
@@ -37,31 +43,44 @@
     <button *ngIf="!inCreate && showCreateButton" class="btn new-user-button" (click)="showCreate()">Create new user</button>
 </div>
 <div *ngIf="inCreate" class="login-container">
-    <div class="ui-grid ui-grid-responsive ui-grid-pad">
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12">
-                <input [(ngModel)]="newUser.username" type="text" class="form-control" placeholder="Enter username" />
+    <div class="well">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="newUser.username" type="text" class="form-control" placeholder="Enter username" />
+                </div>
             </div>
-        </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12">
-                <input [(ngModel)]="newUser.password" type="password" class="form-control" placeholder="Enter password" />
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="newUser.password" type="password" class="form-control" placeholder="Enter password" />
+                </div>
             </div>
-        </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12">
-                <input [(ngModel)]="newUser.email" type="text" class="form-control" placeholder="Enter Email" />
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="newUser.email" type="text" class="form-control" placeholder="Enter email" />
+                </div>
             </div>
-        </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12">
-                <select [(ngModel)]="newUser.permissionLevel" class="form-control" id="sel">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="newUser.firstName" type="text" class="form-control" placeholder="Enter first name" />
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="newUser.lastName" type="text" class="form-control" placeholder="Enter last name" />
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <select [(ngModel)]="newUser.permissionLevel" class="form-control" id="sel">
                 <option selected="selected" [value]="0">User</option>
                 <option [value]="1">Editor (must be approved)</option>
                 <option [value]="2">Admin (must be approved)</option>
             </select>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <button class="btn ui-grid-col-12 create-btn" (click)="onCreate()">Create</button>
             </div>
         </div>
-        <button class="btn btn-primary" (click)="onCreate()">Create</button>
     </div>
-</div>

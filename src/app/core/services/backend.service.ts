@@ -40,7 +40,6 @@ export class BackendService {
   }
 
   setHeaders(): void {
-    console.log('setting headers with token: ', this.token);
     this.headers = new Headers();
     this.headers.append("Content-Type", 'application/json');
     this.headers.append("Accept", 'application/json');
@@ -59,7 +58,6 @@ export class BackendService {
 }
 
   post(url: string, body: any) {
-    console.log('post with options: ', this.options);
     this.checkLoginStatus();
     return this.handleResponse(this.http.post(this.baseUrl + url, body, this.options));
   }

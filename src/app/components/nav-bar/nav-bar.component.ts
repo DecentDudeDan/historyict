@@ -10,7 +10,7 @@ import { PermissionType } from '../../core/models';
 export class NavBarComponent implements OnInit {
 
   constructor(private auth: AuthenticationService) {
-   }
+  }
 
   loggedIn: boolean = false;
   permissionLevel: PermissionType = PermissionType.USER;
@@ -21,13 +21,13 @@ export class NavBarComponent implements OnInit {
 
   isLoggedIn() {
     this.auth.loggedInStatus()
-    .subscribe((auth) => {
-      this.loggedIn = auth.loggedIn;
-      this.permissionLevel = auth.permissionLevel;
-    }, (err) => {
-      this.loggedIn = false;
-      this.permissionLevel = PermissionType.USER;
-    })
+      .subscribe((auth) => {
+        this.loggedIn = auth.loggedIn;
+        this.permissionLevel = auth.permissionLevel;
+      }, (err) => {
+        this.loggedIn = false;
+        this.permissionLevel = PermissionType.USER;
+      })
   }
 
   logout() {

@@ -8,10 +8,10 @@
                 </sebm-google-map-marker>
             </sebm-google-map>
         </div>
-        <div *ngIf="loggedIn">
+        <div>
             <button (click)="addMarker()" class="btn">Add Marker</button>
-            <button (click)="editMarker()" [disabled]="!isSelected" class="btn"> Edit Marker </button>
-            <button *ngIf="isLocal()" (click)="deleteMarker()" [disabled]="!isSelected" class="btn"> Delete Marker </button>
+            <button *ngIf="loggedIn" (click)="editMarker()" [disabled]="!isSelected" class="btn"> Edit Marker </button>
+            <button *ngIf="loggedIn" (click)="deleteMarker()" [disabled]="!isSelected" class="btn"> Delete Marker </button>
         </div>
 
     </div>

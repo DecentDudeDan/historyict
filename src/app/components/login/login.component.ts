@@ -2,7 +2,7 @@ import { Message } from 'primeng/primeng';
 import { UserService } from './../../core/services/user.service';
 import { User, AuthEvent, PermissionType } from './../../core/models';
 import { AuthenticationService } from './../../core/services/authentication.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +11,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private auth: AuthenticationService, private userService: UserService) {
-   }
+  @ViewChild('pass') passwordField;
+  @ViewChild('user') usernameField;
 
   msgs: Message[] = [];
   newUser: User = new User();
@@ -22,46 +22,78 @@ export class LoginComponent implements OnInit {
   showCreateButton: boolean = true;
   loggedIn: boolean;
 
+  constructor(private auth: AuthenticationService, private userService: UserService) {
+  }
+
   ngOnInit() {
     this.isLoggedIn();
   }
 
   onEnter(username: string, password: string): void {
     this.auth.login(username, password)
-    .subscribe((bool) => {
-      this.showCreateButton = !bool;
-      this.loggedIn = bool;
-    });
+      .subscribe((object) => {
+        this.showCreateButton = !object.success;
+        this.loggedIn = object.success;
+        if (!object.success) {
+          this.msgs.push({ severity: 'error', summary: 'Login Failed!', detail: object.res.message });
+          if (object.res.message.indexOf('Authentication failed. Wrong password.') != -1) {
+            this.passwordField.nativeElement.value = '';
+          } else {
+            this.passwordField.nativeElement.value = '';
+            this.usernameField.nativeElement.value = '';
+          }
+        }
+      });
   }
 
   onCreate(): void {
-    if (this.auth.permissionLevel === PermissionType.ADMIN || this.newUser.permissionLevel === PermissionType.USER) {
+    if (this.newUser.permissionLevel === PermissionType.USER) {
       this.newUser.approved = new Date();
     }
-    
+
     this.userService.post(this.newUser)
-    .subscribe((res) => {
-      console.log(res);
-      this.inCreate = false;
-      this.showCreateButton = false;
-      this.msgs = [];
-      this.msgs.push({severity: 'success', summary: 'Creation success!', detail: 'New user was successfully created, please log in now.'});
-    });
+      .subscribe((res) => {
+        var body = res.json();
+        this.inCreate = false;
+        if (body.success == true) {
+          this.msgs = [];
+          this.msgs.push({ severity: 'success', summary: 'Creation success!', detail: 'New user was successfully created, you will be able to login once approved (if User was selected you are automatically approved).' });
+        } else {
+          this.msgs = [];
+          this.msgs.push({ severity: 'error', summary: 'Creation failed!', detail: body.message });
+        }
+        this.newUser = new User();
+      });
   }
 
   showCreate(): void {
     this.inCreate = true;
   }
-  
+
   isLoggedIn() {
     this.auth.loggedInStatus()
-    .subscribe((auth) => {
-      this.showCreateButton = !auth.loggedIn;
-      this.loggedIn = auth.loggedIn;
-      this.showUser = this.auth.userInfo;
-    }, (err) => {
-      this.loggedIn = false;
-    })
+      .subscribe((auth) => {
+        this.showCreateButton = !auth.loggedIn;
+        this.loggedIn = auth.loggedIn;
+        this.showUser = this.auth.userInfo;
+      }, (err) => {
+        this.loggedIn = false;
+      })
+  }
+
+  getPermissionLevelType(): string {
+    switch (this.showUser.permissionLevel) {
+      case 0:
+        return 'User';
+      case 1:
+        return 'Editor';
+      case 2:
+        return 'Admin';
+    }
+  }
+
+  getFormattedDate(): string {
+    return new Date(this.showUser.created).toLocaleDateString();
   }
 
 }
