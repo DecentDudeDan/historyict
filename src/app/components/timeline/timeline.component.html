@@ -65,7 +65,8 @@
             </div>
         </p-dialog>
     </div>
-    <button class="btn" (click)="addHistory()"> Add History </button>
-    <button *ngIf="loggedIn" class="btn" [disabled]="!this.currentHistory.created" (click)="editHistory()"> Edit History </button>
-    <button *ngIf="loggedIn" class="btn" [disabled]="!this.currentHistory.created" (click)="deleteHistory()"> Delete History </button>
+    <button *ngIf="loggedIn" class="btn" (click)="addHistory()"> Add History </button>
+    <button *ngIf="this.auth.isEditor() || this.auth.isAdmin()" class="btn" [disabled]="!this.currentHistory.created" (click)="editHistory()"> Edit History </button>
+    <button *ngIf="this.auth.isAdmin()" class="btn" [disabled]="!this.currentHistory.created" (click)="deleteHistory()"> Delete History </button>
+    <span *ngIf="!loggedIn">You must be logged in to contribute. </span>
 </div>

@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   showInfo: boolean = false;
   showCreateButton: boolean = true;
   loggedIn: boolean;
+  passwordConfirm: string;
 
   constructor(private auth: AuthenticationService, private userService: UserService) {
   }
@@ -63,6 +64,7 @@ export class LoginComponent implements OnInit {
           this.msgs.push({ severity: 'error', summary: 'Creation failed!', detail: body.message });
         }
         this.newUser = new User();
+        this.passwordConfirm = null;
       });
   }
 
@@ -94,6 +96,18 @@ export class LoginComponent implements OnInit {
 
   getFormattedDate(): string {
     return new Date(this.showUser.created).toLocaleDateString();
+  }
+
+  isPasswordValid() {
+    if (this.newUser.password) {
+      return this.newUser.password.length >= 8
+    } 
+
+    return false;
+  }
+
+  isPasswordConfirmed(): boolean {
+    return (this.passwordConfirm === this.newUser.password) && this.isPasswordValid();
   }
 
 }

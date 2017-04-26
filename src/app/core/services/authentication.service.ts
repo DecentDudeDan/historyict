@@ -14,7 +14,7 @@ export class AuthenticationService {
     private _permissionLevel: PermissionType;
     private currentUser: User;
 
-    constructor(private backendService: BackendService) {}
+    constructor(private backendService: BackendService) { }
 
     login(username: string, password: string): Observable<any> {
         let user = new User();
@@ -56,12 +56,12 @@ export class AuthenticationService {
     getLoginInfo() {
         let body = { includePermission: true };
         this.backendService.post('/users/info', body)
-        .subscribe((res) => {
-            this.updateLoginCache(res);
-        }, (err) => {
-            console.log('Error in getLoginInfo: ', err);
-            this.logout()
-        });
+            .subscribe((res) => {
+                this.updateLoginCache(res);
+            }, (err) => {
+                console.log('Error in getLoginInfo: ', err);
+                this.logout()
+            });
     }
 
     updateLoginCache(res) {
@@ -70,10 +70,10 @@ export class AuthenticationService {
 
         if ((body.id !== '' || body.id !== null) && body.deleted !== true) {
             this._permissionLevel = body.permissionLevel;
-            this.backendService.updateLoginCache({loggedIn: true, permissionLevel: body.permissionLevel });
+            this.backendService.updateLoginCache({ loggedIn: true, permissionLevel: body.permissionLevel });
         } else {
             this._permissionLevel = PermissionType.USER;
-            this.backendService.updateLoginCache({loggedIn: false, permissionLevel: PermissionType.USER});
+            this.backendService.updateLoginCache({ loggedIn: false, permissionLevel: PermissionType.USER });
         }
     }
 
@@ -81,7 +81,26 @@ export class AuthenticationService {
         return this.currentUser ? this.currentUser : null;
     }
 
-    get permissionLevel(): PermissionType {
-        return this._permissionLevel ? this._permissionLevel : PermissionType.USER;
+    isAdmin(): boolean {
+        return this._permissionLevel ? this._permissionLevel === PermissionType.ADMIN : false;
+    }
+
+    isEditor(): boolean {
+        return this._permissionLevel ? this._permissionLevel === PermissionType.EDITOR : false;
+    }
+
+    isUser(): boolean {
+        return !this.isAdmin() && !this.isEditor();
+    }
+
+    getFullName(): string {
+        if (this.currentUser) {
+            let first = this.currentUser.firstName ? this.currentUser.firstName : null;
+            let last = this.currentUser.lastName ? this.currentUser.lastName : null;
+
+            return first + ' ' + last;
+        }
+
+        return null;
     }
 }

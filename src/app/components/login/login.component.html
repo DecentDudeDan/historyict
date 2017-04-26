@@ -47,12 +47,23 @@
         <div class="ui-grid ui-grid-responsive ui-grid-pad">
             <div class="ui-grid-row">
                 <div class="ui-grid-col-12">
+                    <h2> New Account </h2>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
                     <input [(ngModel)]="newUser.username" type="text" class="form-control" placeholder="Enter username" />
                 </div>
             </div>
             <div class="ui-grid-row">
                 <div class="ui-grid-col-12">
-                    <input [(ngModel)]="newUser.password" type="password" class="form-control" placeholder="Enter password" />
+                    <input [ngClass]="{'error': !isPasswordValid()}" [(ngModel)]="newUser.password" type="password" class="form-control" placeholder="Enter password" />
+                    <span class="password-error-msg" *ngIf="!isPasswordValid()">Password must be at least 8 characters long</span>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <input [(ngModel)]="passwordConfirm" type="password" class="form-control" placeholder="Confirm password" />
                 </div>
             </div>
             <div class="ui-grid-row">
@@ -80,7 +91,7 @@
                 </div>
             </div>
             <div class="ui-grid-row">
-                <button class="btn ui-grid-col-12 create-btn" (click)="onCreate()">Create</button>
+                <button [disabled]="!isPasswordConfirmed()" class="btn ui-grid-col-12 create-btn" (click)="onCreate()">Create</button>
             </div>
         </div>
     </div>

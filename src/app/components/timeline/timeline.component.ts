@@ -21,7 +21,8 @@ export class TimelineComponent implements OnChanges, OnInit {
   keywordSuggestions: string[] = ['Black history', '1800"s', '1900"s', '2000"s', 'Kansas', 'Native Americans', "Indians"];
   filteredKeywords: string[];
 
-  constructor(private historyService: HistoryService, private auth: AuthenticationService) { }
+  constructor(private historyService: HistoryService, private auth: AuthenticationService) {
+  }
 
   ngOnChanges() {
     if (this.marker.title) {
@@ -31,6 +32,9 @@ export class TimelineComponent implements OnChanges, OnInit {
 
   ngOnInit() {
     this.isLoggedIn();
+    if (this.loggedIn) {
+      this.auth.getLoginInfo();
+    }
   }
 
   addHistory(): void {
@@ -69,10 +73,10 @@ export class TimelineComponent implements OnChanges, OnInit {
           this.getHistory();
         });
     } else {
-      if (this.auth.permissionLevel === PermissionType.ADMIN || this.auth.permissionLevel === PermissionType.EDITOR) {
+      if (this.auth.isAdmin() || this.auth.isEditor()) {
         this.currentHistory.approved = new Date();
       }
-      this.currentHistory.author = this.auth.userInfo.firstName + ' ' + this.auth.userInfo.lastName;
+      this.currentHistory.author = this.auth.getFullName()
 
       this.historyService.post(this.currentHistory)
         .subscribe(() => {

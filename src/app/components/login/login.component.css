@@ -21,6 +21,7 @@
 .well {
     background-color: #008999;
     color: #F7FFFF;
+    opacity: 0.9;
 }
 
 .info-container {
@@ -39,4 +40,12 @@ h2 {
 .create-btn {
     margin: 10px;
     color: black;
+}
+
+input.error {
+    border: 2px solid red; 
+}
+
+.password-error-msg {
+    margin-left: 2px;
 }

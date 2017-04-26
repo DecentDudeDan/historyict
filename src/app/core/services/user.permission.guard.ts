@@ -9,6 +9,6 @@ export class permissionGuard implements CanActivate {
   constructor(private authService: AuthenticationService) { }
 
   canActivate(): boolean {
-    return this.authService.permissionLevel === PermissionType.ADMIN;
+    return this.authService.isAdmin();
   }
 }

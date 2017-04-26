@@ -28,14 +28,17 @@ export class MapComponent implements OnInit {
   isSelected: boolean;
   gettingCoords: boolean = false;
   cursorType: string = 'move';
-  
+
   constructor(private markerService: MarkerService, private auth: AuthenticationService) {
-   }
+  }
 
   ngOnInit() {
     this.getMarkers();
-    this.isSelected = false;
     this.isLoggedIn();
+    this.isSelected = false;
+    if (this.loggedIn) {
+      this.auth.getLoginInfo();
+    }
   }
 
   getCurrentMarker(): Marker {
@@ -49,7 +52,7 @@ export class MapComponent implements OnInit {
     this.editingMarker = new Marker();
     this.getCoords();
     this.msgs = [];
-    this.msgs.push({severity: 'info', summary: 'Getting Coordinates', detail: 'Select a locatin on the map to obtain coordinates'});
+    this.msgs.push({ severity: 'info', summary: 'Getting Coordinates', detail: 'Select a locatin on the map to obtain coordinates' });
   }
 
   editMarker(): void {
@@ -70,32 +73,32 @@ export class MapComponent implements OnInit {
   mapRightClicked($event: MouseEvent) {
     if (this.gettingCoords) {
       this.cursorType = 'move';
-      
+      this.gettingCoords = false;
     }
   }
 
   getMarkers(): void {
     this.markerService.get()
-    .subscribe((res: Marker[]) => {
-      this.markers = res;
-    }, err => {
-      this.markers = [];
-      console.log(err);
-    })
+      .subscribe((res: Marker[]) => {
+        this.markers = res;
+      }, err => {
+        this.markers = [];
+        console.log(err);
+      })
   }
 
   deleteMarker(): void {
-      if (this.currentMarker != null) {
-    this.markerService.delete(this.currentMarker)
-    .subscribe(() => {
-      this.getMarkers();
-    });
+    if (this.currentMarker != null) {
+      this.markerService.delete(this.currentMarker)
+        .subscribe(() => {
+          this.getMarkers();
+        });
     }
     this.isSelected = false;
   }
 
   clickedMarker(marker: Marker): void {
-    if ( this.currentMarker === marker) {
+    if (this.currentMarker === marker) {
       this.currentMarker = null;
       this.isSelected = false;
     } else {
@@ -108,18 +111,18 @@ export class MapComponent implements OnInit {
     if (this.isValid(this.editingMarker)) {
       if (this.editingMarker.created) {
         this.markerService.put(this.editingMarker)
-        .subscribe(() => {
-          this.getMarkers();
-        });
+          .subscribe(() => {
+            this.getMarkers();
+          });
       } else {
-        if (this.auth.permissionLevel === PermissionType.ADMIN || this.auth.permissionLevel === PermissionType.EDITOR) {
+        if (this.auth.isAdmin() || this.auth.isEditor()) {
           this.editingMarker.approved = new Date();
         }
-        this.editingMarker.author = this.auth.userInfo.firstName + ' ' + this.auth.userInfo.lastName;
-      this.markerService.post(this.editingMarker)
-      .subscribe(() => {
-        this.getMarkers();
-      });
+        this.editingMarker.author = this.auth.getFullName();
+        this.markerService.post(this.editingMarker)
+          .subscribe(() => {
+            this.getMarkers();
+          });
       }
     }
     this.editingMarker = new Marker();
@@ -132,14 +135,14 @@ export class MapComponent implements OnInit {
   }
 
   isValid(marker: Marker): boolean {
-    if(marker.title != null && marker.lat != null && marker.lng != null) {
+    if (marker.title != null && marker.lat != null && marker.lng != null) {
       return true;
     } else {
-      this.msgs.push({severity: 'error', summary: 'Invalid Marker', detail: 'Marker must have a title, latitude, and longitude'});
+      this.msgs.push({ severity: 'error', summary: 'Invalid Marker', detail: 'Marker must have a title, latitude, and longitude' });
       return false;
     }
   }
-  
+
   isLocal(): boolean {
     return window.location.href.indexOf('localhost') != -1;
   }

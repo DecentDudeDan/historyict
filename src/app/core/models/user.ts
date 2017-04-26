@@ -7,7 +7,7 @@ export class User {
     email: string;
     username: string;
     password: string;
-    permissionLevel: PermissionType;
+    permissionLevel: PermissionType = PermissionType.USER;
     created: Date;
     approved: Date;
     declined: Date;
