@@ -1,3 +1,4 @@
+import { ListConfig } from './../list/list-config';
 import { History } from './../../core/models/history';
 import { Marker } from './../../core/models/marker';
 import { User } from './../../core/models/user';
@@ -13,9 +14,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  pendingUsers: User[] = [];
-  pendingMarkers: Marker[] = [];
-  pendingHistorys: History[] = [];
+  pendingUsers: User[];
+  pendingMarkers: Marker[];
+  pendingHistorys: History[];
+
+  markerConfig: ListConfig = {
+    ColumnNames: [
+      'Title',
+      'lat',
+      'lng',
+      'author',
+      'street1',
+      'street2'
+    ],
+    Type: 'Marker'
+  }
+
+  fakeMarkers: Marker[] = [
+    {
+    title: 'test',
+    street1: 'street1',
+    street2: 'street2',
+    lat: 10921,
+    lng: 10103,
+    deleted: false,
+    id: '5'
+  },
+  {
+    title: 'test2',
+    street1: 'street9',
+    street2: 'street6',
+    lat: 20404,
+    lng: 34043,
+    deleted: false,
+    id: '6'
+    }
+  ]
 
   constructor(private userService: UserService, private markerService: MarkerService, private historyService: HistoryService) { }
 
@@ -50,6 +84,10 @@ export class AdminDashboardComponent implements OnInit {
     .subscribe((users) => {
       this.pendingUsers = users;
     });
+  }
+
+  review(event: Event) {
+    console.log(event);
   }
 
   reviewMarker(marker: Marker, isApproved) {

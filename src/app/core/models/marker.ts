@@ -7,10 +7,10 @@ export class Marker {
     id: string;
     iconUrl?: string;
     label?: string;
-    author: string;
-    created: Date;
-    lastUpdated: Date;
-    approved: Date;
-    declined: Date;
+    author?: string;
+    created?: Date;
+    lastUpdated?: Date;
+    approved?: Date;
+    declined?: Date;
     deleted: boolean;
 }
