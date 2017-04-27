@@ -1,3 +1,5 @@
+import { CommonModule } from '@angular/common';
+import { ListComponent } from './components/list/list.component';
 import { permissionGuard } from './core/services/user.permission.guard';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { appRoutes } from './app.routes';
@@ -7,7 +9,7 @@ import { HistoryService } from './core/services/history.service';
 import { UserService } from './core/services/user.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
-import { CollapseModule } from 'ng2-bootstrap/collapse';
+import { TabsModule } from 'ng2-bootstrap';
 import { DialogModule, 
   EditorModule, 
   SharedModule, 
@@ -43,10 +45,12 @@ import { LoginComponent } from './components/login/login.component';
     MapComponent,
     TimelineComponent,
     IconPickerComponent,
-    LoginComponent
+    LoginComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     CalendarModule,
     DialogModule,
     EditorModule,
@@ -59,20 +63,13 @@ import { LoginComponent } from './components/login/login.component';
     FormsModule,
     HttpModule,
     CoreModule,
-    CollapseModule.forRoot(),
+    TabsModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4ASKPhyU9yq1UfTGfMjNGKHsNqrnFg3c'
     })
   ],
-  providers: [
-    AuthenticationService,
-    UserService,
-    HistoryService,
-    BackendService,
-    MarkerService,
-    permissionGuard
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

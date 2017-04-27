@@ -1,50 +1,5 @@
 <div class="container">
     <div class="well">
-        <h1 class="admin-title">
-            Admin Dashboard
-        </h1>
-
-        <div class="pending-wrapper">
-            <h1>Pending markers...</h1>
-            <div class="pending-item" *ngFor="let marker of pendingMarkers">
-                <ul>
-                    <li>Username: {{marker.title}}</li>
-                    <li>Created: {{marker.created}}</li>
-                    <li>Author: {{marker.author}}</li>
-                </ul>
-                <span class="review-buttons">
-                    <button class="btn" (click)="reviewMarker(marker, true)">Approve</button>
-                    <button class="btn" (click)="reviewMarker(marker, false)">Decline</button>
-                </span>
-            </div>
-        </div>
-        <div>
-            <h1>Pending historys...</h1>
-            <div class="pending-item" *ngFor="let history of pendingHistorys">
-                <ul>
-                    <li>title: {{history.title}}</li>
-                    <li [innerHTML]="history.content"></li>
-                    <li>Created: {{history.created}}</li>
-                </ul>
-                <span class="review-buttons">
-                    <button class="btn" (click)="reviewHistory(history, true)">Approve</button>
-                    <button class="btn" (click)="reviewHistory(history, false)">Decline</button>
-                </span>
-            </div>
-        </div>
-        <div>
-            <h1>Pending users...</h1>
-            <div class="pending-item" *ngFor="let user of pendingUsers">
-                <ul>
-                    <li>Username: {{user.username}}</li>
-                    <li>Permission: {{ getPermissionLevel(user) }}</li>
-                    <li>Created: {{user.created}}</li>
-                </ul>
-                <span class="review-buttons">
-                    <button class="btn" (click)="reviewUser(user, true)">Approve</button>
-                    <button class="btn" (click)="reviewUser(user, false)">Decline</button>
-                </span>
-            </div>
-        </div>
+        <app-list [items]="fakeMarkers" [config]="markerConfig" (review)="review($event)"></app-list>
     </div>
 </div>
