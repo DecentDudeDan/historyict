@@ -29,7 +29,6 @@
     "@angular/router": "^3.3.1",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
-    "angular-cli": "^1.0.0-beta.26",
     "angular2-google-maps": "^0.17.0",
     "chance": "^1.0.4",
     "codelyzer": "~2.0.0-beta.1",
@@ -57,5 +56,7 @@
     "webpack": "^2.2.1",
     "zone.js": "^0.7.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@angular/cli": "^1.0.1"
+  }
 }

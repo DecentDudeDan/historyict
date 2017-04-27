@@ -1,6 +1,4 @@
-import { History } from './../../core/models/history';
-import { Marker } from './../../core/models/marker';
-import { User } from './../../core/models/user';
+import { History, Marker, User, PermissionType } from './../../core/models';
 import { HistoryService } from './../../core/services/history.service';
 import { MarkerService } from './../../core/services/marker.service';
 import { UserService } from './../../core/services/user.service';
@@ -33,38 +31,38 @@ export class AdminDashboardComponent implements OnInit {
 
   getPendingMarkers() {
     this.markerService.get('pending')
-    .subscribe((markers) => {
-      this.pendingMarkers = markers;
-    });
+      .subscribe((markers) => {
+        this.pendingMarkers = markers;
+      });
   }
 
   getPendingHistorys() {
     this.historyService.get('pending')
-    .subscribe((historys) => {
-      this.pendingHistorys = historys;
-    });
+      .subscribe((historys) => {
+        this.pendingHistorys = historys;
+      });
   }
 
   getPendingUsers() {
     this.userService.get('pending')
-    .subscribe((users) => {
-      this.pendingUsers = users;
-    });
+      .subscribe((users) => {
+        this.pendingUsers = users;
+      });
   }
 
   reviewMarker(marker: Marker, isApproved) {
     if (isApproved) {
       marker.approved = new Date();
       this.markerService.put(marker)
-      .subscribe(() => {
-        this.getPendingMarkers();
-      });
+        .subscribe(() => {
+          this.getPendingMarkers();
+        });
     } else {
       marker.declined = new Date();
       this.markerService.put(marker)
-      .subscribe(() => {
-        this.getPendingMarkers();
-      });
+        .subscribe(() => {
+          this.getPendingMarkers();
+        });
     }
   }
 
@@ -72,15 +70,15 @@ export class AdminDashboardComponent implements OnInit {
     if (isApproved) {
       history.approved = new Date();
       this.historyService.put(history)
-      .subscribe(() => {
-        this.getPendingHistorys();
-      });
+        .subscribe(() => {
+          this.getPendingHistorys();
+        });
     } else {
       history.declined = new Date();
       this.historyService.put(history)
-      .subscribe(() => {
-        this.getPendingHistorys();
-      });
+        .subscribe(() => {
+          this.getPendingHistorys();
+        });
     }
   }
 
@@ -88,16 +86,28 @@ export class AdminDashboardComponent implements OnInit {
     if (isApproved) {
       user.approved = new Date();
       this.userService.put(user)
-      .subscribe(() => {
-        this.getPendingUsers();
-      });
+        .subscribe(() => {
+          this.getPendingUsers();
+        });
     } else {
       user.declined = new Date();
       this.userService.put(user)
-      .subscribe(() => {
-        this.getPendingUsers();
-      });
+        .subscribe(() => {
+          this.getPendingUsers();
+        });
     }
+  }
+
+  getPermissionLevel(user: User): string {
+    if (user.permissionLevel === PermissionType.USER) {
+      return "User";
+    } else if (user.permissionLevel === PermissionType.EDITOR) {
+      return "Editor";
+    } else if (user.permissionLevel === PermissionType.ADMIN) {
+      return "Admin";
+    }
+
+    return null;
   }
 
 }

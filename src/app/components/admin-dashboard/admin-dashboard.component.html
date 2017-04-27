@@ -37,7 +37,7 @@
             <div class="pending-item" *ngFor="let user of pendingUsers">
                 <ul>
                     <li>Username: {{user.username}}</li>
-                    <li>Permission: {{user.permissionLevel}}</li>
+                    <li>Permission: {{ getPermissionLevel(user) }}</li>
                     <li>Created: {{user.created}}</li>
                 </ul>
                 <span class="review-buttons">
