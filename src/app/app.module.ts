@@ -1,3 +1,4 @@
+import { AgmCoreModule } from '@agm/core';
 import { CommonModule } from '@angular/common';
 import { ListComponent } from './components/list/list.component';
 import { permissionGuard } from './core/services/user.permission.guard';
@@ -27,9 +28,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http'
-import { Routes, RouterModule } from '@angular/router';
-import { AgmCoreModule } from 'angular2-google-maps/core';
-
+import { Routes, RouterModule } from '@angular/router';;
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { TimelineComponent } from './components/timeline/timeline.component';

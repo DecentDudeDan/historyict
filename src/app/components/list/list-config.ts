@@ -1,4 +1,6 @@
+import { ItemType } from './../../core/models';
+
 export class ListConfig {
-    ColumnNames: Array<string>;
-    Type: string;
+    ColumnNames: Array<any>;
+    Type: ItemType;
 }

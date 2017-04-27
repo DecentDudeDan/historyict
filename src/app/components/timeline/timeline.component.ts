@@ -76,8 +76,6 @@ export class TimelineComponent implements OnChanges, OnInit {
       if (this.auth.isAdmin() || this.auth.isEditor()) {
         this.currentHistory.approved = new Date();
       }
-      this.currentHistory.author = this.auth.getFullName()
-
       this.historyService.post(this.currentHistory)
         .subscribe(() => {
           this.getHistory();
@@ -107,10 +105,6 @@ export class TimelineComponent implements OnChanges, OnInit {
     } else {
       this.currentHistory = new History();
     }
-  }
-
-  isLocal(): boolean {
-    return window.location.href.indexOf('localhost') != -1;
   }
 
   filterKeywordsEvent($event) {

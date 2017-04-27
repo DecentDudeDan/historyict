@@ -26,7 +26,6 @@ export class AuthenticationService {
                 let res = response.json();
                 if (res && res.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    console.log('in auth service with token: ', res);
                     localStorage.setItem('authToken', JSON.stringify(res.token));
                     this.backendService.setToken(res.token);
                     this.getLoginInfo();
@@ -35,7 +34,6 @@ export class AuthenticationService {
                         res: res
                     };
                 } else {
-                    console.log('in auth service w/o token: ', res);
                     return {
                         success: false,
                         res: res
@@ -91,16 +89,5 @@ export class AuthenticationService {
 
     isUser(): boolean {
         return !this.isAdmin() && !this.isEditor();
-    }
-
-    getFullName(): string {
-        if (this.currentUser) {
-            let first = this.currentUser.firstName ? this.currentUser.firstName : null;
-            let last = this.currentUser.lastName ? this.currentUser.lastName : null;
-
-            return first + ' ' + last;
-        }
-
-        return null;
     }
 }

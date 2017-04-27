@@ -9,7 +9,7 @@ export class User {
     password: string;
     permissionLevel: PermissionType = PermissionType.USER;
     created: Date;
-    approved: Date;
-    declined: Date;
+    approved: Date = null;
+    declined: Date = null;
     deleted: Boolean
 }

@@ -18,6 +18,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.0",
     "@angular/common": "^2.3.1",
     "@angular/compiler": "^2.3.1",
     "@angular/compiler-cli": "^2.3.1",
@@ -29,7 +30,6 @@
     "@angular/router": "^3.3.1",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
-    "angular2-google-maps": "^0.17.0",
     "chance": "^1.0.4",
     "codelyzer": "~2.0.0-beta.1",
     "core-js": "^2.4.1",

@@ -1,24 +1,55 @@
-<div>
-  <tabset>
-    <tab heading="Pending">
-      <table>
-        <thead>
-          <td *ngFor="let column of config.ColumnNames">{{column}}</td>
+<div class="list-wrapper">
+  <tabset [justified]="true">
+    <tab heading="Pending" (select)="requestItems(requestType.Pending)">
+      <table class="table table-stripped">
+        <thead class="th-container">
+          <tr>
+            <th *ngFor="let column of config.ColumnNames">{{column.title}}</th>
+          </tr>
         </thead>
         <tr *ngFor="let item of items">
-          <td *ngFor="let column of config.ColumnNames">{{getItemData(item, column)}}</td>
+          <td *ngFor="let column of config.ColumnNames" [innerHTML]="getItemData(item, column.key)"></td>
+          <td class="review-buttons">
+            <span (click)="reviewItem(item, true, requestType.Pending)" class="glyphicon glyphicon-ok approve-icon"></span>
+            <span (click)="reviewItem(item, false, requestType.Pending)" class="glyphicon glyphicon-remove decline-icon"></span>
+          </td>
         </tr>
       </table>
-      <span class="review-buttons">
-      <button class="btn" (click)="reviewItem(item, true)">Approve</button>
-      <button class="btn" (click)="reviewItem(item, false)">Decline</button>
-    </span>
+      <h3 *ngIf="items.length < 1">No items found with this criteria</h3>
     </tab>
-    <tab heading="Approved">
-      approved
+    <tab heading="Approved" (select)="requestItems(requestType.Approved)">
+      <table class="table table-stripped">
+        <thead class="th-container">
+          <tr>
+            <th *ngFor="let column of config.ColumnNames">{{column.title}}</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let item of items">
+          <td *ngFor="let column of config.ColumnNames" [innerHTML]="getItemData(item, column.key)"></td>
+          <td class="review-buttons">
+            <span (click)="reviewItem(item, true, requestType.Approved)" class="glyphicon glyphicon-ok approve-icon"></span>
+            <span (click)="reviewItem(item, false, requestType.Approved)" class="glyphicon glyphicon-remove decline-icon"></span>
+          </td>
+        </tr>
+      </table>
+      <h3 *ngIf="items.length < 1">No items found with this criteria</h3>
     </tab>
-    <tab heading="Declined">
-      declined
+    <tab heading="Declined" (select)="requestItems(requestType.Declined)">
+      <table class="table table-stripped">
+        <thead class="th-container">
+          <tr>
+            <th *ngFor="let column of config.ColumnNames">{{column.title}}</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let item of items">
+          <td *ngFor="let column of config.ColumnNames" [innerHTML]="getItemData(item, column.key)"></td>
+          <td class="review-buttons">
+            <span (click)="reviewItem(item, true, requestType.Declined)" class="glyphicon glyphicon-ok approve-icon"></span>
+            <span (click)="reviewItem(item, false, requestType.Declined)" class="glyphicon glyphicon-remove decline-icon"></span>
+          </td>
+        </tr>
+      </table>
+      <h3 *ngIf="items.length < 1">No items found with this criteria</h3>
     </tab>
   </tabset>
 </div>

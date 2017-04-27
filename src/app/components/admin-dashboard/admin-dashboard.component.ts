@@ -1,5 +1,4 @@
-
-import { History, Marker, User, PermissionType } from './../../core/models';
+import { History, Marker, User, PermissionType, ItemType, RequestType } from './../../core/models';
 import { ListConfig } from './../list/list-config';
 import { HistoryService } from './../../core/services/history.service';
 import { MarkerService } from './../../core/services/marker.service';
@@ -13,126 +12,156 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  pendingUsers: User[];
-  pendingMarkers: Marker[];
-  pendingHistorys: History[];
+  requestedItems: Array<any> = [];
+  ItemType = ItemType;
+  RequestType = RequestType;
 
   markerConfig: ListConfig = {
     ColumnNames: [
-      'Title',
-      'lat',
-      'lng',
-      'author',
-      'street1',
-      'street2'
+      { title: 'Title', key: 'title' },
+      { title: 'Street1', key: 'street1' },
+      { title: 'Street2', key: 'street2' },
+      { title: 'Latitude', key: 'lat' },
+      { title: 'Longitude', key: 'lng' },
+      { title: 'Author', key: 'author' }
     ],
-    Type: 'Marker'
+    Type: ItemType.Marker
   }
 
-  fakeMarkers: Marker[] = [
-    {
-    title: 'test',
-    street1: 'street1',
-    street2: 'street2',
-    lat: 10921,
-    lng: 10103,
-    deleted: false,
-    id: '5'
-  },
-  {
-    title: 'test2',
-    street1: 'street9',
-    street2: 'street6',
-    lat: 20404,
-    lng: 34043,
-    deleted: false,
-    id: '6'
-    }
-  ]
+  historyConfig: ListConfig = {
+    ColumnNames: [
+      { title: 'Title', key: 'title' },
+      { title: 'Content', key: 'content' },
+      { title: 'Date', key: 'date' },
+      { title: 'Source', key: 'source' },
+      { title: 'Images', key: 'images' },
+      { title: 'Author', key: 'author' }
+    ],
+    Type: ItemType.History
+  }
+
+  userConfig: ListConfig = {
+    ColumnNames: [
+      { title: 'Username', key: 'username' },
+      { title: 'Email', key: 'email' },
+      { title: 'Permission', key: 'permissionLevel' },
+      { title: 'First', key: 'firstName' },
+      { title: 'Last', key: 'lastName' }
+    ],
+    Type: ItemType.User
+  }
 
   constructor(private userService: UserService, private markerService: MarkerService, private historyService: HistoryService) { }
 
   ngOnInit() {
-    this.populatePendingItems();
+    this.getMarkers('pending');
   }
 
-  populatePendingItems() {
-    this.getPendingMarkers();
-
-    this.getPendingHistorys();
-
-    this.getPendingUsers();
-  }
-
-  getPendingMarkers() {
-    this.markerService.get('pending')
+  getMarkers(type) {
+    this.markerService.get(type)
       .subscribe((markers) => {
-        this.pendingMarkers = markers;
+        this.requestedItems = markers;
       });
   }
 
-  getPendingHistorys() {
-    this.historyService.get('pending')
+  getHistorys(type) {
+    this.historyService.get(type)
       .subscribe((historys) => {
-        this.pendingHistorys = historys;
+        this.requestedItems = historys;
       });
   }
 
-  getPendingUsers() {
-    this.userService.get('pending')
+  getUsers(type) {
+    this.userService.get(type)
       .subscribe((users) => {
-        this.pendingUsers = users;
+        this.requestedItems = users;
       });
   }
 
-  review(event: Event) {
-    console.log(event);
+  requestItems(event) {
+    this.requestedItems = [];
+    let lowercaseType = RequestType[event.requestType].toLowerCase();
+
+    switch (event.itemType) {
+      case ItemType.Marker:
+        this.getMarkers(lowercaseType);
+        break;
+      case ItemType.History:
+        this.getHistorys(lowercaseType);
+        break;
+      case ItemType.User:
+        this.getUsers(lowercaseType);
+        break;
+    }
   }
 
-  reviewMarker(marker: Marker, isApproved) {
+  review(event) {
+    switch (event.itemType) {
+      case ItemType.Marker:
+        this.reviewMarker(event.item, event.approved, event.previousType);
+        break;
+      case ItemType.History:
+        this.reviewHistory(event.item, event.approved, event.previousType);
+        break;
+      case ItemType.User:
+        this.reviewUser(event.item, event.approved, event.previousType);
+        break;
+    }
+  }
+
+  reviewMarker(marker: Marker, isApproved: boolean, previousType) {
+    let lowercaseType = RequestType[previousType].toLowerCase();
     if (isApproved) {
       marker.approved = new Date();
+      marker.declined = null;
       this.markerService.put(marker)
         .subscribe(() => {
-          this.getPendingMarkers();
+          this.getMarkers(lowercaseType);
         });
     } else {
       marker.declined = new Date();
+      marker.approved = null;
       this.markerService.put(marker)
         .subscribe(() => {
-          this.getPendingMarkers();
+          this.getMarkers(lowercaseType);
         });
     }
   }
 
-  reviewHistory(history: History, isApproved) {
+  reviewHistory(history: History, isApproved: boolean, previousType) {
+    let lowercaseType = RequestType[previousType].toLowerCase();
     if (isApproved) {
       history.approved = new Date();
+      history.declined = null;
       this.historyService.put(history)
         .subscribe(() => {
-          this.getPendingHistorys();
+          this.getHistorys(lowercaseType);
         });
     } else {
       history.declined = new Date();
+      history.approved = null;
       this.historyService.put(history)
         .subscribe(() => {
-          this.getPendingHistorys();
+          this.getHistorys(lowercaseType);
         });
     }
   }
 
-  reviewUser(user: User, isApproved) {
+  reviewUser(user: User, isApproved: boolean, previousType) {
+    let lowercaseType = RequestType[previousType].toLowerCase();
     if (isApproved) {
       user.approved = new Date();
+      user.declined = null;
       this.userService.put(user)
         .subscribe(() => {
-          this.getPendingUsers();
+          this.getUsers(lowercaseType);
         });
     } else {
       user.declined = new Date();
+      user.approved = null;
       this.userService.put(user)
         .subscribe(() => {
-          this.getPendingUsers();
+          this.getUsers(lowercaseType);
         });
     }
   }

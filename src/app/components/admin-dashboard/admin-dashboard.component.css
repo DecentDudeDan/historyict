@@ -1,21 +1,10 @@
-.well {
-    background-color: #008999;
-    color: #F7FFFF;
-    height: 100%;
+.admin-well {
+    height: 600px;
     width: 800px;
-    opacity: 0.9;
 }
 
-.container {
+.admin-container {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.pending-item:hover {
-    color: darkslategrey;
-}
-
-.admin-title {
-    align-self: center;
 }

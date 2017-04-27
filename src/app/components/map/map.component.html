@@ -1,12 +1,12 @@
 <p-growl [value]="msgs"></p-growl>
 
 <div>
-    <div class="container well" [ngClass]="{'hasCrosshair': gettingCoords}">
+    <div class="container well map-well" [ngClass]="{'hasCrosshair': gettingCoords}">
         <div class="map-container">
-            <sebm-google-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" (mapRightClick)="mapRightClicked($event)" [draggableCursor]="cursorType">
-                <sebm-google-map-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [label]="marker.label" [iconUrl]="marker.iconUrl" (markerClick)="clickedMarker(marker)">
-                </sebm-google-map-marker>
-            </sebm-google-map>
+            <agm-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" (mapRightClick)="mapRightClicked($event)" [draggableCursor]="cursorType">
+                <agm-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [label]="marker.label" [iconUrl]="marker.iconUrl" (markerClick)="clickedMarker(marker)">
+                </agm-marker>
+            </agm-map>
         </div>
         <div>
             <button *ngIf="loggedIn" (click)="addMarker()" class="btn">Add Marker</button>
@@ -17,7 +17,7 @@
 
     </div>
 
-    <div class="timeline-container well">
+    <div class="timeline-container well map-well">
         <app-timeline *ngIf="isSelected" [marker]="getCurrentMarker()"></app-timeline>
         <div *ngIf="!isSelected">
             <div>

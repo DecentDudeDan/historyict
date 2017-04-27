@@ -1,6 +1,28 @@
 .review-buttons {
     display: inline-block;
-    margin-left: 20px;
-    margin-bottom: 20px;
     color: black;
+}
+
+.approve-icon {
+    color: limegreen;
+    cursor: pointer;
+}
+
+.decline-icon {
+    color: red;
+    cursor: pointer;
+}
+
+.decline-icon:hover {
+    border: dimgrey solid 1px;
+    border-radius: 10%;
+}
+
+.approve-icon:hover {
+    border: dimgrey solid 1px;
+    border-radius: 10%;
+}
+
+.list-wrapper {
+    padding: 20px;
 }

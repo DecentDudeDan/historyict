@@ -1,5 +1,28 @@
-<div class="container">
-    <div class="well">
-        <app-list [items]="fakeMarkers" [config]="markerConfig" (review)="review($event)"></app-list>
-    </div>
+<div class="admin-container">
+  <div class="well admin-well">
+    <h2>Admin Dashboard</h2>
+    <tabset>
+      <tab heading="Markers" (select)="requestItems({itemType: ItemType.Marker, requestType: RequestType.Pending})">
+        <app-list 
+        [items]="requestedItems" 
+        [config]="markerConfig" 
+        (review)="review($event)"
+        (request)="requestItems($event)"></app-list>
+      </tab>
+      <tab heading="Historys" (select)="requestItems({itemType: ItemType.History, requestType: RequestType.Pending})">
+        <app-list 
+        [items]="requestedItems" 
+        [config]="historyConfig" 
+        (review)="review($event)"
+        (request)="requestItems($event)"></app-list>
+      </tab>
+      <tab heading="Users" (select)="requestItems({itemType: ItemType.User, requestType: RequestType.Pending})">
+        <app-list 
+        [items]="requestedItems" 
+        [config]="userConfig" 
+        (review)="review($event)"
+        (request)="requestItems($event)"></app-list>
+      </tab>
+    </tabset>
+  </div>
 </div>
