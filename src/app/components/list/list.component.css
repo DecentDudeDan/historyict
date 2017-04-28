@@ -29,4 +29,5 @@
 
 .col-class {
     max-width: 100px;
+    overflow-x: hidden;
 }
