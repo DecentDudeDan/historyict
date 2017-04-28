@@ -1,6 +1,7 @@
 .admin-well {
     height: 600px;
     width: 800px;
+    overflow-y: auto;
 }
 
 .admin-container {

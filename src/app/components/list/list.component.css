@@ -26,3 +26,7 @@
 .list-wrapper {
     padding: 20px;
 }
+
+.col-class {
+    max-width: 100px;
+}

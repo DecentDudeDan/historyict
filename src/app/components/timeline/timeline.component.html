@@ -2,7 +2,7 @@
     <div class="timeline-container">
         <div *ngIf="this.historys.length > 0" class="timeline timeline-alternating timeline-collapsing timeline-with-arrows">
             <div *ngFor="let history of historys" class="timeline-block" [ngClass]="{selected: history == currentHistory}" (click)="onSelect(history)">
-                <div class="timeline-icon"><i style="color:#c23b22" class="fa fa-lg"></i></div>
+                <div class="timeline-icon"><i style="color:#008999" class="fa fa-lg"></i></div>
                 <div class="timeline-content tl-content">
                     <h2 *ngIf="history.title != null">{{history.title}}</h2>
                     <div [innerHTML]="history.content">

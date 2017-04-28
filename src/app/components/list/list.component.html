@@ -21,11 +21,11 @@
       <table class="table table-stripped">
         <thead class="th-container">
           <tr>
-            <th *ngFor="let column of config.ColumnNames">{{column.title}}</th>
+            <th class="col-class" *ngFor="let column of config.ColumnNames">{{column.title}}</th>
           </tr>
         </thead>
         <tr *ngFor="let item of items">
-          <td *ngFor="let column of config.ColumnNames" [innerHTML]="getItemData(item, column.key)"></td>
+          <td class="col-class" *ngFor="let column of config.ColumnNames" [innerHTML]="getItemData(item, column.key)"></td>
           <td class="review-buttons">
             <span (click)="reviewItem(item, true, requestType.Approved)" class="glyphicon glyphicon-ok approve-icon"></span>
             <span (click)="reviewItem(item, false, requestType.Approved)" class="glyphicon glyphicon-remove decline-icon"></span>

@@ -33,8 +33,6 @@ export class AdminDashboardComponent implements OnInit {
       { title: 'Title', key: 'title' },
       { title: 'Content', key: 'content' },
       { title: 'Date', key: 'date' },
-      { title: 'Source', key: 'source' },
-      { title: 'Images', key: 'images' },
       { title: 'Author', key: 'author' }
     ],
     Type: ItemType.History
