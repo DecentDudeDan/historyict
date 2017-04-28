@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { AuthenticationService } from './../../core/services/authentication.service';
-import { MouseEvent, LatLngBoundsLiteral } from 'angular2-google-maps/core';
+import { MouseEvent, LatLngBoundsLiteral } from '@agm/core';
 import { Response } from '@angular/http';
 import { Marker, PermissionType } from './../../core/models';
 import { MarkerService } from './../../core/services/marker.service';
