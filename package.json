@@ -10,7 +10,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "preinstall": "rm -rf node_modules && npm install -g @angular/cli@latest",
+    "preinstall": "npm install && npm install -g @angular/cli@latest",
     "postinstall": "ng build",
     "lint": "tslint \"src/**/*.ts\" --project src/tsconfig.json --type-check && tslint \"e2e/**/*.ts\" --project e2e/tsconfig.json --type-check",
     "test": "ng test",
