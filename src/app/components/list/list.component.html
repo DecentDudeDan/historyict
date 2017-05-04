@@ -1,6 +1,6 @@
 <div class="list-wrapper">
   <tabset [justified]="true">
-    <tab heading="Pending" (select)="requestItems(requestType.Pending)">
+    <tab heading="Pending" [active]="active" (select)="requestItems(requestType.Pending)">
       <table class="table table-stripped">
         <thead class="th-container">
           <tr>

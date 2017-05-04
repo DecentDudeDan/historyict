@@ -4,6 +4,7 @@
     <tabset>
       <tab heading="Markers" (select)="requestItems({itemType: ItemType.Marker, requestType: RequestType.Pending})">
         <app-list 
+        [active]="pActive"
         [items]="requestedItems" 
         [config]="markerConfig" 
         (review)="review($event)"
@@ -11,6 +12,7 @@
       </tab>
       <tab heading="Historys" (select)="requestItems({itemType: ItemType.History, requestType: RequestType.Pending})">
         <app-list 
+        [active]="pActive"
         [items]="requestedItems" 
         [config]="historyConfig" 
         (review)="review($event)"
@@ -18,6 +20,7 @@
       </tab>
       <tab heading="Users" (select)="requestItems({itemType: ItemType.User, requestType: RequestType.Pending})">
         <app-list 
+        [active]="pActive"
         [items]="requestedItems" 
         [config]="userConfig" 
         (review)="review($event)"

@@ -16,6 +16,8 @@ export class AdminDashboardComponent implements OnInit {
   ItemType = ItemType;
   RequestType = RequestType;
 
+  pActive: boolean = true;
+
   markerConfig: ListConfig = {
     ColumnNames: [
       { title: 'Title', key: 'title' },
@@ -79,6 +81,12 @@ export class AdminDashboardComponent implements OnInit {
   requestItems(event) {
     this.requestedItems = [];
     let lowercaseType = RequestType[event.requestType].toLowerCase();
+
+    if (lowercaseType == 'pending') {
+      this.pActive = true;
+    } else {
+      this.pActive = false;
+    }
 
     switch (event.itemType) {
       case ItemType.Marker:

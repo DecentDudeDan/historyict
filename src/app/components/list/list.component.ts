@@ -13,6 +13,7 @@ export class ListComponent implements OnInit {
 
   @Input() config: ListConfig
   @Input() items: any;
+  @Input() active: boolean;
 
   @Output() review: EventEmitter<any> = new EventEmitter();
   @Output() request: EventEmitter<any> = new EventEmitter();

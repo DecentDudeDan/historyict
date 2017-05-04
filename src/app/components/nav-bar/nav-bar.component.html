@@ -4,8 +4,9 @@
             <a class="navbar-brand" href="#">History of Wichita</a>
         </div>
         <ul class="nav navbar-nav">
-            <li [routerLink]="['/']"><a>Welcome</a></li>
             <li [routerLink]="['/map']"><a>Map</a></li>
+            <li [routerLink]="['/resources']"><a>Resources</a></li>
+            <li [routerLink]="['/resources']"><a>About</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li *ngIf="hasAdminPermission()" [routerLink]="['/admin']"><a>Admin</a></li>

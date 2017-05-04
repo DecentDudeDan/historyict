@@ -118,6 +118,7 @@ export class MapComponent implements OnInit {
         if (this.auth.isAdmin() || this.auth.isEditor()) {
           this.editingMarker.approved = new Date();
         }
+        this.editingMarker.author = this.auth.userInfo.username;
         this.markerService.post(this.editingMarker)
           .subscribe(() => {
             this.getMarkers();

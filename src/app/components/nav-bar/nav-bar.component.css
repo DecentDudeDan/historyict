@@ -25,3 +25,7 @@ nav li:hover {
 .navbar-brand:hover {
     color: #F7FFFF;
 }
+
+.navbar-header {
+    text-align: center;
+}

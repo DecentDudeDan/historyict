@@ -1,3 +1,4 @@
+import { ResourcesComponent } from './components/resources/resources.component';
 import { AgmCoreModule } from '@agm/core';
 import { CommonModule } from '@angular/common';
 import { ListComponent } from './components/list/list.component';
@@ -22,7 +23,6 @@ import { DialogModule,
   InputMaskModule } from 'primeng/primeng'
 import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { WelcomePageComponent } from './components/welcome-page/welcome-page.component';
 import { CoreModule } from './core/core.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
@@ -37,7 +37,7 @@ import { LoginComponent } from './components/login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
-    WelcomePageComponent,
+    ResourcesComponent,
     PageNotFoundComponent,
     AdminDashboardComponent,
     NavBarComponent,

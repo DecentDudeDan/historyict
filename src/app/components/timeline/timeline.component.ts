@@ -76,6 +76,7 @@ export class TimelineComponent implements OnChanges, OnInit {
       if (this.auth.isAdmin() || this.auth.isEditor()) {
         this.currentHistory.approved = new Date();
       }
+      this.currentHistory.author = this.auth.userInfo.username;
       this.historyService.post(this.currentHistory)
         .subscribe(() => {
           this.getHistory();

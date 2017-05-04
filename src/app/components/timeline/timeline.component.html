@@ -1,5 +1,6 @@
 <div class="tl-container">
     <div class="timeline-container">
+        <h1 class="dispaly-4 timeline-header">{{marker.title}}</h1>
         <div *ngIf="this.historys.length > 0" class="timeline timeline-alternating timeline-collapsing timeline-with-arrows">
             <div *ngFor="let history of historys" class="timeline-block" [ngClass]="{selected: history == currentHistory}" (click)="onSelect(history)">
                 <div class="timeline-icon"><i style="color:#008999" class="fa fa-lg"></i></div>
