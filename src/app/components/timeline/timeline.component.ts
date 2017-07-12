@@ -92,7 +92,7 @@ export class TimelineComponent implements OnChanges, OnInit {
         .subscribe(() => {
           this.getHistory();
           this.currentHistory = new History();
-        })
+        });
     }
   }
 

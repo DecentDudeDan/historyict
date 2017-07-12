@@ -1,10 +1,11 @@
+import { TimelineComponent } from './../timeline/timeline.component';
 import { Observable } from 'rxjs/Rx';
 import { AuthenticationService } from './../../core/services/authentication.service';
 import { MouseEvent, LatLngBoundsLiteral } from '@agm/core';
 import { Response } from '@angular/http';
 import { Marker, PermissionType } from './../../core/models';
 import { MarkerService } from './../../core/services/marker.service';
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { Message } from 'primeng/primeng';
 
 
@@ -16,6 +17,7 @@ import { Message } from 'primeng/primeng';
 })
 export class MapComponent implements OnInit {
 
+  @ViewChild('timeline') timeline: ElementRef;
   msgs: Message[] = [];
   loggedIn: boolean;
   initialLat: number = 37.6872;
@@ -104,6 +106,7 @@ export class MapComponent implements OnInit {
     } else {
       this.currentMarker = marker;
       this.isSelected = true;
+      this.timeline.nativeElement.scrollIntoView({behavior: "smooth"});
     }
   }
 

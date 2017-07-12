@@ -4,10 +4,7 @@
 
 .container {
     display: block;
-    float: left;
-    width: 49%;
     height: 800px;
-    margin: 5px;
 }
 
 
@@ -16,10 +13,7 @@
 }
 
 .timeline-container {
-    display: inline-block;
     height: 800px;
-    width: 49%;
-    margin: 5px;
 }
 
 .marker-list {
