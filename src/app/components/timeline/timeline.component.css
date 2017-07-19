@@ -4,7 +4,13 @@
     justify-content: center;
 }
 
-.timeline-container {
+.timeline-wrapper-mobile {
+    height: 650px;
+    margin-bottom: 10px;
+    color: black;
+}
+
+.timeline-wrapper {
     height: 700px;
     margin-bottom: 10px;
     color: black;

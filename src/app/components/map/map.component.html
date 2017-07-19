@@ -1,7 +1,11 @@
 <p-growl [value]="msgs"></p-growl>
 
 <div>
-    <div class="container well" [ngClass]="{'hasCrosshair': gettingCoords}">
+    <div class="well" [ngClass]="{
+        'crosshairs': gettingCoords,
+        'container-mobile': mobile,
+        'container': !mobile
+        }">
         <div class="map-container">
             <agm-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" (mapRightClick)="mapRightClicked($event)" [draggableCursor]="cursorType">
                 <agm-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [label]="marker.label" [iconUrl]="marker.iconUrl" (markerClick)="clickedMarker(marker)">
@@ -17,7 +21,10 @@
 
     </div>
 
-    <div #timeline class="container well">
+    <div #timeline class="well" [ngClass]="{
+        'timeline-container-mobile': mobile,
+        'timeline-container': !mobile
+    }">
         <app-timeline *ngIf="isSelected" [marker]="getCurrentMarker()"></app-timeline>
         <div *ngIf="!isSelected">
             <div>

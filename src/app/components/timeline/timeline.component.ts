@@ -14,6 +14,7 @@ export class TimelineComponent implements OnChanges, OnInit {
   private dateFormat = require('../../../../node_modules/dateformat');
 
   @Input() marker: Marker;
+  @Input() mobile: boolean;
   historys: History[] = [];
   visible: boolean;
   loggedIn: boolean;
@@ -21,7 +22,7 @@ export class TimelineComponent implements OnChanges, OnInit {
   keywordSuggestions: string[] = ['Black history', '1800"s', '1900"s', '2000"s', 'Kansas', 'Native Americans', "Indians"];
   filteredKeywords: string[];
 
-  constructor(private historyService: HistoryService, private auth: AuthenticationService) {
+  constructor(private historyService: HistoryService, public auth: AuthenticationService) {
   }
 
   ngOnChanges() {

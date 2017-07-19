@@ -1,36 +1,50 @@
 .sebm-google-map-container {
-    height: 720px;
+  height: 720px;
+}
+
+.container-mobile {
+  display: block;
+  height: 800px;
 }
 
 .container {
-    display: block;
-    height: 800px;
+  display: block;
+  float: left;
+  width: 49%;
+  height: 800px;
+  margin: 5px;
 }
 
-
 .map-container {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.timeline-container-mobile {
+  height: 800px;
 }
 
 .timeline-container {
-    height: 800px;
+  display: inline-block;
+  height: 800px;
+  width: 49%;
+  margin: 5px;
 }
 
 .marker-list {
-    display: inline-block;
-    width: 50%;
+  display: inline-block;
+  width: 50%;
 }
 
 li:hover {
-    background-color: lightgrey;
-    cursor: pointer;
+  background-color: lightgrey;
+  cursor: pointer;
 }
 
 button {
-    margin-bottom: 5px;
-    color: black;
+  margin-bottom: 5px;
+  color: black;
 }
 
-.hasCrosshairs {
-    cursor: crosshair;
+.crosshairs {
+  cursor: crosshair;
 }

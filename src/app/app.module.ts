@@ -11,7 +11,7 @@ import { HistoryService } from './core/services/history.service';
 import { UserService } from './core/services/user.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
-import { TabsModule } from 'ng2-bootstrap';
+import { TabsModule } from 'ngx-bootstrap';
 import { DialogModule, 
   EditorModule, 
   SharedModule, 
@@ -25,6 +25,7 @@ import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { CoreModule } from './core/core.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http'
@@ -49,6 +50,7 @@ import { LoginComponent } from './components/login/login.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     CalendarModule,
     DialogModule,
