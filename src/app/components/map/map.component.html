@@ -7,10 +7,7 @@
         'container': !mobile
         }">
         <div class="map-container">
-            <agm-map [latitude]="initialLat" [longitude]="initialLng" [streetViewControl]="false" [zoom]="zoomAmount" [disableDoubleClickZoom]="true" (mapClick)="mapClicked($event)" (mapRightClick)="mapRightClicked($event)" [draggableCursor]="cursorType">
-                <agm-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [label]="marker.label" [iconUrl]="marker.iconUrl" (markerClick)="clickedMarker(marker)">
-                </agm-marker>
-            </agm-map>
+            <div class="mapDiv" id="mapDiv"></div>
         </div>
         <div>
             <button *ngIf="loggedIn" (click)="addMarker()" class="btn">Add Marker</button>

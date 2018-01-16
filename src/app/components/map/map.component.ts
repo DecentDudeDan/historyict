@@ -1,13 +1,16 @@
 import { TimelineComponent } from './../timeline/timeline.component';
 import { Observable } from 'rxjs/Rx';
 import { AuthenticationService } from './../../core/services/authentication.service';
-import { MouseEvent, LatLngBoundsLiteral } from '@agm/core';
+import * as esriLoader from 'esri-loader';
 import { Response } from '@angular/http';
 import { Marker, PermissionType } from './../../core/models';
 import { MarkerService } from './../../core/services/marker.service';
 import { Component, OnInit, Input, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { Message } from 'primeng/primeng';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 
+
+let EsriGraphic;
 
 @Component({
   selector: 'app-map',
@@ -22,7 +25,7 @@ export class MapComponent implements OnInit {
   loggedIn: boolean;
   initialLat: number = 37.6872;
   initialLng: number = -97.3301;
-  zoomAmount: number = 15;
+  zoomAmount: number = 13;
   markers: Marker[];
   currentMarker: Marker;
   editingMarker: Marker = new Marker();
@@ -31,6 +34,7 @@ export class MapComponent implements OnInit {
   gettingCoords: boolean = false;
   cursorType: string = 'move';
   mobile: boolean = false;
+  view: __esri.MapView;
 
   constructor(private markerService: MarkerService, public auth: AuthenticationService) {
   }
@@ -42,6 +46,33 @@ export class MapComponent implements OnInit {
     this.isSelected = false;
     if (this.loggedIn) {
       this.auth.getLoginInfo();
+    }
+    if (!esriLoader.isLoaded()) {
+      esriLoader.loadScript().then(() => {
+        esriLoader.loadModules(['esri/views/MapView', 
+                                'esri/WebMap',
+                                'esri/Graphic']).then(([MapView, WebMap, Graphic]: [__esri.MapViewConstructor, __esri.WebMapConstructor, __esri.GraphicConstructor]) => {
+          var webmap = new WebMap({
+            portalItem: { // autocasts as new PortalItem()
+              id: '8bf7167d20924cbf8e25e7b11c7c502c'
+            }
+          });
+          this.view = new MapView({
+            map: webmap,
+            container: 'mapDiv',
+            center: [this.initialLng, this.initialLat],
+            zoom: this.zoomAmount
+          });
+
+          EsriGraphic = Graphic;
+          this.view.on('click', (event) => this.mapClicked(event));
+          this.view.on('pointer-down', (event) => this.eventHandler(event));
+          this.addMarkers();
+        })
+          .catch(err => {
+            console.error(err);
+          });
+      });
     }
   }
 
@@ -70,17 +101,24 @@ export class MapComponent implements OnInit {
     return check;
   }
 
-  mapClicked($event: MouseEvent) {
-    if (this.gettingCoords) {
-      this.editingMarker.lat = $event.coords.lat;
-      this.editingMarker.lng = $event.coords.lng;
-      this.gettingCoords = false;
-      this.cursorType = 'move';
-      this.isEditing = true;
+  mapClicked($event) {
+    if ($event.button === 2) {
+      if (this.gettingCoords) {
+        this.cursorType = 'move';
+        this.gettingCoords = false;
+      }
+    } else {
+      if (this.gettingCoords) {
+        this.editingMarker.lat = $event.mapPoint.latitude;
+        this.editingMarker.lng = $event.mapPoint.longitude;
+        this.gettingCoords = false;
+        this.cursorType = 'move';
+        this.isEditing = true;
+      }
     }
   }
 
-  mapRightClicked($event: MouseEvent) {
+  mapRightClicked($event) {
     if (this.gettingCoords) {
       this.cursorType = 'move';
       this.gettingCoords = false;
@@ -91,10 +129,47 @@ export class MapComponent implements OnInit {
     this.markerService.get()
       .subscribe((res: Marker[]) => {
         this.markers = res;
+        if (this.view) {
+          this.addMarkers();
+        }
       }, err => {
         this.markers = [];
         console.log(err);
       })
+  }
+
+  addMarkers() {
+    this.view.graphics.addMany(this.mapToGraphics(this.markers));
+  }
+
+  mapToGraphics(markers: Marker[]): __esri.Graphic[] {
+    let mappedPoints: __esri.Graphic[] = [];
+    markers.forEach(m => {
+      var point = {
+        type: "point", // autocasts as new Point()
+        longitude: m.lng,
+        latitude: m.lat
+      };
+  
+      // Create a symbol for drawing the point
+      var markerSymbol = {
+        type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+        color: [226, 119, 40],
+        outline: { // autocasts as new SimpleLineSymbol()
+          color: [255, 255, 255],
+          width: 2
+        }
+      };
+  
+      // Create a graphic and add the geometry and symbol to it
+      var pointGraphic = new EsriGraphic({
+        geometry: point,
+        symbol: markerSymbol
+      });
+
+      mappedPoints.push(pointGraphic);
+    })
+    return mappedPoints;
   }
 
   deleteMarker(): void {
@@ -107,6 +182,10 @@ export class MapComponent implements OnInit {
     this.isSelected = false;
   }
 
+  eventHandler(event): void {
+    this.view.hitTest(event).then(res => this.getGraphic(res, this));
+  }
+
   clickedMarker(marker: Marker): void {
     if (this.currentMarker === marker) {
       this.currentMarker = null;
@@ -115,6 +194,21 @@ export class MapComponent implements OnInit {
       this.currentMarker = marker;
       this.isSelected = true;
       this.timeline.nativeElement.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  getGraphic(response, context) {
+    console.log(response);
+    if(response.results.length) {
+      let marker;
+      const geometry: __esri.Geometry = response.results[0].graphic.geometry;
+      console.log('graphic: ', geometry);
+      marker = context.markers.find(m => {
+        return m.lat === geometry.get('latitude') && m.lng === geometry.get('longitude');
+      })
+      if (marker) {
+        context.clickedMarker(marker[0]);
+      }
     }
   }
 

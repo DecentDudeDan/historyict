@@ -83,15 +83,8 @@ export class LoginComponent implements OnInit {
       })
   }
 
-  getPermissionLevelType(): string {
-    switch (this.showUser.permissionLevel) {
-      case 0:
-        return 'User';
-      case 1:
-        return 'Editor';
-      case 2:
-        return 'Admin';
-    }
+  capitilise(string) {
+    return string[0].toUpperCase() + string.slice(1);
   }
 
   getFormattedDate(): string {

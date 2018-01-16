@@ -1,5 +1,5 @@
-export const enum PermissionType {
-    USER = 0,
-    EDITOR = 1,
-    ADMIN = 2
+export enum PermissionType {
+    USER = 'user',
+    EDITOR = 'editor',
+    ADMIN = 'admin'
 }

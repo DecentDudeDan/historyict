@@ -25,7 +25,7 @@
             Username: {{showUser.username}}
         </div>
         <div>
-            Permission: {{ getPermissionLevelType() }}
+            Permission: {{ capitilise(showUser.permissionLevel) }}
         </div>
         <div>
             Created: {{ getFormattedDate() }}
@@ -84,9 +84,9 @@
             <div class="ui-grid-row">
                 <div class="ui-grid-col-12">
                     <select [(ngModel)]="newUser.permissionLevel" class="form-control" id="sel">
-                <option selected="selected" [value]="0">User</option>
-                <option [value]="1">Editor (must be approved)</option>
-                <option [value]="2">Admin (must be approved)</option>
+                <option selected="selected" [value]="'user'">User</option>
+                <option [value]="'editor'">Editor (must be approved)</option>
+                <option [value]="'admin'">Admin (must be approved)</option>
             </select>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AuthenticationService } from './../../core/services/authentication.service';
 import { Component, OnInit } from '@angular/core';
 import { PermissionType } from '../../core/models';
@@ -9,7 +10,7 @@ import { PermissionType } from '../../core/models';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private auth: AuthenticationService) {
+  constructor(private auth: AuthenticationService, private router: Router) {
   }
 
   loggedIn: boolean = false;
@@ -32,6 +33,7 @@ export class NavBarComponent implements OnInit {
 
   logout() {
     this.auth.logout();
+    this.router.navigate(['/account']);
   }
 
   hasAdminPermission(): boolean {

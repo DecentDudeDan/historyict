@@ -1,13 +1,14 @@
 import { ListConfig } from './list-config';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RequestType } from './../../core/models';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent {
 
   requestType = RequestType;
 
@@ -19,9 +20,6 @@ export class ListComponent implements OnInit {
   @Output() request: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
   getItemData(item: any, columnName: string) {
     if (columnName === 'permissionLevel') {

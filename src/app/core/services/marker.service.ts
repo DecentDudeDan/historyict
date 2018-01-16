@@ -25,8 +25,8 @@ export class MarkerService {
       return this.backendService.post(this.markerUrl, body);
     }
 
-  put(body: Marker) {
-      return this.backendService.put(this.markerUrl, body);
+  put(body: Marker, url: string = '') {
+      return this.backendService.put(this.markerUrl + '/' + url, body);
     }
 
   delete(body: Marker) {

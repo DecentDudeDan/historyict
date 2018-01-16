@@ -26,8 +26,8 @@ export class UserService {
     return this.backendService.post(this.userUrl, body);
   }
 
-  put(body: User) {
-    return this.backendService.put(this.userUrl, body);
+  put(body: User, url: string = '') {
+    return this.backendService.put(this.userUrl + '/' + url, body);
   }
 
   delete(body: User) {

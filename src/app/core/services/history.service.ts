@@ -25,8 +25,8 @@ export class HistoryService {
       return this.backendService.post(this.historyUrl, body);
     }
 
-  put(body: History) {
-      return this.backendService.put(this.historyUrl, body);
+  put(body: History, url: string = '') {
+      return this.backendService.put(this.historyUrl + '/' + url, body);
     }
 
   delete(body: History) {

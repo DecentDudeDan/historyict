@@ -1,5 +1,4 @@
 import { ResourcesComponent } from './components/resources/resources.component';
-import { AgmCoreModule } from '@agm/core';
 import { CommonModule } from '@angular/common';
 import { ListComponent } from './components/list/list.component';
 import { permissionGuard } from './core/services/user.permission.guard';
@@ -65,10 +64,7 @@ import { LoginComponent } from './components/login/login.component';
     HttpModule,
     CoreModule,
     TabsModule.forRoot(),
-    RouterModule.forRoot(appRoutes),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyB4ASKPhyU9yq1UfTGfMjNGKHsNqrnFg3c'
-    })
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,13 @@
-.sebm-google-map-container {
+.map-container {
   height: 720px;
+  margin-bottom: 10px;
+}
+
+.mapDiv {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .container-mobile {
@@ -13,10 +21,6 @@
   width: 49%;
   height: 800px;
   margin: 5px;
-}
-
-.map-container {
-  margin-bottom: 10px;
 }
 
 .timeline-container-mobile {

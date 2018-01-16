@@ -117,59 +117,29 @@ export class AdminDashboardComponent implements OnInit {
 
   reviewMarker(marker: Marker, isApproved: boolean, previousType) {
     let lowercaseType = RequestType[previousType].toLowerCase();
-    if (isApproved) {
-      marker.approved = new Date();
-      marker.declined = null;
-      this.markerService.put(marker)
+    let reviewType: string = isApproved ? 'approve' : 'decline';
+      this.markerService.put(marker, reviewType)
         .subscribe(() => {
           this.getMarkers(lowercaseType);
         });
-    } else {
-      marker.declined = new Date();
-      marker.approved = null;
-      this.markerService.put(marker)
-        .subscribe(() => {
-          this.getMarkers(lowercaseType);
-        });
-    }
   }
 
   reviewHistory(history: History, isApproved: boolean, previousType) {
     let lowercaseType = RequestType[previousType].toLowerCase();
-    if (isApproved) {
-      history.approved = new Date();
-      history.declined = null;
-      this.historyService.put(history)
+    let reviewType: string = isApproved ? 'approve' : 'decline';
+      this.historyService.put(history, reviewType)
         .subscribe(() => {
           this.getHistorys(lowercaseType);
         });
-    } else {
-      history.declined = new Date();
-      history.approved = null;
-      this.historyService.put(history)
-        .subscribe(() => {
-          this.getHistorys(lowercaseType);
-        });
-    }
   }
 
   reviewUser(user: User, isApproved: boolean, previousType) {
     let lowercaseType = RequestType[previousType].toLowerCase();
-    if (isApproved) {
-      user.approved = new Date();
-      user.declined = null;
-      this.userService.put(user)
+    let reviewType: string = isApproved ? 'approve' : 'decline';    
+      this.userService.put(user, reviewType)
         .subscribe(() => {
           this.getUsers(lowercaseType);
         });
-    } else {
-      user.declined = new Date();
-      user.approved = null;
-      this.userService.put(user)
-        .subscribe(() => {
-          this.getUsers(lowercaseType);
-        });
-    }
   }
 
   getPermissionLevel(user: User): string {
