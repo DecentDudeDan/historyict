@@ -1,3 +1,4 @@
+import { EventType } from './../../core/models/eventType';
 import { TimelineComponent } from './../timeline/timeline.component';
 import { Observable } from 'rxjs/Rx';
 import { AuthenticationService } from './../../core/services/authentication.service';
@@ -35,6 +36,7 @@ export class MapComponent implements OnInit {
   cursorType: string = 'move';
   mobile: boolean = false;
   view: __esri.MapView;
+  map: __esri.WebMap;
 
   constructor(private markerService: MarkerService, public auth: AuthenticationService) {
   }
@@ -47,33 +49,34 @@ export class MapComponent implements OnInit {
     if (this.loggedIn) {
       this.auth.getLoginInfo();
     }
-    if (!esriLoader.isLoaded()) {
-      esriLoader.loadScript().then(() => {
-        esriLoader.loadModules(['esri/views/MapView', 
-                                'esri/WebMap',
-                                'esri/Graphic']).then(([MapView, WebMap, Graphic]: [__esri.MapViewConstructor, __esri.WebMapConstructor, __esri.GraphicConstructor]) => {
-          var webmap = new WebMap({
-            portalItem: { // autocasts as new PortalItem()
-              id: '8bf7167d20924cbf8e25e7b11c7c502c'
-            }
-          });
-          this.view = new MapView({
-            map: webmap,
-            container: 'mapDiv',
-            center: [this.initialLng, this.initialLat],
-            zoom: this.zoomAmount
-          });
+    setTimeout(() => {
+        esriLoader.loadScript().then(() => {
+          esriLoader.loadModules(['esri/views/MapView',
+            'esri/WebMap',
+            'esri/Graphic']).then(([MapView, WebMap, Graphic]: [__esri.MapViewConstructor, __esri.WebMapConstructor, __esri.GraphicConstructor]) => {
+              this.map = new WebMap({
+                portalItem: { // autocasts as new PortalItem()
+                  id: '8bf7167d20924cbf8e25e7b11c7c502c'
+                }
+              });
+              this.view = new MapView({
+                map: this.map,
+                container: 'mapDiv',
+                center: [this.initialLng, this.initialLat],
+                zoom: this.zoomAmount
+              });
 
-          EsriGraphic = Graphic;
-          this.view.on('click', (event) => this.mapClicked(event));
-          this.view.on('pointer-down', (event) => this.eventHandler(event));
-          this.addMarkers();
-        })
-          .catch(err => {
-            console.error(err);
-          });
-      });
-    }
+              EsriGraphic = Graphic;
+              this.view.on('click', (event) => this.eventHandler(event, EventType.Click));
+              this.view.on('pointer-down', (event) => this.eventHandler(event, EventType.PointerDown));
+              this.view.on('pointer-move', (event) => this.eventHandler(event, EventType.MouseOver))
+              this.addMarkers();
+            })
+            .catch(err => {
+              console.error(err);
+            });
+        });
+    });
   }
 
   getCurrentMarker(): Marker {
@@ -150,7 +153,7 @@ export class MapComponent implements OnInit {
         longitude: m.lng,
         latitude: m.lat
       };
-  
+
       // Create a symbol for drawing the point
       var markerSymbol = {
         type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
@@ -160,7 +163,7 @@ export class MapComponent implements OnInit {
           width: 2
         }
       };
-  
+
       // Create a graphic and add the geometry and symbol to it
       var pointGraphic = new EsriGraphic({
         geometry: point,
@@ -182,8 +185,20 @@ export class MapComponent implements OnInit {
     this.isSelected = false;
   }
 
-  eventHandler(event): void {
-    this.view.hitTest(event).then(res => this.getGraphic(res, this));
+  eventHandler(event, type: EventType): void {
+    switch (type) {
+      case EventType.PointerDown:
+        this.view.hitTest(event).then(res => this.getGraphic(res, this));
+        break;
+      case EventType.MouseOver:
+        this.view.hitTest(event).then(res => this.setPointer(res, this));
+        break;
+      case EventType.Click:
+        this.mapClicked(event);
+        break;
+      default:
+        throw new Error('unhandled event type');
+    }
   }
 
   clickedMarker(marker: Marker): void {
@@ -197,9 +212,17 @@ export class MapComponent implements OnInit {
     }
   }
 
+  setPointer(response, context) {
+    if (response.results.length) {
+      this.cursorType = 'pointer';
+    } else {
+      this.cursorType = 'default';
+    }
+  }
+
   getGraphic(response, context) {
     console.log(response);
-    if(response.results.length) {
+    if (response.results.length) {
       let marker;
       const geometry: __esri.Geometry = response.results[0].graphic.geometry;
       console.log('graphic: ', geometry);
@@ -246,10 +269,6 @@ export class MapComponent implements OnInit {
       this.msgs.push({ severity: 'error', summary: 'Invalid Marker', detail: 'Marker must have a title, latitude, and longitude' });
       return false;
     }
-  }
-
-  isLocal(): boolean {
-    return window.location.href.indexOf('localhost') != -1;
   }
 
   getCoords(): void {

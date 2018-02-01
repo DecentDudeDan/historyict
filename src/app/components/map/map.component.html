@@ -2,6 +2,7 @@
 
 <div>
     <div class="well" [ngClass]="{
+        'pointer': cursorType === 'pointer',
         'crosshairs': gettingCoords,
         'container-mobile': mobile,
         'container': !mobile
@@ -32,7 +33,7 @@
         </div>
     </div>
 
-    <p-dialog width="1000" height="800" header="Marker Form" modal="true" [(visible)]="isEditing">
+    <p-dialog width="1000" height="800" header="Marker Form" modal="true" [visible]="isEditing">
         <div class="ui-grid ui-grid-responsive ui-grid-pad">
             <div class="ui-grid-row">
                 <div class="ui-grid-col-12">

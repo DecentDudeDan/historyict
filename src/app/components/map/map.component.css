@@ -52,3 +52,7 @@ button {
 .crosshairs {
   cursor: crosshair;
 }
+
+.pointer {
+  cursor: pointer;
+}
