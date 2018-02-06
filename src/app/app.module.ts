@@ -19,6 +19,7 @@ import { DialogModule,
   TooltipModule,
   AutoCompleteModule,
   InputTextModule,
+  FileUploadModule,
   InputMaskModule } from 'primeng/primeng'
 import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -57,6 +58,7 @@ import { LoginComponent } from './components/login/login.component';
     GrowlModule,
     TooltipModule,
     AutoCompleteModule,
+    FileUploadModule,
     InputTextModule,
     InputMaskModule,
     SharedModule,

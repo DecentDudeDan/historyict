@@ -50,32 +50,34 @@ export class MapComponent implements OnInit {
       this.auth.getLoginInfo();
     }
     setTimeout(() => {
-        esriLoader.loadScript().then(() => {
-          esriLoader.loadModules(['esri/views/MapView',
-            'esri/WebMap',
-            'esri/Graphic']).then(([MapView, WebMap, Graphic]: [__esri.MapViewConstructor, __esri.WebMapConstructor, __esri.GraphicConstructor]) => {
-              this.map = new WebMap({
-                portalItem: { // autocasts as new PortalItem()
-                  id: '8bf7167d20924cbf8e25e7b11c7c502c'
-                }
-              });
-              this.view = new MapView({
-                map: this.map,
-                container: 'mapDiv',
-                center: [this.initialLng, this.initialLat],
-                zoom: this.zoomAmount
-              });
-
-              EsriGraphic = Graphic;
-              this.view.on('click', (event) => this.eventHandler(event, EventType.Click));
-              this.view.on('pointer-down', (event) => this.eventHandler(event, EventType.PointerDown));
-              this.view.on('pointer-move', (event) => this.eventHandler(event, EventType.MouseOver))
-              this.addMarkers();
-            })
-            .catch(err => {
-              console.error(err);
+      esriLoader.loadScript().then(() => {
+        esriLoader.loadModules(['esri/views/MapView',
+          'esri/WebMap',
+          'esri/Graphic']).then(([MapView, WebMap, Graphic]: [__esri.MapViewConstructor, __esri.WebMapConstructor, __esri.GraphicConstructor]) => {
+            this.map = new WebMap({
+              portalItem: { // autocasts as new PortalItem()
+                id: '8bf7167d20924cbf8e25e7b11c7c502c'
+              }
             });
-        });
+            this.view = new MapView({
+              map: this.map,
+              container: 'mapDiv',
+              center: [this.initialLng, this.initialLat],
+              zoom: this.zoomAmount
+            });
+
+            EsriGraphic = Graphic;
+            this.view.on('click', (event) => this.eventHandler(event, EventType.Click));
+            this.view.on('pointer-down', (event) => this.eventHandler(event, EventType.PointerDown));
+            this.view.on('pointer-move', (event) => this.eventHandler(event, EventType.MouseOver));
+            if (this.markers && this.markers.length > 0) {
+              this.addMarkers();
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      });
     });
   }
 
@@ -104,16 +106,16 @@ export class MapComponent implements OnInit {
     return check;
   }
 
-  mapClicked($event) {
-    if ($event.button === 2) {
+  mapClicked(event) {
+    if (event.button === 2) {
       if (this.gettingCoords) {
         this.cursorType = 'move';
         this.gettingCoords = false;
       }
     } else {
       if (this.gettingCoords) {
-        this.editingMarker.lat = $event.mapPoint.latitude;
-        this.editingMarker.lng = $event.mapPoint.longitude;
+        this.editingMarker.lat = event.mapPoint.latitude;
+        this.editingMarker.lng = event.mapPoint.longitude;
         this.gettingCoords = false;
         this.cursorType = 'move';
         this.isEditing = true;
@@ -142,6 +144,7 @@ export class MapComponent implements OnInit {
   }
 
   addMarkers() {
+    this.view.graphics.removeAll();
     this.view.graphics.addMany(this.mapToGraphics(this.markers));
   }
 
@@ -221,16 +224,14 @@ export class MapComponent implements OnInit {
   }
 
   getGraphic(response, context) {
-    console.log(response);
     if (response.results.length) {
       let marker;
       const geometry: __esri.Geometry = response.results[0].graphic.geometry;
-      console.log('graphic: ', geometry);
       marker = context.markers.find(m => {
         return m.lat === geometry.get('latitude') && m.lng === geometry.get('longitude');
-      })
+      });
       if (marker) {
-        context.clickedMarker(marker[0]);
+        context.clickedMarker(marker);
       }
     }
   }
