@@ -7,30 +7,34 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class HistoryService {
 
-  constructor(private backendService: BackendService) { 
-  }
-
-  private historyUrl: string = '/historys';
-
-  get(id?: string) {
-      let dataId = id ? id : '';
-      if (dataId) {
-          return this.backendService.get(this.historyUrl + '/' + dataId);
-      } else {
-          return this.backendService.get(this.historyUrl);
-      }
+    constructor(private backendService: BackendService) {
     }
 
-  post(body: History) {
-      return this.backendService.post(this.historyUrl, body);
+    private historyUrl: string = '/historys';
+
+    get(id?: string) {
+        let dataId = id ? id : '';
+        if (dataId) {
+            return this.backendService.get(this.historyUrl + '/' + dataId);
+        } else {
+            return this.backendService.get(this.historyUrl);
+        }
     }
 
-  put(body: History, url: string = '') {
-      return this.backendService.put(this.historyUrl + '/' + url, body);
+    post(body: History) {
+        return this.backendService.post(this.historyUrl, body);
     }
 
-  delete(body: History) {
-      body.deleted = true;
-      return this.backendService.put(this.historyUrl, body);
+    put(body: History, url: string = '') {
+        return this.backendService.put(this.historyUrl + '/' + url, body);
+    }
+
+    delete(body: History) {
+        body.deleted = true;
+        return this.backendService.put(this.historyUrl, body);
+    }
+
+    getUploadUrl(): string {
+        return this.historyUrl + '/upload';
     }
 }

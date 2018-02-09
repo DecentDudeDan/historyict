@@ -20,6 +20,10 @@
     cursor: pointer;
 }
 
+.history-form {
+    margin-bottom: 20px;
+}
+
 .primefix {
     display: inline !important;
 }
@@ -30,4 +34,29 @@
 
 .timeline-header {
     text-align: center;
+}
+
+.history-form-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    div {
+        padding: 0 10px;
+
+        button {
+            width: 200px;
+        }
+    }
+}
+
+.loader-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+}
+
+.ball-spin-fade-loader > div {
+    background-color: #008999;
 }

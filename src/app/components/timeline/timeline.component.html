@@ -6,7 +6,9 @@
     <h1 class="dispaly-4 timeline-header">{{marker.title}}</h1>
     <div *ngIf="this.historys.length > 0" class="timeline timeline-alternating timeline-collapsing timeline-with-arrows">
       <div *ngFor="let history of historys" class="timeline-block" [ngClass]="{selected: history == currentHistory}" (click)="onSelect(history)">
-        <div class="timeline-icon"><i style="color:#008999" class="fa fa-lg"></i></div>
+        <div class="timeline-icon">
+          <i style="color:#008999" class="fa fa-lg"></i>
+        </div>
         <div class="timeline-content tl-content">
           <h2 *ngIf="history.title != null">{{history.title}}</h2>
           <div [innerHTML]="history.content">
@@ -15,13 +17,25 @@
         </div>
       </div>
     </div>
-    <div *ngIf="this.historys.length < 1" class="no-history-container">
+    <div *ngIf="loading" class="loader-wrapper">
+      <div class="loader-inner ball-spin-fade-loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <div *ngIf="this.historys.length < 1 && !loading" class="no-history-container">
       <h2>
         No history found. Be the first to add history to this location by clicking "Add History" below.
       </h2>
     </div>
     <p-dialog width="1000" height="800" responsive="true" header="History Form" modal="true" [(visible)]="visible">
-      <div class="ui-grid ui-grid-responsive ui-grid-pad">
+      <div class="ui-grid ui-grid-responsive ui-grid-pad history-form">
         <div class="ui-grid-row">
           <div class="ui-grid-col-12">
             <input [(ngModel)]="currentHistory.title" type="text" pInputText class="ui-grid-col-12" placeholder="Title">
@@ -60,19 +74,24 @@
           </div>
         </div>
         <div class="ui-grid-row">
-          <div class="ui-grid-col-2">
-            <button class="btn btn-primary ui-grid-col-12" (click)=onSave()>Save</button>
+          <div class="ui-grid-col-12">
           </div>
-          <div class="ui-grid-col-2">
-            <button class="btn ui-grid-col-12" (click)=onCancel()>Cancel</button>
-          </div>
+        </div>
+      </div>
+      <div class="history-form-footer">
+        <div>
+          <button class="btn btn-primary" (click)=onSave()>Save</button>
+        </div>
+        <div>
+          <button class="btn" (click)=onCancel()>Cancel</button>
         </div>
       </div>
     </p-dialog>
   </div>
   <div>
     <button *ngIf="loggedIn" class="btn" (click)="addHistory()"> Add History </button>
-    <button *ngIf="this.auth.isEditor() || this.auth.isAdmin()" class="btn" [disabled]="!this.currentHistory.created" (click)="editHistory()"> Edit History </button>
+    <button *ngIf="this.auth.isEditor() || this.auth.isAdmin()" class="btn" [disabled]="!this.currentHistory.created" (click)="editHistory()">
+      Edit History </button>
     <button *ngIf="this.auth.isAdmin()" class="btn" [disabled]="!this.currentHistory.created" (click)="deleteHistory()"> Delete History </button>
   </div>
 </div>

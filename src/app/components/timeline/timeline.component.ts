@@ -7,7 +7,7 @@ import { Component, OnInit, Input, OnChanges, ViewEncapsulation } from '@angular
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.css']
+  styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent implements OnChanges, OnInit {
 
@@ -16,8 +16,10 @@ export class TimelineComponent implements OnChanges, OnInit {
   @Input() marker: Marker;
   @Input() mobile: boolean;
   historys: History[] = [];
+  uploadedFiles: any[] = [];
   visible: boolean;
   loggedIn: boolean;
+  loading: boolean = false;
   currentHistory: History = new History();
   keywordSuggestions: string[] = ['Black history', '1800"s', '1900"s', '2000"s', 'Kansas', 'Native Americans', "Indians"];
   filteredKeywords: string[];
@@ -38,6 +40,19 @@ export class TimelineComponent implements OnChanges, OnInit {
     }
   }
 
+  getUploadUrl(): string {
+    return this.historyService.getUploadUrl();
+  }
+
+  onUpload(event) {
+    console.log(event);
+    let data: FormData = new FormData();
+    for (let file of event.files) {
+      data.append('files', file, file.name)
+      console.log(data);
+    }
+  }
+
   addHistory(): void {
     this.currentHistory = new History();
     this.visible = true;
@@ -48,6 +63,7 @@ export class TimelineComponent implements OnChanges, OnInit {
   }
 
   getHistory(): void {
+    this.loading = true;
     this.historyService.get(this.marker.id)
       .subscribe((res: History[]) => {
         res.forEach((hist: History) => {
@@ -62,6 +78,10 @@ export class TimelineComponent implements OnChanges, OnInit {
           if (keyA > keyB) return 1;
           return 0;
         });
+        this.loading = false;
+      }, (err) => {
+        console.log(err);
+        this.loading = false;
       });
   }
 
