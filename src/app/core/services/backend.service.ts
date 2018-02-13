@@ -18,12 +18,13 @@ export class BackendService {
 
   constructor(private http: Http, private router: Router) { 
     let authToken = localStorage.getItem('authToken');
-    this.setToken(JSON.parse(authToken));
+    let cleanedToken = JSON.parse(authToken);
+    this.setToken(cleanedToken);
     this.options = new RequestOptions({ headers: this.headers });
   }
 
   setToken(token: string): void {
-      if(token !== '' || token !== null || token !== undefined) {
+      if(token) {
         this.token = "Bearer " + token;
       } else {
         this.token = null;
@@ -73,7 +74,15 @@ export class BackendService {
     return this.handleResponse(this.http.put(this.baseUrl + url, body, this.options))
   }
 
-  handleResponse(res: Observable<Response>): Observable<Response> {
+  upload(url: string, data: FormData) {
+    const uploadHeaders: Headers = new Headers();
+    uploadHeaders.append("Authorization", this.token);
+    const uploadOptions: RequestOptions = new RequestOptions({headers: uploadHeaders});
+    this.checkLoginStatus();
+    return this.handleResponse(this.http.post(this.baseUrl + url, data, uploadOptions));
+  }
+
+  handleResponse(res: Observable<Response>): Observable<any> {
     return res.map((res) => {
       if (res.status == 401) {
         this.logout();

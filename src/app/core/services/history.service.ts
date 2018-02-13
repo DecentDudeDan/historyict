@@ -34,7 +34,7 @@ export class HistoryService {
         return this.backendService.put(this.historyUrl, body);
     }
 
-    getUploadUrl(): string {
-        return this.historyUrl + '/upload';
+    upload(data: FormData) {
+        return this.backendService.upload(this.historyUrl + '/upload', data);
     }
 }

@@ -26,7 +26,7 @@ export class AuthenticationService {
                 let res = response.json();
                 if (res && res.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('authToken', JSON.stringify(res.token));
+                    localStorage.setItem('authToken', JSON.stringify(res.token.trim()));
                     this.backendService.setToken(res.token);
                     this.getLoginInfo();
                     return {

@@ -2,7 +2,7 @@ import { AuthenticationService } from './../../core/services/authentication.serv
 import { Marker } from './../../core/models/marker';
 import { History, PermissionType } from './../../core/models';
 import { HistoryService } from './../../core/services/history.service';
-import { Component, OnInit, Input, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, OnChanges, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-timeline',
@@ -15,6 +15,8 @@ export class TimelineComponent implements OnChanges, OnInit {
 
   @Input() marker: Marker;
   @Input() mobile: boolean;
+  @ViewChild('fileUpload') fileUpload: ElementRef;
+  formData: FormData = new FormData();
   historys: History[] = [];
   uploadedFiles: any[] = [];
   visible: boolean;
@@ -38,18 +40,46 @@ export class TimelineComponent implements OnChanges, OnInit {
     if (this.loggedIn) {
       this.auth.getLoginInfo();
     }
+
+    const input = this.fileUpload.nativeElement;
+    input.onchange = () => {
+      if (input.files[0] !== null) {
+        this.getFileData(input.files[0]);
+      }
+    };
   }
 
-  getUploadUrl(): string {
-    return this.historyService.getUploadUrl();
+  getFileData(file: File) {
+    if (file == null) {
+      return;
+    }
+
+    if (this.isValidFile(file)) {
+      this.formData.append('id', this.marker.id);
+      this.formData.append('file', file, file.name);
+    }
   }
 
-  onUpload(event) {
-    console.log(event);
-    let data: FormData = new FormData();
-    for (let file of event.files) {
-      data.append('files', file, file.name)
-      console.log(data);
+  private isValidFile(file: File): boolean {
+    if (file.type.indexOf('image/') === -1) {
+      return false;
+    }
+    return true;
+  }
+
+  upload() {
+    if (this.formData.get('id')) {
+      this.historyService.upload(this.formData).subscribe(res => {
+        const json = JSON.parse(res._body);
+        const imageLocation =json.location;
+        if (this.currentHistory.images) {
+          this.currentHistory.images.push(imageLocation);
+        } else {
+          this.currentHistory.images = [imageLocation];
+        }
+        this.formData = new FormData();
+        this.fileUpload.nativeElement.value = null;
+      });
     }
   }
 
