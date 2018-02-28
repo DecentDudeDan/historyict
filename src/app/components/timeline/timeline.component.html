@@ -54,7 +54,9 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-12">
-            <input readonly [(ngModel)]="currentHistory.images" type="text" pInputText class="ui-grid-col-12" placeholder="Image Url">
+            <template *ngFor="let img of currentHistory.images">
+                <input readonly [(ngModel)]="img" type="text" pInputText class="ui-grid-col-12" placeholder="Image Url">
+            </template>
           </div>
         </div>
         <div class="ui-grid-row">
@@ -73,7 +75,7 @@
             </div>
           </div>
         </div>
-        <div class="ui-grid-row">
+        <div *ngIf="this.auth.isEditor() || this.auth.isAdmin()" class="ui-grid-row">
           <div class="ui-grid-col-6">
               <input #fileUpload type="file" accept="image/*">
               <button (click)="upload()">Do it!</button>
