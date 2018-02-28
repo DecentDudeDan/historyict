@@ -3,13 +3,14 @@ import { Marker } from './../../core/models/marker';
 import { History, PermissionType } from './../../core/models';
 import { HistoryService } from './../../core/services/history.service';
 import { Component, OnInit, Input, ViewChild, ElementRef, OnChanges, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss']
 })
-export class TimelineComponent implements OnChanges, OnInit {
+export class TimelineComponent implements OnChanges, OnInit, AfterViewInit {
 
   private dateFormat = require('../../../../node_modules/dateformat');
 
@@ -40,7 +41,9 @@ export class TimelineComponent implements OnChanges, OnInit {
     if (this.loggedIn) {
       this.auth.getLoginInfo();
     }
-
+  }
+  
+  ngAfterViewInit() {
     const input = this.fileUpload.nativeElement;
     input.onchange = () => {
       if (input.files[0] !== null) {
@@ -90,6 +93,10 @@ export class TimelineComponent implements OnChanges, OnInit {
 
   editHistory(): void {
     this.visible = true;
+  }
+
+  removeImageSrc(index) {
+    this.currentHistory.images.splice(index, 1);
   }
 
   getHistory(): void {

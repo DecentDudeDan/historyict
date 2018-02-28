@@ -54,9 +54,10 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-12">
-            <template *ngFor="let img of currentHistory.images">
-                <input readonly [(ngModel)]="img" type="text" pInputText class="ui-grid-col-12" placeholder="Image Url">
-            </template>
+            <div *ngFor="let img of currentHistory.images; let i = index">
+                <input readonly [value]="img" type="text" pInputText class="ui-grid-col-11" placeholder="Image Url">
+                <span (click)="removeImageSrc(i)" class="glyphicon glyphicon-remove ui-grid-col-1"></span>
+            </div>
           </div>
         </div>
         <div class="ui-grid-row">
