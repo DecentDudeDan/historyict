@@ -31,6 +31,7 @@
         </a>
         <a class="nav-item nav-link" [routerLink]="['/resources']">Resources</a>
         <a class="nav-item nav-link" [routerLink]="['/resources']">About</a>
+        <a class="nav-item nav-link" *ngIf="hasAdminPermission()" [routerLink]="['/admin']">Admin</a>
         <a class="nav-item nav-link" [routerLink]="['/account']">
             {{ loggedIn ? 'Account' : 'Login' }}
         </a>
