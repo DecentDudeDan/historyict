@@ -10,17 +10,19 @@ import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss']
 })
-export class TimelineComponent implements OnChanges, OnInit, AfterViewInit {
+export class TimelineComponent implements OnChanges, OnInit {
 
   private dateFormat = require('../../../../node_modules/dateformat');
 
   @Input() marker: Marker;
   @Input() mobile: boolean;
   @ViewChild('fileUpload') fileUpload: ElementRef;
+  @ViewChild('fileLabel') fileLabel: ElementRef;
   formData: FormData = new FormData();
   historys: History[] = [];
   uploadedFiles: any[] = [];
   visible: boolean;
+  imageSiderBarVisiable: boolean = false;
   loggedIn: boolean;
   loading: boolean = false;
   currentHistory: History = new History();
@@ -42,15 +44,6 @@ export class TimelineComponent implements OnChanges, OnInit, AfterViewInit {
       this.auth.getLoginInfo();
     }
   }
-  
-  ngAfterViewInit() {
-    const input = this.fileUpload.nativeElement;
-    input.onchange = () => {
-      if (input.files[0] !== null) {
-        this.getFileData(input.files[0]);
-      }
-    };
-  }
 
   getFileData(file: File) {
     if (file == null) {
@@ -60,6 +53,7 @@ export class TimelineComponent implements OnChanges, OnInit, AfterViewInit {
     if (this.isValidFile(file)) {
       this.formData.append('id', this.marker.id);
       this.formData.append('file', file, file.name);
+      this.fileLabel.nativeElement.innerHTML = file.name;
     }
   }
 
@@ -93,6 +87,15 @@ export class TimelineComponent implements OnChanges, OnInit, AfterViewInit {
 
   editHistory(): void {
     this.visible = true;
+
+    const input = this.fileUpload.nativeElement;
+    input.onchange = () => {
+      console.log('changed');
+      if (input.files[0] !== null) {
+        this.getFileData(input.files[0]);
+      }
+    };
+
   }
 
   removeImageSrc(index) {
@@ -158,12 +161,20 @@ export class TimelineComponent implements OnChanges, OnInit, AfterViewInit {
     this.visible = false;
   }
 
+  showImageSideBar(history: History) {
+    this.imageSiderBarVisiable = true;
+  }
+
   onSelect(history: History): void {
     if (this.currentHistory !== history) {
       this.currentHistory = history;
     } else {
       this.currentHistory = new History();
     }
+  }
+
+  deselectHistory() {
+    this.currentHistory = new History();
   }
 
   filterKeywordsEvent($event) {

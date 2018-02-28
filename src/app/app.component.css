@@ -16,4 +16,5 @@ img {
 .router-content {
     position: relative;
     margin: auto;
+    font-size: 16px;
 }

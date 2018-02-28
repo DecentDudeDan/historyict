@@ -12,14 +12,14 @@ import { AuthenticationService } from './core/services/authentication.service';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
 import { TabsModule } from 'ngx-bootstrap';
 import { DialogModule, 
-  EditorModule, 
+  EditorModule,
+  SidebarModule,
   SharedModule, 
   CalendarModule, 
   GrowlModule, 
   TooltipModule,
   AutoCompleteModule,
   InputTextModule,
-  FileUploadModule,
   InputMaskModule } from 'primeng/primeng'
 import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -58,9 +58,9 @@ import { LoginComponent } from './components/login/login.component';
     GrowlModule,
     TooltipModule,
     AutoCompleteModule,
-    FileUploadModule,
     InputTextModule,
     InputMaskModule,
+    SidebarModule,
     SharedModule,
     FormsModule,
     HttpModule,

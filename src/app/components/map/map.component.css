@@ -3,6 +3,10 @@
   margin-bottom: 10px;
 }
 
+.map-wrapper {
+  font-size: 16px;
+}
+
 .mapDiv {
   height: 100%;
   width: 100%;

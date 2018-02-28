@@ -5,14 +5,15 @@
     }">
     <h1 class="dispaly-4 timeline-header">{{marker.title}}</h1>
     <div *ngIf="this.historys.length > 0" class="timeline timeline-alternating timeline-collapsing timeline-with-arrows">
-      <div *ngFor="let history of historys" class="timeline-block" [ngClass]="{selected: history == currentHistory}" (click)="onSelect(history)">
+      <div *ngFor="let history of historys" class="timeline-block" [ngClass]="{selected: history == currentHistory}">
         <div class="timeline-icon">
           <i style="color:#008999" class="fa fa-lg"></i>
         </div>
-        <div class="timeline-content tl-content">
+        <div class="timeline-content tl-content" (click)="onSelect(history)">
           <h2 *ngIf="history.title != null">{{history.title}}</h2>
           <div [innerHTML]="history.content">
           </div>
+          <button class="btn btn-sm" *ngIf="history.images && history.images.length > 0" (click)="showImageSideBar(history)">View Images</button>
           <div class="timeline-date">{{history.date}}</div>
         </div>
       </div>
@@ -55,8 +56,8 @@
         <div class="ui-grid-row">
           <div class="ui-grid-col-12">
             <div *ngFor="let img of currentHistory.images; let i = index">
-                <input readonly [value]="img" type="text" pInputText class="ui-grid-col-11" placeholder="Image Url">
-                <span (click)="removeImageSrc(i)" class="glyphicon glyphicon-remove ui-grid-col-1"></span>
+              <input readonly [value]="img" type="text" pInputText class="ui-grid-col-11 mb-2" placeholder="Image Url">
+              <span (click)="removeImageSrc(i)" class="glyphicon glyphicon-remove ui-grid-col-1 pl-3 pt-3"></span>
             </div>
           </div>
         </div>
@@ -77,11 +78,14 @@
           </div>
         </div>
         <div *ngIf="this.auth.isEditor() || this.auth.isAdmin()" class="ui-grid-row">
-          <div class="ui-grid-col-6">
-              <input #fileUpload type="file" accept="image/*">
-              <button (click)="upload()">Do it!</button>
-          </div>
-          <div class="ui-grid-col-6">
+          <div class="input-group">
+            <div class="custom-file">
+              <input #fileUpload type="file" class="custom-file-input" accept="image/*" id="inputGroupFile02">
+              <label #fileLabel class="custom-file-label" for="inputGroupFile02">Choose file</label>
+            </div>
+            <div class="input-group-append upload-button ml-3">
+              <button class="btn btn-sm btn-success" (click)="upload()">Upload</button>
+            </div>
           </div>
         </div>
       </div>
@@ -90,15 +94,24 @@
           <button class="btn btn-primary" (click)=onSave()>Save</button>
         </div>
         <div>
-          <button class="btn" (click)=onCancel()>Cancel</button>
+          <button class="btn btn-lg" (click)=onCancel()>Cancel</button>
         </div>
       </div>
     </p-dialog>
   </div>
   <div>
-    <button *ngIf="loggedIn" class="btn" (click)="addHistory()"> Add History </button>
-    <button *ngIf="this.auth.isEditor() || this.auth.isAdmin()" class="btn" [disabled]="!this.currentHistory.created" (click)="editHistory()">
+    <button *ngIf="loggedIn" class="btn btn-lg btn-lg" (click)="addHistory()"> Add History </button>
+    <button *ngIf="this.auth.isEditor() || this.auth.isAdmin()" class="btn btn-lg" [disabled]="!this.currentHistory.created"
+      (click)="editHistory()">
       Edit History </button>
-    <button *ngIf="this.auth.isAdmin()" class="btn" [disabled]="!this.currentHistory.created" (click)="deleteHistory()"> Delete History </button>
+    <button *ngIf="this.auth.isAdmin()" class="btn btn-lg" [disabled]="!this.currentHistory.created" (click)="deleteHistory()">
+      Delete History </button>
   </div>
 </div>
+
+<p-sidebar [(visible)]="imageSiderBarVisiable" (onHide)="deselectHistory()" [baseZIndex]="10000">
+    <h1 style="font-weight:normal">Images</h1>
+    <div *ngFor="let img of currentHistory.images; let i = index">
+      <img class="w-75 h-75 mx-auto mb-4" [src]="img">
+    </div>
+</p-sidebar>

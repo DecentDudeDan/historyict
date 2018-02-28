@@ -1,6 +1,6 @@
 <p-growl [value]="msgs"></p-growl>
 
-<div>
+<div class="map-wrapper">
     <div class="well" [ngClass]="{
         'pointer': cursorType === 'pointer',
         'crosshairs': gettingCoords,
@@ -11,9 +11,9 @@
             <div class="mapDiv" id="mapDiv"></div>
         </div>
         <div>
-            <button *ngIf="loggedIn" (click)="addMarker()" class="btn">Add Marker</button>
-            <button *ngIf="this.auth.isEditor() || this.auth.isAdmin()" (click)="editMarker()" [disabled]="!isSelected" class="btn"> Edit Marker </button>
-            <button *ngIf="this.auth.isAdmin()" (click)="deleteMarker()" [disabled]="!isSelected" class="btn"> Delete Marker </button>
+            <button *ngIf="loggedIn" (click)="addMarker()" class="btn btn-lg">Add Marker</button>
+            <button *ngIf="this.auth.isEditor() || this.auth.isAdmin()" (click)="editMarker()" [disabled]="!isSelected" class="btn btn-lg"> Edit Marker </button>
+            <button *ngIf="this.auth.isAdmin()" (click)="deleteMarker()" [disabled]="!isSelected" class="btn btn-lg"> Delete Marker </button>
             <span *ngIf="!loggedIn">You must be logged in to contribute. </span>
         </div>
 
@@ -59,10 +59,10 @@
             </div>
             <div class="ui-grid-row">
                 <div class="ui-grid-col-2">
-                    <button class="btn btn-primary" (click)=onSave()>Save</button>
+                    <button class="btn btn-lg btn-primary" (click)=onSave()>Save</button>
                 </div>
                 <div class="ui-grid-col-2">
-                    <button class="btn" (click)=cancel()>Cancel</button>
+                    <button class="btn btn-lg" (click)=cancel()>Cancel</button>
                 </div>
             </div>
         </div>

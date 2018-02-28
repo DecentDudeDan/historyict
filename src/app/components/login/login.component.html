@@ -1,26 +1,30 @@
 <p-growl life=5000 [value]="msgs"></p-growl>
 
-<div *ngIf="!loggedIn" class="login-container">
-    <form class="well">
-        <h2>
+<div *ngIf="!loggedIn" class="card w-25 mx-auto">
+    <form class="card-body">
+        <h2 class="card-header">
             Please log in
         </h2>
         <div class="form-group">
             <label for="username">Username</label>
-            <input #user type="text" class="form-control" id="username" placeholder="Enter username" (keyup.enter)="onEnter(user.value, pass.value)" />
+            <input #user type="text" class="form-control" id="username" placeholder="Enter username" (keyup.enter)="onEnter(user.value, pass.value)"
+            />
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input #pass type="password" class="form-control" id="password" placeholder="Enter password" (keyup.enter)="onEnter(user.value, pass.value)" />
+            <input #pass type="password" class="form-control" id="password" placeholder="Enter password" (keyup.enter)="onEnter(user.value, pass.value)"
+            />
         </div>
     </form>
 </div>
 
-<div *ngIf="loggedIn && showUser !== null" class="login-container">
-    <div class="info-container">
+<div *ngIf="loggedIn && showUser !== null" class="card w-25 mx-auto pt-4">
+    <div class="card-header">
         <h2>
             You are currently logged in.
         </h2>
+    </div>
+    <div class="card-body">
         <div>
             Username: {{showUser.username}}
         </div>
@@ -40,12 +44,12 @@
     <br>
 </div>
 <div class="login-container">
-    <button *ngIf="!inCreate && showCreateButton" class="btn new-user-button" (click)="showCreate()">Create new user</button>
+    <button *ngIf="!inCreate && showCreateButton" class="btn btn-lg new-user-button" (click)="showCreate()">Create new user</button>
 </div>
-<div *ngIf="inCreate" class="login-container">
-    <div class="well">
-        <div class="ui-grid ui-grid-responsive ui-grid-pad">
-            <div class="ui-grid-row">
+<div *ngIf="inCreate && !loggedIn" class="w-25 mx-auto">
+    <div class="card">
+        <div class="card-body ui-grid ui-grid-responsive ui-grid-pad">
+            <div class="ui-grid-row card-header">
                 <div class="ui-grid-col-12">
                     <h2> New Account </h2>
                 </div>
@@ -57,7 +61,8 @@
             </div>
             <div class="ui-grid-row">
                 <div class="ui-grid-col-12">
-                    <input [ngClass]="{'error': !isPasswordValid()}" [(ngModel)]="newUser.password" type="password" class="form-control" placeholder="Enter password" />
+                    <input [ngClass]="{'error': !isPasswordValid()}" [(ngModel)]="newUser.password" type="password" class="form-control" placeholder="Enter password"
+                    />
                     <span class="password-error-msg" *ngIf="!isPasswordValid()">Password must be at least 8 characters long</span>
                 </div>
             </div>
@@ -84,14 +89,14 @@
             <div class="ui-grid-row">
                 <div class="ui-grid-col-12">
                     <select [(ngModel)]="newUser.permissionLevel" class="form-control" id="sel">
-                <option selected="selected" [value]="'user'">User</option>
-                <option [value]="'editor'">Editor (must be approved)</option>
-                <option [value]="'admin'">Admin (must be approved)</option>
-            </select>
+                        <option selected="selected" [value]="'user'">User</option>
+                        <option [value]="'editor'">Editor (must be approved)</option>
+                        <option [value]="'admin'">Admin (must be approved)</option>
+                    </select>
                 </div>
             </div>
             <div class="ui-grid-row">
-                <button [disabled]="!isPasswordConfirmed()" class="btn ui-grid-col-12 create-btn" (click)="onCreate()">Create</button>
+                <button [disabled]="!isPasswordConfirmed()" class="btn btn-lg ui-grid-col-12 create-btn" (click)="onCreate()">Create</button>
             </div>
         </div>
     </div>

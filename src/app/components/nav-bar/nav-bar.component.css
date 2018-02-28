@@ -1,31 +1,7 @@
-.settings {
-    text-align: right;
+.navbar {
+    font-size: 28px;
 }
 
-.router-header li:hover {
-    cursor: pointer;
-}
-
-nav {
-    background-color: #008999;
-}
-
-nav li:hover {
-    background-color: #002C51;
-}
-
-.navbar-nav li a {
-    color: #F7FFFF;
-}
-
-.navbar-brand {
-    color: #F7FFFF;
-}
-
-.navbar-brand:hover {
-    color: #F7FFFF;
-}
-
-.navbar-header {
-    text-align: center;
+.nav-item {
+    margin-left: 10px;
 }
